@@ -8,7 +8,6 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/css/login.css">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -21,14 +20,14 @@
             style="padding: 100px 50px;">
             <div class="ms-3 wow zoomIn" data-wow-delay="0.2s">
                 <h2>WELCOME TO</h2>
-                <img src="img/logo.png" alt="ELOGSARI" class="mb-2" style="width:200px;height:160px;">
+                <img src="img/logo.png" alt="ukm" class="mb-2" style="width:200px;height:160px;">
                 <p>Ukm Olahragra Politeknik Negeri Banyuwangi</p>
             </div>
         </div>
         <div class="col-md-6 text-white px-4">
             <h1 class="text-center" style="margin-top: 80px;">LOGIN</h1>
 
-            <form action="" method="POST" id="login-form">
+            <form action="{{ route('postlogin') }}" method="POST" id="login-form">
                 @csrf
                 <div class="input-form mt-4">
                     <div style="position: relative">
@@ -61,6 +60,7 @@
                         <i class="fa-regular fa-eye" id="eye"
                             style="position: absolute; right: 10px; bottom: 15px; cursor: pointer; display: none;"></i>
                     </div>
+
                 </div>
                 <br>
                 <div>
@@ -80,6 +80,11 @@
         </div>
     </div>
 
+
+    {{-- **************************************************************************************************************** --}}
+
+
+    {{-- INI BUKA ALERT DARI PACKAGE --}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="fas fa-exclamation-triangle me-2"></i>
@@ -88,25 +93,10 @@
         </div>
     @endif
 
-    @if ($message = Session::get('failed'))
-        <script>
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "{{ $message }}",
-            });
-        </script>
-    @endif
 
-    <!-- @if ($message = Session::get('captcha_failed'))
-<script>
-    Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "{{ $message }}",
-    });
-</script>
-@endif -->
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
@@ -121,7 +111,8 @@
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-        
+
+    {{-- MATA KETIP --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             new WOW().init();
@@ -139,7 +130,25 @@
             document.getElementById('eyeSlash').style.display = 'block';
         });
     </script>
-    @include('sweetalert::alert')
+
+    {{-- KALO PAKAI PACKAGE --}}
+    {{-- @include('sweetalert::alert') --}}
+
+
+    {{-- harus pakek ini baru hidup --}}
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+
+    {{-- @if ($message = Session::get('failed'))
+    <script>
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "{{ $message }}",
+        });
+    </script>
+    @endif --}}
+
 </body>
 
 

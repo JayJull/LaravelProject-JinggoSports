@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="hidden sm:flex items-center">
-                    <a href="#"
+                    <a href="{{ route('login') }}"
                         class="ml-3 bg-customColor-kuning hover:bg-yellow-500 text-black px-8 py-2 font-medium text-xs rounded-full">Login</a>
                 </div>
             </div>
