@@ -132,7 +132,7 @@
     </script>
 
     {{-- KALO PAKAI PACKAGE --}}
-    {{-- @include('sweetalert::alert') --}}
+    @include('sweetalert::alert')
 
 
     {{-- harus pakek ini baru hidup --}}

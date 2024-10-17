@@ -15,17 +15,17 @@ class LoginController extends Controller
 
     public function postlogin(Request $request)
     {
-$validator = Validator::make($request->all(), [
-            'email'     => 'required|email',
-            'password'  => 'required',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
             'g-recaptcha-response' => 'required|recaptcha',
         ]);
 
         if ($validator->fails()) {
             return redirect()->route('login')
-                             ->withErrors($validator)
-                             ->withInput()
-                             ->with('error', 'Mohon konfirmasi bahwa anda bukan robot.');
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Mohon konfirmasi bahwa anda bukan robot.');
         }
         $data = [
             'email' => $request->email,
