@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('prodi');
             $table->string('gambar')->nullable();
             $table->string('email')->unique();
+            $table->foreignId('current_role_id')->nullable()->constrained('roles');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();

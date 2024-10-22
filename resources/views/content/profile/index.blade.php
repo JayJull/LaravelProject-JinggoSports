@@ -12,7 +12,7 @@
                         <div class="card-profile-image mt-4 d-flex justify-content-center">
                             <a>
                                 <img class="img-profile rounded-circle"
-                                    src="{{ asset('storage/foto/' . Auth::user()->gambar) }}" width="160" height="160">
+                                    src="{{ asset('storage/foto/' . Auth::user()->gambar) }}" width="160" height="160"  style="width: 150px; height: 150px; object-fit: cover;">
                             </a>
                         </div>
                     @else

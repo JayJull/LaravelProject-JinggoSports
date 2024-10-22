@@ -53,13 +53,6 @@ class DashboardController extends Controller
         $persentaseTolak = ($pendaftarTolak / $totalPendaftar) * 100;
 
 
-        // dd(auth()->user()->getRoleNames());
-
-        // if (auth()->user()->can('view_dashboard')) {
-        //     return view('dashboard.index', compact('totalPendaftar', 'totalDivisi', 'pendaftarTerima', 'pendaftarTolak', 'persentaseTerima', 'persentaseTolak'));
-        // }
-        // return abort(403); // keamanan lewat controller
-
         // $user = auth()->user();
         // $logName = $user->name;
         // activity()->inLog($logName)->log('membuka beranda');

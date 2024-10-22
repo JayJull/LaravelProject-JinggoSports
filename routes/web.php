@@ -11,6 +11,7 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SwitchRoleController;
 use App\Http\Controllers\TimeLineController;
 use App\Models\Timeline;
 use Carbon\Carbon;
@@ -57,14 +58,14 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
-// });
+// *** SWITCH ROLE ***//
+Route::middleware(['auth'])->group(function () {
+    Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
+});
 
 
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:pengurus');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:admin');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
 
