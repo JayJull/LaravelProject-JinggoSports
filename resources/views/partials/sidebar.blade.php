@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item @if (request()->routeIs('dashboard')) active @endif">
-        <a class="nav-link" href="{{ route('dashboard') }}">
+        <a class="nav-link" href="#">
             <i class="fas fa-fw fa-home"></i>
             <span>Dashboard</span></a>
     </li>
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Menampilkan Navigasi Berdasarkan Role -->
-    @if (auth()->check())
+    {{-- @if (auth()->check())
         @if (auth()->user()->current_role_id)
             @includeIf('layouts.' . auth()->user()->currentRole->name)
         @elseif (auth()->user()->hasRole('admin'))
@@ -34,7 +34,8 @@
         @elseif (auth()->user()->hasRole('anggota'))
             @includeIf('layouts.anggota')
         @endif
-    @endif
+    @endif --}}
+    @includeIf('layouts.pengurus')
 
     <!-- Pembatas -->
     <hr class="sidebar-divider d-none d-md-block">

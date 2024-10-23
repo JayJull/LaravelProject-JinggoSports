@@ -29,13 +29,12 @@
           <div class="row g-0">
             <div class="col-xl-6 d-none d-xl-block">
               <div class="d-flex justify-content-center align-items-center image-container">
-                <img src="{{ asset('image/pendaftaranlogo.png') }}" alt="Sample photo" class="img-fluid" />
+                <img src="{{ asset('img/pendaftaranlogo.png') }}" alt="Sample photo" class="img-fluid" />
               </div>
             </div>
             <div class="col-xl-6">
               <div class="card-body p-md-5 text-black">
                 <h3 class="mb-5 text-uppercase">Form Pendaftaran</h3>
-
                 <form action="{{ route('store-pendaftaran') }}" method="post" enctype="multipart/form-data">
                   {{ csrf_field() }}
                   <div class="row">
@@ -51,7 +50,7 @@
                     <div class="col-md-6 mb-4" style="font-weight: bold;">
                       <div data-mdb-input-init class="form-outline">
                         <label class="form-label" for="form3Example1n">Nim</label>
-                        <input type="number" id="nim" class="form-control form-control-lg" name='nim' min='12' />
+                        <input type="text" id="nim" class="form-control form-control-lg" name='nim' maxlength=12 minlength=12 />
                       </div>
                     </div>
                   </div>
@@ -62,14 +61,9 @@
                       <label class="form-label" for="form3Example1m1" style="font-weight: bold;">Prodi</label>
                         <select name="prodi" data-mdb-select-init id="form3Example1m1" class="form-control form-control-lg">
                           <option value="">Pilih Prodi</option>
-                          <option value="TRPL">TRPL</option>
-                          <option value="Bisnis Digital">Bisnis Digital</option>
-                          <option value="MANAJEMEN Bisnis Pariwisata">Manajemen Bisnis Pariwisata</option>
-                          <option value="Teknik Sipil">Teknik Sipil</option>
-                          <option value="Teknik Mesin">Teknik Mesin</option>
-                          <option value="TPHT">TPHT </option>
-                          <option value="Agribisnis">Agribisnis</option>
-                          <option value="TMK">TMK</option>
+                          @foreach ($prodi as $prodis)                              
+                          <option value={{$prodis->id_prodi}}>{{$prodis->nama}}</option>                          
+                          @endforeach
                         </select>
                       </div>
                     </div>
@@ -86,17 +80,17 @@
                     <h6 class="mb-0 me-4 mb-3" style="font-weight: bold;">Semester : </h6>
                     <div class="form-check form-check-inline mb-1 me-4">
                       <input class="form-check-input" type="radio" name="semester" id="femaleGender" value="1" />
-                      <label class="form-check-label" for="femaleGender"> 1</label>
+                      <label class="form-check-label" for="femaleGender">1</label>
                     </div>
-                    <div class="form-check form-check-inline mb-0 me-4">
+                    <div class="form-check form-check-inline mb-1 me-4">
                       <input class="form-check-input" type="radio" name="semester" id="maleGender" value="3" />
-                      <label class="form-check-label" for="maleGender"> 3</label>
+                      <label class="form-check-label" for="maleGender">3</label>
                     </div>
                   </div>
 
                   <div data-mdb-input-init class="form-outline mb-4">
                     <label class="form-label" for="no_telp" style="font-weight: bold;">No Telphone</label>
-                    <input type="number" id="no_telp" class="form-control form-control-lg" name="no_telp"/>
+                    <input type="text" id="no_telp" class="form-control form-control-lg" maxlength=13 name="no_telp"/>
                   </div>
 
                   <div class="row">
@@ -104,9 +98,9 @@
                       <div data-mdb-input-init class="form-outline">
                         <label class="form-label" for="divisi_1" style="font-weight: bold;">Pilih Divisi 1</label>
                         <select name="divisi_1" id="divisi_1" class="form-control form-control-lg">
-                          @foreach($dtDivisi as $divisi)
-
-                            <option value="{{ $divisi->nama }}" {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>{{ $divisi->nama }}</option>
+                          <option value="">Pilih Divisi</option>
+                          @foreach($divisi as $divisis)
+                            <option value={{ $divisis->id_divisi }}>{{ $divisis->nama }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -116,8 +110,8 @@
                         <label class="form-label" for="divisi_2" style="font-weight: bold;">Pilih Divisi 2</label>
                         <select name="divisi_2" id="divisi_2" class="form-control form-control-lg">
                         <option value="">None</option>
-                          @foreach($dtDivisi as $divisi)
-                            <option value="{{ $divisi->nama }}" {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>{{ $divisi->nama }}</option>
+                          @foreach($divisi as $divisis)
+                            <option value={{ $divisis->id_divisi }}>{{ $divisis->nama }}</option>
                           @endforeach
                         </select>
                       </div>
@@ -139,7 +133,17 @@
         </div>
       </div>
     </div>
-  <!-- </div> -->
-<!-- </section> -->
+    <script>
+      document.getElementById('nim').addEventListener('keydown', function (e) {
+          if (!((e.key >= '0' && e.key <= '9') || ['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key))) {
+              e.preventDefault();
+          }
+      });
+      document.getElementById('no_telp').addEventListener('keydown', function (e) {
+          if (!((e.key >= '0' && e.key <= '9') || ['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key))) {
+              e.preventDefault();
+          }
+      });
+    </script>
 </body>
 </html>

@@ -17,7 +17,7 @@ class Divisi extends Model
 
     public function anggota()
     {
-        return $this->belongsToMany(Anggota::class, 'divisi_has_anggota', 'id_divisi', 'id_anggota');
+        return $this->belongsToMany(Anggota::class, 'divisi_has_anggotas', 'id_divisi', 'id_anggota');
     }
 
     public function jadwal()

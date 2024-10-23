@@ -27,25 +27,26 @@
             <!-- bagian yang dihapus -->
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Halo</span>
+                {{-- <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span> --}}
 
-                @if (Auth::user()->gambar !== null)
+                {{-- @if (Auth::user()->gambar !== null)
                     <img class="img-profile rounded-circle" src="{{ asset('storage/foto/' . Auth::user()->gambar) }}">
                 @else
                     <img class="img-profile rounded-circle" src="{{ asset('template/img/undraw_profile.svg') }}">
-                @endif
+                @endif --}}
             </a>
 
             
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{{ route('profile') }}">
+                <a class="dropdown-item" href="#">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>
 
                 <!-- bagian yang dihapus 2 -->
-                @if (auth()->user()->roles->count() > 1)
+                {{-- @if (auth()->user()->roles->count() > 1)
                     @foreach (auth()->user()->roles->where('id', '!=', auth()->user()->current_role_id) as $role)
                         <a class="dropdown-item" href="{{ route('switch.role', $role->id) }}">
                             <i class="fas fa-exchange-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -53,7 +54,7 @@
                             {{ __('Switch :name', ['name' => $role->name]) }}
                         </a>
                     @endforeach
-                @endif
+                @endif --}}
 
 
 
@@ -81,7 +82,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="{{ route('logout') }}">Logout</a>
+                <a class="btn btn-primary" href="#">Logout</a>
             </div>
         </div>
     </div>

@@ -104,62 +104,57 @@
         </div>
     </section>
 
-    {{-- <div id="popup2" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div id="popup2" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white p-8 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold mb-4">Informasi Pendaftaran</h2>
-            @if ($currentDate < $pembukaan1 && $status1 == 0)
+            @if ($currentDate < $gelombang_1->waktu_mulai && $gelombang_1->status == 0)
             <p></p>
-            @elseif($currentDate < $pembukaan1 && $status1 == 1)
-            <p>Pendaftaran dimulai pada {{date('d - F - Y', strtotime($pembukaan1))}} hingga {{date('d - F - Y', strtotime($penutupan1))}}</p>
+            @elseif($currentDate < $gelombang_1->waktu_mulai && $gelombang_1->status == 1)
+            <p>Pendaftaran dimulai pada {{date('d - F - Y', strtotime($gelombang_1->waktu_mulai))}} hingga {{date('d - F - Y', strtotime($gelombang_1->waktu_berakhir))}}</p>
 
-                @elseif($currentDate > $penutupan1 && $status1 == 0)
+                @elseif($currentDate > $gelombang_1->waktu_berakhir && $gelombang_1->status == 0)
 
                 <p></p>
-                @elseif($currentDate > $penutupan1 && $status1 == 1)
-                <p>Pendaftaran berakhir pada {{$penutupan1}}</p>
+                @elseif($currentDate > $gelombang_1->waktu_berakhir && $gelombang_1->waktu_berakhir == 1)
+                <p>Pendaftaran berakhir pada {{$gelombang_1->waktu_berakhir}}</p>
 
-                @elseif($currentDate >= $pembukaan1 && $currentDate <= $penutupan1 && $status1==1)
+                @elseif($currentDate >= $gelombang_1->waktu_mulai && $currentDate <= $gelombang_1->waktu_berakhir && $gelombang_1->status == 1)
                 <p>Pendaftaran masih dibuka, ayo bergabung!!</p>
+                
+                @endif
 
-                @elseif($currentDate >= $pembukaan1 && $currentDate <= $penutupan1 && $status1==0)
-                    <p>Pendaftaran di non-aktifkan</p>
-                        @endif
-            <!-- <====================> -->
-
-            @if ($currentDate < $pembukaan2 && $status2 == 0)
+            @if ($currentDate < $gelombang_2->waktu_mulai && $gelombang_2->status == 0)
             <p></p>
-            @elseif($currentDate < $pembukaan2 && $status2 == 1)
-            <p>Pendaftaran dimulai pada {{$pembukaan2}} hingga {{$penutupan2}}</p>
+            @elseif($currentDate < $gelombang_2->waktu_mulai && $gelombang_2->status == 1)
+            <p>Pendaftaran dimulai pada {{$gelombang_2->waktu_mulai}} hingga {{$gelombang_2->waktu_berakhir}}</p>
 
-                @elseif($currentDate > $penutupan2 && $status2 == 0)
+                @elseif($currentDate > $gelombang_2->waktu_berakhir && $gelombang_2->status == 0)
                 <p></p>
-                @elseif($currentDate > $penutupan2 && $status2 == 1)
-                <p>Pendaftaran berakhir pada {{$penutupan2}}</p>
+                @elseif($currentDate > $gelombang_2->waktu_berakhir && $gelombang_2->status == 1)
+                <p>Pendaftaran berakhir pada {{$gelombang_2->waktu_berakhir}}</p>
 
-                @elseif($currentDate >= $pembukaan2 && $currentDate <= $penutupan2 && $status2==1)
-                <p>Pendaftaran masih dibuka, ayo bergabung!!</p>
+                @elseif($currentDate >= $gelombang_2->waktu_mulai && $currentDate <= $gelombang_2->waktu_berakhir && $gelombang_2->status == 1)
+                <p>Pendaftaran masih dibuka, ayo bergabung!!</p>                
+                
+                @endif
 
-                @elseif($currentDate >= $pembukaan2 && $currentDate <= $penutupan2 && $status2==0)
-                    <p>Pendaftaran di non-aktifkan</p>
+             @if ($currentDate < $gelombang_1->waktu_mulai || $gelombang_2->waktu_mulai)
+            <p>Pendaftaran dimulai pada {{$gelombang_1->waktu_mulai}} hingga {{$gelombang_1->waktu_berakhir}}</p>
+                @elseif($currentDate > $gelombang_1->waktu_berakhir || $gelombang_2->waktu_berakhir)
+                <p>Pendaftaran berakhir pada {{$gelombang_1->waktu_berakhir}}</p>
+                @elseif($currentDate >= $gelombang_1->waktu_mulai || $gelombang_2->waktu_mulai && $currentDate <= $gelombang_1->waktu_berakhir || $gelombang_2->waktu_berakhir && $gelombang_1->status == 1 || $gelombang_2->status == 1) <p>Pendaftaran masih dibuka, ayo bergabung!!</p>
+                    @elseif($currentDate >= $gelombang_1->waktu_mulai || $gelombang_2->waktu_mulai && $currentDate <= $gelombang_1->waktu_berakhir || $gelombang_2->waktu_berakhir && $status==0 || $gelombang_2->status == 0) <p>Pendaftaran di non-aktifkan</p>
                         @endif
-
-                        <!-- @if ($currentDate < $pembukaan1 || $pembukaan2)
-            <p>Pendaftaran dimulai pada {{$pembukaan1}} hingga {{$penutupan1}}</p>
-                @elseif($currentDate > $penutupan1 || $penutupan2)
-                <p>Pendaftaran berakhir pada {{$penutupan1}}</p>
-                @elseif($currentDate >= $pembukaan1 || $pembukaan2 && $currentDate <= $penutupan1 || $penutupan2 && $status1==1 || $status2==1) <p>Pendaftaran masih dibuka, ayo bergabung!!</p>
-                    @elseif($currentDate >= $pembukaan1 || $pembukaan2 && $currentDate <= $penutupan1 || $penutupan2 && $status==0 || $status2==0) <p>Pendaftaran di non-aktifkan</p>
-                        @endif -->
                         <div class="mt-4 flex justify-end">
                             <button id="closepopup2" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded mr-2">Close</button>
-                            @if ($currentDate >= $pembukaan1 && $currentDate <= $penutupan1 && $status1 == 1) <a class="bg-customColor-hijau text-white px-4 py-2 rounded mr-2" href="{{ route('create-pendaftaran1') }}">Daftar</a>
+                            @if ($currentDate >= $gelombang_1->waktu_mulai && $currentDate <= $gelombang_1->waktu_berakhir && $gelombang_1->status == 1) <a class="bg-customColor-hijau text-white px-4 py-2 rounded mr-2" href="{{ route('view-pendaftaran') }}">Daftar</a>
                                 @endif
-                            @if ($currentDate >= $pembukaan2 && $currentDate <= $penutupan2 && $status2 == 1) <a class="bg-customColor-hijau text-white px-4 py-2 rounded mr-2" href="{{ route('create-pendaftaran2') }}">Daftar</a>
+                            @if ($currentDate >= $gelombang_2->waktu_mulai && $currentDate <= $gelombang_2->waktu_berakhir && $gelombang_2->status == 1) <a class="bg-customColor-hijau text-white px-4 py-2 rounded mr-2" href="{{ route('view-pendaftaran') }}">Daftar</a>
                                 @endif
                         </div>
 
         </div>
-    </div> --}}
+    </div>
 
 
 
@@ -300,33 +295,33 @@
             <h2 class="text-2xl font-bold mb-4">Tanggal Pendaftaran</h2>
             <div class="row">
 
-                {{-- <div class="container mt-4">
+                <div class="container mt-4">
         <table class="table table-bordered">
             <tbody class="mb-3">
                 <tr>
-                    <th>{{$gelombang1 -> nama}}</th>
+                    <th>{{$gelombang_1->nama}}</th>
                 </tr>
                 <tr>
-                    <td>Waktu Mulai : {{date('d - F - Y', strtotime($gelombang1 -> waktu_mulai))}}</td>
+                    <td>Waktu Mulai : {{date('d - F - Y', strtotime($gelombang_1->waktu_mulai))}}</td>
                 </tr>
                 <tr>
-                    <td>Waktu Selesai : {{date('d - F - Y', strtotime($gelombang1 -> waktu_berakhir))}}</td>
+                    <td>Waktu Selesai : {{date('d - F - Y', strtotime($gelombang_1->waktu_berakhir))}}</td>
                 </tr>
             </tbody>
 
             <tbody class="mb-3">
                 <tr>
-                    <th>{{$gelombang2 -> nama}}</th>
+                    <th>{{$gelombang_2->nama}}</th>
                 </tr>
                 <tr>
-                    <td>Waktu Mulai : {{date('d - F - Y', strtotime($gelombang2 -> waktu_mulai))}}</td>
+                    <td>Waktu Mulai : {{date('d - F - Y', strtotime($gelombang_2->waktu_mulai))}}</td>
                 </tr>
                 <tr>
-                    <td>Waktu Selesai : {{date('d - F - Y', strtotime($gelombang2 -> waktu_berakhir))}}</td>
+                    <td>Waktu Selesai : {{date('d - F - Y', strtotime($gelombang_2->waktu_berakhir))}}</td>
                 </tr>
             </tbody>
         </table>
-    </div> --}}
+    </div>
             </div>
             <div class="mt-4">
                 <button id="closepopup"

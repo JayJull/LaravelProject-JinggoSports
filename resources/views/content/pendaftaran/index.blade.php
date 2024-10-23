@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Pendaftaran')
 @section('content')
 
@@ -31,44 +31,52 @@
 
                         <tbody>
                             @foreach ($dtPendaftaran as $item)
-                                {{-- @if ($item->status == 'menunggu') --}}
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->nim }}</td>
-                                    <td>{{ $item->prodi }}</td>
-                                    <td>{{ $item->divisi_1 }}</td>
+                                    <td>{{ $item->prodi->nama }}</td>
                                     <td>
-                                        @if ($item->divisi_2)
-                                            {{ $item->divisi_2 }}
+                                        @if ($item->divisi->isNotEmpty())
+                                            {{ $item->divisi->first()->nama }}
                                         @else
-                                            "tidak memilih"
+                                            None
                                         @endif
                                     </td>
-
-                                    {{-- kalau yang if di aktifkan ini di off --}}
+                                    <td>
+                                        @if ($item->divisi->count() > 1)
+                                            {{ $item->divisi[1]->nama }}
+                                        @else
+                                            None
+                                        @endif
+                                    </td>
+                                    <!-- Status pendaftaran -->
                                     <td class="text-center" style="width: 3%;">
                                         @if ($item->status == 'menunggu')
-                                            <span class="badge badge-warning">Belum
-                                                <br> Terverifikasi
-                                            </span>
+                                            <span class="badge badge-warning">Belum Terverifikasi</span>
                                         @elseif ($item->status == 'terima')
-                                            <span class="badge badge-success" style="padding: 4px 10px;"> Terima
-                                            </span>
+                                            <span class="badge badge-success">Terima</span>
                                         @elseif ($item->status == 'tolak')
-                                            <span class="badge badge-danger" style="padding: 4px 14px;"> Tolak
-                                            </span>
+                                            <span class="badge badge-danger">Tolak</span>
                                         @endif
                                     </td>
-                                    {{-- *** --}}
 
+                                    <!-- Aksi -->
                                     <td class="text-center" style="width: 9%;">
-                                    @php $id = Crypt::encrypt($item->id); @endphp
-                                        <a href="{{ route('detail-pendaftaran', $id) }}"
-                                            class="btn btn-primary  btn-sm"><i class="fas fa-eye"></i> Detail</a>
+                                        @php $id = Crypt::encrypt($item->id); @endphp
+                                        {{-- <a href="{{ route('pendaftaran.detail', $id) }}" class="btn btn-primary btn-sm"> --}}
+                                        <i class="fas fa-eye"></i> Detail
+                                        </a>
+                                        @if ($item->status == 'menunggu')
+                                            {{-- <a href="{{ route('pendaftaran.terima', $id) }}" class="btn btn-success btn-sm"> --}}
+                                            <i class="fas fa-check"></i> Terima
+                                            </a>
+                                            {{-- <a href="{{ route('pendaftaran.tolak', $id) }}" class="btn btn-danger btn-sm"> --}}
+                                            <i class="fas fa-times"></i> Tolak
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
-                                {{-- @endif --}}
                             @endforeach
                         </tbody>
                     </table>

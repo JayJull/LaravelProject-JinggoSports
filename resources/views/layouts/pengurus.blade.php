@@ -7,21 +7,21 @@
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{{ route('pendaftaran') }}">Data Pendaftar</a>
-            <a class="collapse-item" href="{{ route('detail-terima') }}">Diterima</a>
-            <a class="collapse-item" href="{{ route('detail-tolak') }}">Ditolak</a>
+            <a class="collapse-item" href="{{ route('admin-pendaftaran') }}">Data Pendaftar</a>
+            <a class="collapse-item" href="#">Diterima</a>
+            <a class="collapse-item" href="#">Ditolak</a>
         </div>
     </div>
 </li>
 
 <li class="nav-item @if (request()->routeIs('aktif-presensi')) active @endif">
-    <a class="nav-link" href="{{ route('aktif-presensi') }}">
+    <a class="nav-link" href="#">
         <i class="fas fa-fw fa-calendar-check"></i>
         <span>Aktifasi</span></a>
 </li>
 
 <li class="nav-item @if (request()->routeIs('data-presensi')) active @endif">
-    <a class="nav-link" href="{{ route('data-presensi') }}">
+    <a class="nav-link" href="#">
         <i class="fas fa-fw fa-clipboard-list"></i>
         <span>Data Presensi</span></a>
 </li>
@@ -41,8 +41,8 @@
     </a>
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{{ route('peminjaman') }}">Peminjaman Alat</a>
-            <a class="collapse-item" href="{{ route('pengembalian') }}">Pengembalian Alat</a>
+            <a class="collapse-item" href="#">Peminjaman Alat</a>
+            <a class="collapse-item" href="#">Pengembalian Alat</a>
         </div>
     </div>
 </li>
