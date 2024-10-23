@@ -22,6 +22,10 @@ class Anggota extends Model
         'status',
         'id_prodi'
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function prodi()
     {
@@ -30,7 +34,7 @@ class Anggota extends Model
 
     public function divisi()
     {
-        return $this->belongsTo(Divisi::class, 'id_divisi', 'id_divisi');
+        return $this->belongsToMany(Divisi::class, 'divisi_has_anggotas', 'id_anggota', 'id_divisi');
     }
 
     public function peminjaman()

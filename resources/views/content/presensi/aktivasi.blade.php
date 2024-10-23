@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Divisi')
 @section('content')
 
@@ -25,24 +25,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($dtDivisi as $item)
-<tr>
-    <td>{{ $loop->iteration }}</td>
-    <td class="text-center"><br>{{ $item->nama }}</td>
-    <td class="text-left" style="width: 30%;">
-        <div class="form-group">
-            <input type="time" name="tenggat" id="tenggat-{{$item->id}}" class="form-control" value="{{$item->tenggat}}" placeholder="tenggat" style="width: 50%;" required>
-        </div>
-    </td>
-    <td class="text-center" style="width: 15%;">
-        <br>
-        <button id="toggleButton-{{ $item->id }}" class="btn btn-sm btn-primary toggle-button" data-id="{{ $item->id }}" data-status="{{ $item->aktifasi ? 'active' : 'inactive' }}">
-            <i class="fas {{ $item->aktifasi ? 'fa-check' : 'fa-times' }}"></i> {{ $item->aktifasi ? 'Aktif' : 'Nonaktif' }}
-        </button>
-    </td>
-</tr>
-@endforeach
-
+                    @foreach ($dtJadwal as $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $item->divisi->nama ?? 'Divisi Tidak Ditemukan' }}</td>
+                            <td class="text-left" style="width: 30%;">
+                                <input type="time" name="tenggat" id="tenggat-{{ $item->id_jadwal }}" 
+                                    class="form-control" value="{{ $item->tenggat }}" 
+                                    placeholder="tenggat" style="width: 50%;" required>
+                            </td>
+                            <td class="text-center" style="width: 15%;">
+                                <button id="toggleButton-{{ $item->id_jadwal }}" 
+                                    class="btn btn-sm {{ $item->aktifasi ? 'btn-primary' : 'btn-danger' }} toggle-button"
+                                    data-id="{{ $item->id_jadwal }}" 
+                                    data-status="{{ $item->aktifasi ? 'active' : 'inactive' }}">
+                                    <i class="fas {{ $item->aktifasi ? 'fa-check' : 'fa-times' }}"></i>
+                                    {{ $item->aktifasi ? 'Aktif' : 'Nonaktif' }}
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -60,32 +62,29 @@
     // Menunggu sampai dokumen siap
     $(document).ready(function() {// Untuk setiap elemen dengan kelas .toggle-button
         $('.toggle-button').each(function() {
-            var button = $(this);// Menyimpan elemen tombol saat ini
-            var id = button.data('id');// Mendapatkan data id dari tombol
+        var button = $(this);
+        var id = button.data('id');
+        
+        // Dapatkan status awal dari server untuk setiap tombol
+        $.ajax({
+            url: "{{ route('get-status') }}",
+            method: 'GET',
+            data: { id: id },
+            success: function(response) {
+                var icon = response.status === 'active' ? 'fa-check' : 'fa-times';
+                var buttonText = response.status === 'active' ? 'Aktif' : 'Nonaktif';
+                var buttonClass = response.status === 'active' ? 'btn-primary' : 'btn-danger';
 
-            // Mengirim permintaan AJAX untuk mendapatkan status saat ini dari server
-            $.ajax({
-                url: "{{ route('get-status') }}", // URL untuk permintaan GET status
-                method: 'GET',// Metode HTTP untuk permintaan
-                data: {
-                    id: id// Data yang dikirim ke server (id divisi)
-                },
-                success: function(response) {
-                    /// Mengubah tampilan tombol berdasarkan status yang diterima dari server
-                    var icon = response.status === 'active' ? 'fa-check' : 'fa-times';
-                    var buttonText = response.status === 'active' ? 'Aktif' : 'Nonaktif';
-                    var buttonClass = response.status === 'active' ? 'btn-primary' : 'btn-danger';
-
-                    button.data('status', response.status);// Mengatur data status tombol
-                    button.html('<i class="fas ' + icon + '"></i> ' + buttonText);// Mengubah HTML tombol dengan icon dan teks baru
-                    button.removeClass('btn-primary btn-danger').addClass(buttonClass);// Mengubah kelas tombol
-                },
-                error: function(xhr, status, error) {
-                    // Handle error
-                    console.error(xhr.responseText);
-                }
-            });
+                button.data('status', response.status);
+                button.html('<i class="fas ' + icon + '"></i> ' + buttonText);
+                button.removeClass('btn-primary btn-danger').addClass(buttonClass);
+                console.log(response);  // Debug respons dari server
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            }
         });
+    });
 //======================================//
          // Menambahkan event listener untuk klik pada tombol dengan kelas .toggle-button
         $(document).ready(function() {
@@ -97,8 +96,12 @@
         var icon = newStatus === 'active' ? 'fa-check' : 'fa-times';// Icon baru berdasarkan status baru
         var buttonText = newStatus === 'active' ? 'Aktif' : 'Nonaktif';// Teks tombol baru berdasarkan status baru
         var buttonClass = newStatus === 'active' ? 'btn-primary' : 'btn-danger';// Kelas tombol baru berdasarkan status baru
-        var tenggatValue = $('#tenggat-' + id).val();// Kelas tombol baru berdasarkan status baru
-        
+        var tenggatValue = $('#tenggat-' + id).val();
+        if (!tenggatValue.match(/^\d{2}:\d{2}$/)) {
+            alert("pih ulang tenggat");
+            return; // Hentikan eksekusi jika format tidak valid
+        }
+
         // Mengirim permintaan AJAX untuk memperbarui status di server
         $.ajax({
             url: "{{ route('toggle-status') }}",// URL untuk permintaan POST toggle status

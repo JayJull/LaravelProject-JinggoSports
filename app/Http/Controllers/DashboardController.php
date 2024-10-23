@@ -28,7 +28,7 @@ class DashboardController extends Controller
         // $logName = $user->name;
         // activity()->inLog($logName)->log('membuka beranda');
         // return view('layouts.dashboard');
-        return view("welcome");
+        return view("layouts.dashboard");
 
     }
 }

@@ -17,7 +17,8 @@ class PresensiSeeder extends Seeder
             [
                 'tanggal' => '2024-10-10',
                 'bukti' => null,
-                'id_anggota' => 1,
+                'id_anggota' => 2,
+                'id_divisi'=> 3,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

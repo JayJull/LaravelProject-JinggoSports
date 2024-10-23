@@ -1,4 +1,4 @@
-@extends('home.submain')
+@extends('master.main')
 @section('title', 'Dashboard')
 @section('content')
 

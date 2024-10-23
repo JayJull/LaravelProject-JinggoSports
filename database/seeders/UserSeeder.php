@@ -38,7 +38,19 @@ class UserSeeder extends Seeder
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],            
+            ], 
+            [
+                'name'=>'anggota',
+                'nim'=>'362910229301',
+                'prodi' => 'Manajemen Bisnis Pariwisata',
+                'gambar' => null,
+                'email' => 'testanggota@gmail.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('anggota'),
+                'remember_token' => Str::random(10),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],           
         ]);
     }
 }

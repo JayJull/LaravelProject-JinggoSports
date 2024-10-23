@@ -27,6 +27,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    public function profile()
+    {
+        return $this->hasOne(Anggota::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

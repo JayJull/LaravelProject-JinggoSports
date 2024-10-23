@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Jadwal Latihan')
 @section('content')
 
@@ -47,11 +47,11 @@
 
                                     <td class="text-center" style="width: 15%;">
                                         <form onsubmit="return confirm('Apakah Anda Yakin Menghapus?');"
-                                            action="{{ route('delete-jadwal', $item->id) }}" method="POST">
+                                            action="{{ route('delete-jadwal', $item->id_jadwal) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            @php $id = Crypt::encrypt($item->id); @endphp
-                                            <a href="{{ route('edit-jadwal', $id) }}" {{ $item->id }}
+                                            @php $id_jadwal = Crypt::encrypt($item->id_jadwal); @endphp
+                                            <a href="{{ route('edit-jadwal', $id_jadwal) }}" {{ $item->id_jadwal }}
                                                 class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Edit</a>
 
                                             <button type="submit" class="btn btn-sm btn-danger"><i

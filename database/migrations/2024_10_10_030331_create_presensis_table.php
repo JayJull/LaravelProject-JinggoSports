@@ -16,8 +16,9 @@ return new class extends Migration
             $table->date('tanggal');
             $table->string('bukti')->nullable();
             $table->unsignedBigInteger('id_anggota');
+            $table->unsignedBigInteger('id_divisi');
             $table->timestamps();
-
+            $table->foreign('id_divisi')->references('id_divisi')->on('divisis')->onDelete('cascade');
             $table->foreign(columns: 'id_anggota')->references('id_anggota')->on('anggotas')->onDelete('cascade');
         });
     }

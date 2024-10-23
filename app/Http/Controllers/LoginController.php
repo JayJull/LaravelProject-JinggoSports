@@ -33,7 +33,7 @@ $validator = Validator::make($request->all(), [
         ];
 
         if (Auth::attempt($data)) {
-            return redirect()->route('dashboard')->with('success', 'Kamu Berhasil Login');
+            return redirect()->route('view-presensi')->with('success', 'Kamu Berhasil Login');
         } else {
             return redirect()->route('login')->with('error', 'Email atau Password Salah');
         }

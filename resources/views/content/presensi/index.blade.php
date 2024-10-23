@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Presensi')
 @section('content')
 
@@ -28,17 +28,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($pendaftar->divisi_1)
+                                @if ($pendaftar)
                                 <tr>
                                     <td>1</td>
-                                    <td>{{ $pendaftar->divisi_1 }}</td>
+                                    <td>{{ $namaDivisi[0] }}</td>
                                     <td>
                                         <ul>
-                                            @foreach ($jadwalDivisi1 as $jadwal)
-                                            <li>{{ $jadwal->hari }}: {{ $jadwal->waktu_mulai }} -
-                                                {{ $jadwal->waktu_selesai }}
+                                            <li>{{ $jadwalDivisi2[0]->hari }}: {{ $jadwalDivisi2[0]->waktu_mulai }} -
+                                                {{ $jadwalDivisi2[0]->waktu_selesai }}
                                             </li>
-                                            @endforeach
                                         </ul>
                                     </td>
                                     <td>
@@ -53,17 +51,15 @@
                                     </td>
                                 </tr>
                                 @endif
-                                @if ($pendaftar->divisi_2)
+                                @if ($pendaftar)
                                 <tr>
                                     <td>2</td>
-                                    <td>{{ $pendaftar->divisi_2 }}</td>
+                                    <td>{{ $namaDivisi[1] }}</td>
                                     <td>
                                         <ul>
-                                            @foreach ($jadwalDivisi2 as $jadwal)
-                                            <li>{{ $jadwal->hari }}: {{ $jadwal->waktu_mulai }} -
-                                                {{ $jadwal->waktu_selesai }}
+                                            <li>{{ $jadwalDivisi2[1]->hari }}: {{ $jadwalDivisi2[1]->waktu_mulai }} -
+                                                {{ $jadwalDivisi2[1]->waktu_selesai }}
                                             </li>
-                                            @endforeach
                                         </ul>
                                     </td>
                                     <td>
@@ -111,32 +107,36 @@
                                 <div class="text-center">
                                     <h5 class="font-weight-bold">{{ Auth::user()->name }}</h5>
                                     <p class="font-weight">{{ Auth::user()->role }}</p>
+                                    
+                                    <select name="id_divisi" id="divisi" class="form-control">
+                                        
+                                        @if ($divisiAktif[0]->nama && $jadwalDivisi2[0]->aktifasi == 1)
+                                            <option value="{{ $divisiAktif[0]->id_divisi }}">{{ $divisiAktif[0]->nama }}</option>
+                                        @endif
+                                        @if ($divisiAktif[1]->nama && $jadwalDivisi2[1]->aktifasi)
+                                            <option value="{{ $divisiAktif[1]->id_divisi }}">{{ $divisiAktif[1]->nama }}</option>
+                                        @endif
+                                       
 
-                                    <select name="divisi" id="divisi" class="form-control">
-                                        @if ($pendaftar->divisi_1 && $dtDivisi->where('nama', $pendaftar->divisi_1)->first()->aktifasi)
-                                            <option value="{{ $pendaftar->divisi_1 }}">{{ $pendaftar->divisi_1 }}</option>
-                                        @endif
-                                        @if ($pendaftar->divisi_2 && $dtDivisi->where('nama', $pendaftar->divisi_2)->first()->aktifasi)
-                                            <option value="{{ $pendaftar->divisi_2 }}">{{ $pendaftar->divisi_2 }}</option>
-                                        @endif
+                                        
                                     </select>
+                                    
                                     <br>
                                     <div class="mb-3">
                                         <input type="file" id="bukti" name="bukti" style="opacity:0; display:none" class="btn btn-primary">
                                         <label for="bukti" class="btn btn-primary btn-block">Upload bukti</label>
                                     </div>
-
+                                    
                                     <div class="d-flex justify-content-between">
                                         <button type="submit" class="btn btn-success flex-grow-1">Presensi</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </form>
 
-                    <form id="deleteForm" action="{{ route('delete-profile') }}" method="POST">
-                        @csrf
-                    </form>
+                    
                 </div>
             </div>
         </div>
