@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Presensi')
 @section('content')
 
@@ -28,17 +28,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($pendaftar->divisi_1)
+                                @if ($pendaftar)
                                 <tr>
                                     <td>1</td>
-                                    <td>{{ $pendaftar->divisi_1 }}</td>
+                                    <td>{{ $namaDivisi[0] }}</td>
                                     <td>
                                         <ul>
-                                            @foreach ($jadwalDivisi1 as $jadwal)
-                                            <li>{{ $jadwal->hari }}: {{ $jadwal->waktu_mulai }} -
-                                                {{ $jadwal->waktu_selesai }}
+                                            <li>{{ $jadwalDivisi2[0]->hari }}: {{ $jadwalDivisi2[0]->waktu_mulai }} -
+                                                {{ $jadwalDivisi2[0]->waktu_selesai }}
                                             </li>
-                                            @endforeach
                                         </ul>
                                     </td>
                                     <td>
@@ -53,17 +51,15 @@
                                     </td>
                                 </tr>
                                 @endif
-                                @if ($pendaftar->divisi_2)
+                                @if ($pendaftar)
                                 <tr>
                                     <td>2</td>
-                                    <td>{{ $pendaftar->divisi_2 }}</td>
+                                    <td>{{ $namaDivisi[1] }}</td>
                                     <td>
                                         <ul>
-                                            @foreach ($jadwalDivisi2 as $jadwal)
-                                            <li>{{ $jadwal->hari }}: {{ $jadwal->waktu_mulai }} -
-                                                {{ $jadwal->waktu_selesai }}
+                                            <li>{{ $jadwalDivisi2[1]->hari }}: {{ $jadwalDivisi2[1]->waktu_mulai }} -
+                                                {{ $jadwalDivisi2[1]->waktu_selesai }}
                                             </li>
-                                            @endforeach
                                         </ul>
                                     </td>
                                     <td>
@@ -103,40 +99,54 @@
                 @endif
 
                 <div class="card-body">
-                    <form action="{{ route('store-presensi') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                <form action="{{ route('store-presensi') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="text-center">
-                                    <h5 class="font-weight-bold">{{ Auth::user()->name }}</h5>
-                                    <p class="font-weight">{{ Auth::user()->role }}</p>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="text-center">
+                                <h5 class="font-weight-bold">{{ Auth::user()->name }}</h5>
+                                <p class="font-weight">{{ Auth::user()->role }}</p>
 
-                                    <select name="divisi" id="divisi" class="form-control">
-                                        @if ($pendaftar->divisi_1 && $dtDivisi->where('nama', $pendaftar->divisi_1)->first()->aktifasi)
-                                            <option value="{{ $pendaftar->divisi_1 }}">{{ $pendaftar->divisi_1 }}</option>
-                                        @endif
-                                        @if ($pendaftar->divisi_2 && $dtDivisi->where('nama', $pendaftar->divisi_2)->first()->aktifasi)
-                                            <option value="{{ $pendaftar->divisi_2 }}">{{ $pendaftar->divisi_2 }}</option>
-                                        @endif
-                                    </select>
-                                    <br>
-                                    <div class="mb-3">
-                                        <input type="file" id="bukti" name="bukti" style="opacity:0; display:none" class="btn btn-primary">
-                                        <label for="bukti" class="btn btn-primary btn-block">Upload bukti</label>
-                                    </div>
+                                <!-- Dropdown untuk memilih id_aktifasi -->
+                                <select name="aktifasi_id" id="divisi" class="form-control">
+                                    @if ($dtAktifasi != null)
+                                        @foreach ($dtAktifasi as $aktifasiCollection)
+                                            @foreach (collect($aktifasiCollection) as $aktifasi)
+                                                @if(isset($aktifasi->pertemuan))
+                                                    <option 
+                                                        value="{{ $aktifasi->id_aktifasi }}" 
+                                                        data-id-divisi="{{ $aktifasi->id_divisi }}"> <!-- Menyimpan id_divisi dalam atribut data -->
+                                                        {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )({{$aktifasi->id_aktifasi}})
+                                                    </option>
+                                                @else
+                                                    <option value="">Pertemuan tidak tersedia</option>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    @endif
+                                </select>
 
-                                    <div class="d-flex justify-content-between">
-                                        <button type="submit" class="btn btn-success flex-grow-1">Presensi</button>
-                                    </div>
+                                <!-- Input hidden untuk menyimpan id_divisi yang dipilih -->
+                                <input type="hidden" name="id_divisi" id="id_divisi">
+
+                                <br>
+                                <div class="mb-3">
+                                    <input type="file" id="bukti" name="bukti" style="opacity:0; display:none" class="btn btn-primary">
+                                    <label for="bukti" class="btn btn-primary btn-block">Upload bukti</label>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-success flex-grow-1">Presensi</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </form>
+                <!-- Link untuk mengakses halaman pemindaian QR/Barcode -->
+                <a href="{{ route('scan-qr') }}" id="scanLink">Scan QR/Barcode</a>
 
-                    <form id="deleteForm" action="{{ route('delete-profile') }}" method="POST">
-                        @csrf
-                    </form>
+                    
                 </div>
             </div>
         </div>
@@ -150,3 +160,24 @@
 @include('sweetalert::alert')
 
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil elemen dropdown dan input hidden
+        const divisiDropdown = document.getElementById('divisi');
+        const idDivisiHidden = document.getElementById('id_divisi');
+
+        // Fungsi untuk memperbarui nilai id_divisi
+        function updateIdDivisi() {
+            const selectedOption = divisiDropdown.options[divisiDropdown.selectedIndex];
+            const idDivisi = selectedOption.getAttribute('data-id-divisi');
+            idDivisiHidden.value = idDivisi;
+        }
+
+        // Panggil fungsi pertama kali untuk set nilai default saat halaman dimuat
+        updateIdDivisi();
+
+        // Tambahkan event listener untuk memperbarui nilai saat dropdown berubah
+        divisiDropdown.addEventListener('change', updateIdDivisi);
+    });
+</script>

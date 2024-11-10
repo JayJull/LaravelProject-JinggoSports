@@ -7,9 +7,7 @@
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{{ route('pendaftaran') }}">Data Pendaftar</a>
-            <a class="collapse-item" href="{{ route('detail-terima') }}">Diterima</a>
-            <a class="collapse-item" href="{{ route('detail-tolak') }}">Ditolak</a>
+            
         </div>
     </div>
 </li>
@@ -24,6 +22,12 @@
     <a class="nav-link" href="{{ route('data-presensi') }}">
         <i class="fas fa-fw fa-clipboard-list"></i>
         <span>Data Presensi</span></a>
+</li>
+
+<li class="nav-item @if (request()->routeIs('jadwal')) active @endif">
+    <a class="nav-link" href="{{ route('jadwal') }}">
+        <i class="fas fa-fw fa-clipboard-list"></i>
+        <span>Jadwal</span></a>
 </li>
 
 
@@ -41,8 +45,7 @@
     </a>
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{{ route('peminjaman') }}">Peminjaman Alat</a>
-            <a class="collapse-item" href="{{ route('pengembalian') }}">Pengembalian Alat</a>
+            
         </div>
     </div>
 </li>

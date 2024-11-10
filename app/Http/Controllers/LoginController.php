@@ -20,6 +20,7 @@ class LoginController extends Controller
         $validate = User::validasi($request);
         return $validate;
 
+
     }
 
     public function logout()
