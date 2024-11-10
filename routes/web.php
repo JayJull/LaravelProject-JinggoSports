@@ -82,14 +82,14 @@ Route::group(['middleware' => ['can:manage_divisi']], function () {
 
 
 // *** JADWAL *** //
-// Route::group(['middleware' => ['can:manage_jadwal']], function () {
+Route::group(['middleware' => ['can:manage_jadwal']], function () {
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal');
     Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('create-jadwal');
     Route::post('/jadwal/simpan', [JadwalController::class, 'store'])->name('simpan-jadwal');
     Route::get('/jadwal/edit/{id}', [JadwalController::class, 'edit'])->name('edit-jadwal');
     Route::post('/jadwal/update/{id}', [JadwalController::class, 'update'])->name('update-jadwal');
     Route::delete('/jadwal/delete/{id}', [JadwalController::class, 'destroy'])->name('delete-jadwal');
-// });
+});
 
 
 //*** PENDAFTARAN *** //

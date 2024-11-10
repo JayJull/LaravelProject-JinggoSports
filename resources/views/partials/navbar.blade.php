@@ -39,6 +39,7 @@
 
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="{{ route('profile') }}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>
@@ -46,6 +47,7 @@
                 <!-- bagian yang dihapus 2 -->
                 @if (auth()->user()->roles->count() > 1)
                     @foreach (auth()->user()->roles->where('id', '!=', auth()->user()->current_role_id) as $role)
+                        <a class="dropdown-item" href="{{ route('switch.role', $role->id) }}">
                             <i class="fas fa-exchange-alt fa-sm fa-fw mr-2 text-gray-400"></i>
 
                             {{ __('Switch :name', ['name' => $role->name]) }}
