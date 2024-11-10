@@ -28,7 +28,9 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Divisi::class, 'id_divisi', 'id_divisi');
     }
-    
+    public function aktifasi(){
+        return $this->hasMany(Aktifasi::class, 'jadwal_id', 'jadwal_id');
+    }
     public function getAktifasiAttribute($value)
     {
         $currentTime = Carbon::now()->format('H:i:00'); // Waktu saat ini (jam:menit)

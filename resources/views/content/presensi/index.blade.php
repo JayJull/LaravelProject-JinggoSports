@@ -99,42 +99,52 @@
                 @endif
 
                 <div class="card-body">
-                    <form action="{{ route('store-presensi') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                <form action="{{ route('store-presensi') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="text-center">
-                                    <h5 class="font-weight-bold">{{ Auth::user()->name }}</h5>
-                                    <p class="font-weight">{{ Auth::user()->role }}</p>
-                                    
-                                    <select name="id_divisi" id="divisi" class="form-control">
-                                        
-                                        @if ($divisiAktif[0]->nama && $jadwalDivisi2[0]->aktifasi == 1)
-                                            <option value="{{ $divisiAktif[0]->id_divisi }}">{{ $divisiAktif[0]->nama }}</option>
-                                        @endif
-                                        @if ($divisiAktif[1]->nama && $jadwalDivisi2[1]->aktifasi)
-                                            <option value="{{ $divisiAktif[1]->id_divisi }}">{{ $divisiAktif[1]->nama }}</option>
-                                        @endif
-                                       
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="text-center">
+                                <h5 class="font-weight-bold">{{ Auth::user()->name }}</h5>
+                                <p class="font-weight">{{ Auth::user()->role }}</p>
 
-                                        
-                                    </select>
-                                    
-                                    <br>
-                                    <div class="mb-3">
-                                        <input type="file" id="bukti" name="bukti" style="opacity:0; display:none" class="btn btn-primary">
-                                        <label for="bukti" class="btn btn-primary btn-block">Upload bukti</label>
-                                    </div>
-                                    
-                                    <div class="d-flex justify-content-between">
-                                        <button type="submit" class="btn btn-success flex-grow-1">Presensi</button>
-                                    </div>
+                                <!-- Dropdown untuk memilih id_aktifasi -->
+                                <select name="aktifasi_id" id="divisi" class="form-control">
+                                    @if ($dtAktifasi != null)
+                                        @foreach ($dtAktifasi as $aktifasiCollection)
+                                            @foreach (collect($aktifasiCollection) as $aktifasi)
+                                                @if(isset($aktifasi->pertemuan))
+                                                    <option 
+                                                        value="{{ $aktifasi->id_aktifasi }}" 
+                                                        data-id-divisi="{{ $aktifasi->id_divisi }}"> <!-- Menyimpan id_divisi dalam atribut data -->
+                                                        {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )({{$aktifasi->id_aktifasi}})
+                                                    </option>
+                                                @else
+                                                    <option value="">Pertemuan tidak tersedia</option>
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    @endif
+                                </select>
+
+                                <!-- Input hidden untuk menyimpan id_divisi yang dipilih -->
+                                <input type="hidden" name="id_divisi" id="id_divisi">
+
+                                <br>
+                                <div class="mb-3">
+                                    <input type="file" id="bukti" name="bukti" style="opacity:0; display:none" class="btn btn-primary">
+                                    <label for="bukti" class="btn btn-primary btn-block">Upload bukti</label>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-success flex-grow-1">Presensi</button>
                                 </div>
                             </div>
                         </div>
-
-                    </form>
+                    </div>
+                </form>
+                <!-- Link untuk mengakses halaman pemindaian QR/Barcode -->
+                <a href="{{ route('scan-qr') }}" id="scanLink">Scan QR/Barcode</a>
 
                     
                 </div>
@@ -150,3 +160,24 @@
 @include('sweetalert::alert')
 
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil elemen dropdown dan input hidden
+        const divisiDropdown = document.getElementById('divisi');
+        const idDivisiHidden = document.getElementById('id_divisi');
+
+        // Fungsi untuk memperbarui nilai id_divisi
+        function updateIdDivisi() {
+            const selectedOption = divisiDropdown.options[divisiDropdown.selectedIndex];
+            const idDivisi = selectedOption.getAttribute('data-id-divisi');
+            idDivisiHidden.value = idDivisi;
+        }
+
+        // Panggil fungsi pertama kali untuk set nilai default saat halaman dimuat
+        updateIdDivisi();
+
+        // Tambahkan event listener untuk memperbarui nilai saat dropdown berubah
+        divisiDropdown.addEventListener('change', updateIdDivisi);
+    });
+</script>

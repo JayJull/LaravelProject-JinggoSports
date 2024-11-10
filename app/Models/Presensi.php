@@ -21,7 +21,8 @@ class Presensi extends Model
         'tanggal',
         'bukti',
         'id_anggota',
-        'id_divisi'
+        'id_divisi',
+        'aktifasi_id'
     ];
 
     public function anggota()
@@ -38,9 +39,11 @@ class Presensi extends Model
         
         $data_jadwal = Jadwal::whereIn('id_divisi', $idDivisi)->first();
         $tenggat = $data_jadwal->waktu_selesai;
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'tanggal' => 'nullable',
             'id_divisi' => 'required',
+            'aktifasi_id' => 'required',
             'bukti' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ], [
             'bukti.required' => 'Upload foto dulu',
@@ -52,7 +55,7 @@ class Presensi extends Model
        
         //dd($currentTime);
         if ($validator->fails()) {
-            return redirect()->route('view-presensi')->with('error', 'uplod bukti dulu');
+            return redirect()->route('view-presensi')->with('error', 'data kurang lengkap');
         }
 
         $fotoFile = $request->file('bukti');
@@ -63,24 +66,32 @@ class Presensi extends Model
         $namaFileUnik = Str::uuid() . '' . time() . '' . $fotoFile->getClientOriginalName();
         $fotoPath = $fotoFile->storeAs('public/buktiPresensi', $namaFileUnik);
         
-        
+        $deadLine = Aktifasi::where('id_aktifasi', $request->aktifasi_id)->first();
+        // dd($deadLine->tenggat);
+        $tenggatDate = Carbon::parse($deadLine->tenggat)->format('Y-m-d'); // Convert tenggat to Y-m-d format
+        if ($currentDate > $tenggatDate) {
+            return redirect()->route('view-presensi')->with('error', 'Presensi ditutup');
+        }
+
         $cek = Presensi::where([
             'id_anggota' => $anggota->id_anggota,
             'id_divisi'=> $request->id_divisi,
             'tanggal' => $currentDate,
+            'aktifasi_id'=>$request->aktifasi_id
         ])->first();
         
         if ($cek) {
             return redirect()->route('view-presensi')->with('error', 'Anda sudah presensi');
         } else {
-            if ($currentTime > $tenggat) {
+            if ($currentTime > $deadLine->tenggat ) {
                 return redirect()->route('view-presensi')->with('error', 'Presensi ditutup');
             } else {
                 Presensi::create([
                     'id_anggota' => $anggota->id_anggota,
                     'bukti'=>$namaFileUnik,
                     'tanggal' => $currentDate,
-                    'id_divisi'=>$request->id_divisi
+                    'id_divisi'=>$request->id_divisi,
+                    'aktifasi_id'=>$request->aktifasi_id
                     // 'bukti' => $namaFileUnik,
                 ]);
                 return redirect()->route('view-presensi')->with('toast_success', 'Berhasil presensi');
@@ -184,11 +195,19 @@ public static function takeCek2(){
     //         return redirect()->route('view-presensi');
     // }
 
-    public static function viewPresensi(){
-        $dtJadwal = Jadwal::with('divisi')->get(); // Eager loading relasi
+    public static function viewPresensi() {
+        $dtJadwal = Jadwal::with('divisi')->get();
+        
+        // Ambil semua jadwal_id dari $dtJadwal
+        $jadwalIds = $dtJadwal->pluck('id_jadwal')->toArray();
+    
+        // Ambil data Aktifasi untuk jadwal yang ada
+        $dtAktifasi = Aktifasi::whereIn('jadwal_id', $jadwalIds)->get()->groupBy('jadwal_id');
+        
         $dtDivisi = Divisi::all();
-        return view('content.presensi.aktivasi', compact('dtJadwal', 'dtDivisi'));
+        return view('content.presensi.aktivasi', compact('dtJadwal', 'dtDivisi', 'dtAktifasi'));
     }
+    
 
     public static function updateStatus(Request $request){
         $request->validate([
@@ -211,5 +230,44 @@ public static function takeCek2(){
     
         // Gunakan accessor di model untuk status
         return response()->json(['status' => $jadwal->aktifasi ? 'active' : 'inactive']);
+    }
+
+
+    public static function aktifasi(Request $request, $id){
+        $request->validate([
+            'tenggat'=>'required',
+            // 'status'=>'required',
+            'pertemuan'=>'required',
+        ]);
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $data = Aktifasi::where('pertemuan', $request->pertemuan)->where('jadwal_id', $id)->first();
+        if($data){
+            return redirect()->route('aktif-presensi')->with('error', 'data sudah ada');
+        }
+        Aktifasi::create([
+            'tenggat'=>$request->tenggat,
+            'status'=>1,
+            'pertemuan'=>$request->pertemuan,
+            'tanggal'=>$currentDate,
+            'jadwal_id'=>$id
+        ]);
+        return redirect()->route('aktif-presensi')->with('success', 'berhasil aktifasi');
+    }
+
+    public static function Scan($request){
+        // dd($request);
+        $userLogin = Auth::user();
+
+        $anggota = Anggota::where('nim', $request)->first();
+        // dd($anggota);
+        if(!$anggota){
+            return redirect()->route('scan-qr')->with('error', 'anda bukan anggota');
+        }
+        if ($userLogin->nim != $anggota->nim) {
+            # code...
+            return redirect()->route('scan-qr')->with('error', 'presensi harus menggunakan akun pribadi');
+        }
+        $dtAktifasi = Aktifasi::takeAktifasi();
+        return view('content.presensi.scanResult', compact('anggota','dtAktifasi'));
     }
 }
