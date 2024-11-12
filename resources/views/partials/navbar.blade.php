@@ -30,7 +30,7 @@
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
 
                 @if (Auth::user()->gambar !== null)
-                    <img class="img-profile rounded-circle" src="{{ asset('storage/foto/' . Auth::user()->gambar) }}">
+                    <img class="img-profile rounded-circle" src="{{ asset('storage/foto/' . Auth::user()->gambar) }}" style="object-fit: cover;">
                 @else
                     <img class="img-profile rounded-circle" src="{{ asset('template/img/undraw_profile.svg') }}">
                 @endif
