@@ -29,24 +29,28 @@ class PengembalianController extends Controller
 
     public function store(Request $request)
     {
-        $user = Auth::id();
-        $data = $request->validate([
-            'id_peminjaman' => 'required|exists:peminjamans,id_peminjaman',
-            'tggl_kembali' => 'required|date',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // validasi image
+        // Mendapatkan ID pengguna yang sedang login
+        $userId = Auth::id();
+
+        // Validasi input dari request
+        $validatedData = $request->validate([
+            'id_peminjaman' => 'required|exists:peminjamans,id_peminjaman', // Memastikan ID peminjaman ada
+            'tggl_kembali' => 'required|date', // Validasi tanggal kembali
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi format gambar
         ]);
 
-        // Menyimpan data image jika ada
+        // Cek apakah ada file gambar yang diunggah
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('images/pengembalian', 'public');
+            // Simpan gambar ke folder 'public/pengembalian' dan simpan path-nya di $validatedData['image']
+            $validatedData['image'] = $request->file('image')->store('pengembalian', 'public');
         }
 
-        // Menambahkan petugas_id ke data
-        $data['petugas_id'] = $user;
-        $pengembalian = Pengembalian::kembali($data);
+        // Menambahkan ID petugas ke dalam data yang divalidasi
+        $validatedData['petugas_id'] = $userId;
 
-        // Handle the return process
+        // Menggunakan model Pengembalian untuk menyimpan data
         try {
+            Pengembalian::kembali($validatedData);
             return redirect()->route('pengembalian')->with('toast_success', 'Data berhasil dikembalikan.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);

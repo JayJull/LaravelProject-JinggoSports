@@ -45,17 +45,9 @@
                         <td>{{ date('d-m-Y', strtotime ($data->tggl_pinjam)) }}</td>
                         <td>{{ date('d-m-Y', strtotime ($data->tggl_kembali)) }}</td>
                         <!-- <td>{{ $data->deskripsi }}</td> -->
-                        <td>
-                            @if ($data->image)
-                            @php
-                            $imagePath = asset('storage/images/pengembalian/' . $data->image);
-                           //  dd($imagePath, $data->image);
-                            @endphp
-                            <img src="{{ $imagePath }}" alt="Gambar tidak ada" style="max-width: 200px; max-height: 200px;">
-                            @else
-                            gambar tidak ada
-                            @endif
-                        </td>
+                        <td class="px-4 py-3">
+                                <img src="{{ asset('storage/pengembalian/' . $data->image) }}" alt="Image" style="max-width: 100px; max-height: 100px;">
+                            </td>
                         <td>{{ $data->petugas ? $data->petugas->name : 'N/A' }}</td>
                         <td class="text-center" style="width: 9%;">
                             <form onsubmit="return confirm('Apakah Anda Yakin Menghapus?');" action="{{ route('delete-pengembalian', $data->id_pengembalian) }}" method="POST">

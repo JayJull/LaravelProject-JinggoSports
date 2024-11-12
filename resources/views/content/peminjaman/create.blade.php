@@ -22,8 +22,10 @@
 
 
     function updateDetails() {
-        const select = document.getElementById("nama");
-        const selectedOption = select.options[select.selectedIndex];
+        var select = document.getElementById("nama");
+        var selectedOption = select.options[select.selectedIndex];
+        var idAnggota = selectedOption.value;
+        document.getElementById('id_anggota_hidden').value = idAnggota;
 
         if (selectedOption && selectedOption.value) {
             const nim = selectedOption.getAttribute("data-nim");
@@ -35,6 +37,7 @@
         }
 
     }
+
     function updateStok() {
         const selectElement = document.querySelector('select[name="id_alat"]');
         const stokDisplay = document.getElementById('stokDisplay');
@@ -42,12 +45,11 @@
         const stok = selectedOption.getAttribute('data-stok');
         stokDisplay.textContent = stok ? `Stok Tersisa: ${stok}` : '';
     }
-document.addEventListener('DOMContentLoaded', function(){
-const dateInput = document.querySelector('input[name="tggl_pinjam"]');
-const today = new Date().toISOString().split('T')[0];
-dateInput.setAttribute('min', today);
-});
-
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.querySelector('input[name="tggl_pinjam"]');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    });
 </script>
 
 
@@ -72,7 +74,7 @@ dateInput.setAttribute('min', today);
                             @endforeach
                         </select>
                     </div>
-
+                    <input type="hidden" id="id_anggota_hidden" name="id_anggota">
                     <div class="form-group">
                         <label for="nim">NIM</label>
                         <input type="text" id="nim" name="nim" maxlength="12" class="form-control" required readonly>
@@ -82,7 +84,6 @@ dateInput.setAttribute('min', today);
                         <label for="prodi">Prodi</label>
                         <input type="text" id="prodi" name="prodi" class="form-control" required readonly>
                     </div>
-
                     <div class="form-group d-flex align-items-start">
                         <div style="flex: 1; margin-right: 1rem;">
                             <label for="nama_alat">Pilih Alat</label>

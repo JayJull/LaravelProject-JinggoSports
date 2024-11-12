@@ -23,26 +23,27 @@ class Peminjaman extends Model
      // Method to create a new borrowing
      public static function pinjam($data)
      {
+        $validatedData = $data->validate([
+            'id_anggota'=>'required',
+            'id_alat' => 'required|exists:alats,id_alat',
+            'jml_alat' => 'required|integer|min:1',
+            'tggl_pinjam' => 'required|date',
+        ]);
+            $validatedData['petugas_id'] = auth()->user()->id;
          // Find the alat (tool) by ID
          $alat = Alat::where('id_alat', $data['id_alat'])->firstOrFail();
          
          // Check if stock is sufficient
          $alat->kurangStok($data['jml_alat']);
- 
-         // Find anggota (member) by NIM
-         $anggota = Anggota::where('nim', $data['nim'])->first();
-         if (!$anggota) {
-             throw new \Exception('NIM tidak ditemukan');
-         }
+
  
          // Create a new borrowing record
          return self::create([
-             'id_anggota' => $anggota->id_anggota,
-             'id_prodi' => $anggota->id_prodi,
-             'id_alat' => $data['id_alat'],
-             'jml_alat' => $data['jml_alat'],
-             'tggl_pinjam' => $data['tggl_pinjam'],
-             'petugas_id' => $data['petugas_id'],
+             'id_anggota' => $validatedData['id_anggota'],
+             'id_alat' => $validatedData['id_alat'],
+             'jml_alat' => $validatedData['jml_alat'],
+             'tggl_pinjam' => $validatedData['tggl_pinjam'],
+             'petugas_id' => $validatedData['petugas_id'],
              'status' => 'dipinjam',
          ]);
      }

@@ -36,21 +36,8 @@ class PeminjamanController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nim' => 'required|max:12',
-            'prodi' => 'required',
-            'id_alat' => 'required|exists:alats,id_alat',
-            'jml_alat' => 'required|integer|min:1',
-            'tggl_pinjam' => 'required|date',
-        ]);
-
-        try {
-            $validatedData['petugas_id'] = auth()->user()->id;
-            Peminjaman::pinjam($validatedData);
+            Peminjaman::pinjam($request);
 
             return redirect()->route('peminjaman')->with('success', 'Peminjaman berhasil dibuat');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
-        }
     }
 }
