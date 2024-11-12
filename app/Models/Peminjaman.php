@@ -20,7 +20,7 @@ class Peminjaman extends Model
     ];
 
 
-     // Method to create a new borrowing
+     // Method yang menangani peminjaman kitaaaa
      public static function pinjam($data)
      {
         $validatedData = $data->validate([
@@ -30,14 +30,14 @@ class Peminjaman extends Model
             'tggl_pinjam' => 'required|date',
         ]);
             $validatedData['petugas_id'] = auth()->user()->id;
-         // Find the alat (tool) by ID
+         // melihat alat bedasarkan id
          $alat = Alat::where('id_alat', $data['id_alat'])->firstOrFail();
          
-         // Check if stock is sufficient
+         // memeriksa stok
          $alat->kurangStok($data['jml_alat']);
 
  
-         // Create a new borrowing record
+         // buat peminjaman
          return self::create([
              'id_anggota' => $validatedData['id_anggota'],
              'id_alat' => $validatedData['id_alat'],
