@@ -16,6 +16,7 @@ return new class extends Migration
             $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']);
             $table->time('waktu_mulai');
             $table->time('waktu_selesai');
+            $table->time('tenggat')->nullable();
             $table->boolean('aktifasi')->default(0);
             $table->unsignedBigInteger('id_divisi');
             $table->timestamps();

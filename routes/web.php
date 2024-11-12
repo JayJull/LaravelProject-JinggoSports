@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\PresensiController;
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SwitchRoleController;
 use App\Http\Controllers\TimeLineController;
@@ -81,14 +82,14 @@ Route::group(['middleware' => ['can:manage_divisi']], function () {
 
 
 // *** JADWAL *** //
-Route::group(['middleware' => ['can:manage_jadwal']], function () {
+// Route::group(['middleware' => ['can:manage_jadwal']], function () {
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal');
     Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('create-jadwal');
     Route::post('/jadwal/simpan', [JadwalController::class, 'store'])->name('simpan-jadwal');
     Route::get('/jadwal/edit/{id}', [JadwalController::class, 'edit'])->name('edit-jadwal');
     Route::post('/jadwal/update/{id}', [JadwalController::class, 'update'])->name('update-jadwal');
     Route::delete('/jadwal/delete/{id}', [JadwalController::class, 'destroy'])->name('delete-jadwal');
-});
+// });
 
 
 //*** PENDAFTARAN *** //
@@ -155,12 +156,19 @@ Route::post('/verifikasi/{token}', [LoginController::class, 'verifikasi'])->name
 
 
 // *** PRESENSI *** //
-Route::get('/presensi', [PresensiController::class, 'index'])->name(    'view-presensi');
-Route::post('presensi/store',[PresensiController::class, 'index'])->name('store-presensi');
+Route::get('/presensi', [PresensiController::class, 'index'])->name('view-presensi');
+Route::post('presensi/store',[PresensiController::class, 'inputPresensi'])->name('store-presensi');
 Route::get('/data/presensi', [PresensiController::class, 'view'])->name('data-presensi');
 Route::get('aktifasi/presensi',[PresensiController::class, 'activatePresensiView'])->name('aktif-presensi');
 Route::post('/toggle-status', [PresensiController::class, 'toggleStatus'])->name('toggle-status');
 Route::get('/get-status', [PresensiController::class, 'getStatus'])->name('get-status');
+Route::post('/activate/{id}', [PresensiController::class, 'activate'])->name('aktivasi');
+Route::post('/scan-result', [PresensiController::class, 'Scanner'])->name('scan-result');
+// routes/web.php
+Route::get('/scan-qr', function () {
+    return view('content.presensi.scan'); // Halaman untuk memindai QR atau Barcode
+})->name('scan-qr');
+
 
 
 
