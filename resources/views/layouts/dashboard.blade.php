@@ -98,7 +98,6 @@
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
                                                     <div class="progress-bar bg-success" role="progressbar"
-                                                        style="width: {{ $persentaseTerima }}%"
                                                         aria-valuenow="{{ $persentaseTerima }}" aria-valuemin="0"
                                                         aria-valuemax="100">
                                                     </div>
@@ -135,7 +134,7 @@
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
                                                     <div class="progress-bar bg-warning" role="progressbar"
-                                                        style="width: {{ $persentaseTolak }}%"
+                                                        
                                                         aria-valuenow="{{ $persentaseTolak }}" aria-valuemin="0"
                                                         aria-valuemax="1000">
                                                     </div>
