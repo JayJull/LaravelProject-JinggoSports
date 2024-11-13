@@ -31,6 +31,8 @@
 
 
 <!-- Nav Item - Pages Collapse Menu -->
+
+<!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item @if (request()->routeIs('peminjaman', 'pengembalian')) active @endif">
     <a class="nav-link collapsed " data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
         aria-controls="collapsePages">
@@ -40,6 +42,8 @@
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
 
+            <a class="collapse-item" href="{{ route('peminjaman') }}">Peminjaman Alat</a>
+            <a class="collapse-item" href="{{ route('pengembalian') }}">Pengembalian Alat</a>
         </div>
     </div>
 </li>
