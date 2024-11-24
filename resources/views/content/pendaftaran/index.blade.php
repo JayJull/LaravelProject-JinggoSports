@@ -54,27 +54,17 @@
                                     <td class="text-center" style="width: 3%;">
                                         @if ($item->status == 'menunggu')
                                             <span class="badge badge-warning">Belum Terverifikasi</span>
-                                        @elseif ($item->status == 'terima')
+                                        @elseif ($item->status == 'diterima')
                                             <span class="badge badge-success">Terima</span>
-                                        @elseif ($item->status == 'tolak')
+                                        @elseif ($item->status == 'ditolak')
                                             <span class="badge badge-danger">Tolak</span>
                                         @endif
                                     </td>
-
                                     <!-- Aksi -->
                                     <td class="text-center" style="width: 9%;">
-                                        @php $id = Crypt::encrypt($item->id); @endphp
-                                        {{-- <a href="{{ route('pendaftaran.detail', $id) }}" class="btn btn-primary btn-sm"> --}}
-                                        <i class="fas fa-eye"></i> Detail
-                                        </a>
-                                        @if ($item->status == 'menunggu')
-                                            {{-- <a href="{{ route('pendaftaran.terima', $id) }}" class="btn btn-success btn-sm"> --}}
-                                            <i class="fas fa-check"></i> Terima
-                                            </a>
-                                            {{-- <a href="{{ route('pendaftaran.tolak', $id) }}" class="btn btn-danger btn-sm"> --}}
-                                            <i class="fas fa-times"></i> Tolak
-                                            </a>
-                                        @endif
+                                        {{-- @php $id = Crypt::encrypt($item->id); @endphp --}}
+                                        <a href="{{ route('admin-pendaftaran-detail', $item->id_anggota) }}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye"></i> Detail                                        
                                     </td>
                                 </tr>
                             @endforeach

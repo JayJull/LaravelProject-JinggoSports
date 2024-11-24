@@ -21,11 +21,23 @@ class AnggotaSeeder extends Seeder
                 'semester' => '3',
                 'no_telp' => '081234567890',
                 'cv' => null,
-                'status' => 'menunggu',
+                'status' => 'diterima',
                 'id_prodi' => 1, 
                 'created_at' => now(),
                 'updated_at' => now(),
             ],           
+            [
+                'nama' => 'Anggota2',
+                'nim' => '362910229320',
+                'email' => 'testanggota2@gmail.com',
+                'semester' => '3',
+                'no_telp' => '081234567890',
+                'cv' => null,
+                'status' => 'ditolak',
+                'id_prodi' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

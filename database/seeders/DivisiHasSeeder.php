@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Anggota;
+use App\Models\Divisi;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DivisiHasSeeder extends Seeder
 {
@@ -13,15 +13,17 @@ class DivisiHasSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('divisi_has_anggotas')->insert([
-            [
-                'id_divisi' => 1,
-                'id_anggota' => 1,
-            ],
-            [
-                'id_divisi' => 2,
-                'id_anggota' => 1,
-            ],            
-        ]);
+        // Ambil semua anggota yang diterima
+        $anggotaDiterima = Anggota::where('status', 'diterima')->get();
+
+        foreach ($anggotaDiterima as $anggota) {
+            // Tentukan divisi-divisi yang akan dimasukkan (misalnya, divisi pertama dan kedua)
+            $divisis = Divisi::take(2)->get(); // Ambil dua divisi pertama, bisa disesuaikan
+
+            foreach ($divisis as $divisi) {
+                // Masukkan anggota ke dalam setiap divisi yang diambil
+                $divisi->anggota()->attach($anggota->id_anggota);
+            }
+        }
     }
 }

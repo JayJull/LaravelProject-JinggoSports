@@ -22,6 +22,7 @@ class Anggota extends Model
         'status',
         'id_prodi'
     ];
+    
 
     public function prodi()
     {

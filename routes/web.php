@@ -25,7 +25,11 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('/timeline', [TimeLineController::class, 'index'])->name('view-timeLine');    
     Route::post('/timeline/update/{id}', [TimeLineController::class, 'update'])->name('timeline-update');
     Route::get('/pendaftaran', [AnggotaController::class, 'index_pendaftaran'])->name('admin-pendaftaran');    
+    Route::get('/pendaftaran/detail/{id}', [AnggotaController::class, 'detail_pendaftaran'])->name('admin-pendaftaran-detail');
+    Route::post('/pendaftaran/terima/{id}', [AnggotaController::class, 'approve_pendaftaran'])->name('pendaftaran-terima');
 });
+
+Route::get('/anggota/aktivasi/{token}/{email}', [AnggotaController::class, 'aktivasi'])->name('anggota-aktivasi');
 
 Route::group(['prefix' => 'pengurus'], function() {
     Route::get('/pendaftaran', [AnggotaController::class, 'pendaftaran'])->name('view-pendaftaran');

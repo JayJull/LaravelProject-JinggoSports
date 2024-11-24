@@ -17,6 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $primaryKey = "id_user";
     protected $fillable = [
         'name',
         'nim',
@@ -45,4 +46,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function anggota()
+    {
+        return $this->hasOne(Anggota::class, 'id_user', 'id_user');
+    }
 }

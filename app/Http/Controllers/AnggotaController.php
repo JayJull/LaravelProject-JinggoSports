@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ApprovePendaftaran;
 use App\Models\Anggota;
 use App\Models\Divisi;
 use App\Models\Prodi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AnggotaController extends Controller
 {
-    public function pendaftaran() {
+    public function pendaftaran()
+    {
         $prodi = Prodi::all();
         $divisi = Divisi::all();
         return view('content.pendaftaran.formulir', compact('prodi', 'divisi'));
     }
 
-    public function create_pendaftaran(Request $request) {
-        // Validasi input dari pengguna
+    public function create_pendaftaran(Request $request)
+    {
         $this->validate($request, [
             'nama' => [
                 'required',
@@ -29,37 +33,31 @@ class AnggotaController extends Controller
             'prodi' => 'required',
             'email' => 'required|email',
             'no_telp' => 'required',
-            'cv' => 'nullable|mimes:jpeg,png,jpg|max:10240',
+            'cv' => 'required|mimes:pdf,doc,docx|max:10240',
             'semester' => 'required',
             'divisi_1' => 'required',
             'divisi_2' => 'nullable|different:divisi_1'
         ], [
             'regex' => 'Nama hanya boleh berisi huruf dan spasi',
-            'cv.mimes' => 'CV harus dalam format jpeg, png, atau jpg',
+            'cv.mimes' => 'CV harus dalam format pdf, doc, atau docx',
         ]);
 
         try {
             DB::beginTransaction();
-
             // Cek apakah NIM atau email sudah terdaftar
-            $cekPendaftar = Anggota::where('nim', $request->nim)
-                                ->orWhere('email', $request->email)
-                                ->first();
-            
-            $cekUser = User::where('nim', $request->nim)
-                            ->orWhere('email', $request->email)
-                            ->first();
+            $cekPendaftar = Anggota::where('email', $request->email)->first();
+            $cekUser = User::where('email', $request->email)->first();
 
             if ($cekPendaftar || $cekUser) {
                 return redirect()->route('home')->with('error', 'NIM atau email sudah terdaftar');
             }
 
             // Proses file CV jika ada yang diunggah
-            $imageName = null;
+            $cvFileName = null;
             if ($request->hasFile('cv')) {
-                $image = $request->file('cv');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('public/cv', $imageName);
+                $cvFile = $request->file('cv');
+                $cvFileName = time() . '.' . $cvFile->getClientOriginalExtension();
+                $cvFile->storeAs('public/cv', $cvFileName);
             }
 
             // Simpan data ke tabel Anggota
@@ -69,18 +67,17 @@ class AnggotaController extends Controller
                 'id_prodi' => $request->prodi,
                 'email' => $request->email,
                 'no_telp' => $request->no_telp,
-                'cv' => $imageName,
+                'cv' => $cvFileName,
                 'semester' => $request->semester,
-                'status' => 'menunggu' // Sesuai dengan default value di migration
+                'status' => 'menunggu' // Status awal adalah 'menunggu'
             ]);
 
-            // Simpan data ke tabel divisi_has_anggotas untuk pilihan pertama
             DB::table('divisi_has_anggotas')->insert([
                 'id_anggota' => $anggota->id_anggota,
                 'id_divisi' => $request->divisi_1
             ]);
 
-            // Simpan data ke tabel divisi_has_anggotas untuk pilihan kedua jika ada
+            // Masukkan ke tabel divisi_has_anggotas untuk divisi kedua (jika ada)
             if ($request->divisi_2) {
                 DB::table('divisi_has_anggotas')->insert([
                     'id_anggota' => $anggota->id_anggota,
@@ -91,13 +88,12 @@ class AnggotaController extends Controller
             DB::commit();
             return redirect()->route('landing-page')
                 ->with('success', 'Pendaftaran berhasil, pantengin notifikasi emailnya ya!');
-
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             // Hapus file CV jika ada error
-            if (isset($imageName)) {
-                Storage::delete('public/cv/' . $imageName);
+            if (isset($cvFileName)) {
+                Storage::delete('public/cv/' . $cvFileName);
             }
 
             return redirect()->back()
@@ -106,32 +102,49 @@ class AnggotaController extends Controller
         }
     }
 
-    public function index_pendaftaran(){
+    public function index_pendaftaran()
+    {
         $dtPendaftaran = Anggota::all();
         return view('content.pendaftaran.index', compact('dtPendaftaran'));
     }
 
-    public function approve_pendaftaran($id_anggota, $id_divisi) {
-        try {
-            DB::beginTransaction();
-
-            // Update status anggota
-            $anggota = Anggota::findOrFail($id_anggota);
-            $anggota->status = 'diterima';
-            $anggota->save();
-
-            // Hapus semua relasi divisi yang tidak dipilih
-            DB::table('divisi_has_anggotas')
-                ->where('id_anggota', $id_anggota)
-                ->where('id_divisi', '!=', $id_divisi)
-                ->delete();
-
-            DB::commit();
-            return redirect()->back()->with('success', 'Pendaftaran berhasil disetujui');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyetujui pendaftaran');
+    public function detail_pendaftaran($id)
+    {
+        $dtAnggota = Anggota::with(['divisi', 'prodi'])->findOrFail($id);
+        if ($dtAnggota->cv) {
+            $dtAnggota->cv_base64 = base64_encode($dtAnggota->cv);
         }
+        return view('content.pendaftaran.detail', compact('dtAnggota'));
+    }
+
+    public function approve_pendaftaran($id)
+    {
+        $anggota = Anggota::findOrFail($id);
+
+        // Update status menjadi diterima
+        $anggota->status = 'diterima';
+        $anggota->save();
+
+        // Buat user baru untuk anggota yang diterima
+        $user = new User();
+        $user->id_anggota = $anggota->id_anggota;
+        $user->email = $anggota->email;
+        $user->token = Str::random(60);  // Generate token aktivasi
+        $user->save();
+
+        // Kirim email aktivasi
+        Mail::to($anggota->email)->send(new ApprovePendaftaran($anggota, $user->token));
+
+        return redirect()->route('admin-pendaftaran')->with('success', 'Pendaftaran berhasil diterima. Email aktivasi telah dikirim.');
+    }
+
+    public function aktivasi($token, $email)
+    {
+        $user = User::where('token', $token)->where('email', $email)->first();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Token aktivasi tidak valid.');
+        }
+        return view('auth.setpass', compact('token', 'email'));
     }
 }
