@@ -10,20 +10,18 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ApprovePendaftaran extends Mailable
+class DeclinePendaftaran extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $anggota;
-    public $token;
     /**
      * Create a new message instance.
      */
-    public function __construct(Anggota $anggota, $token)
+    public function __construct(Anggota $anggota)
     {
         //
         $this->anggota = $anggota;
-        $this->token = $token;
     }
 
     /**
@@ -32,20 +30,18 @@ class ApprovePendaftaran extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Approve Pendaftaran',
+            subject: 'Decline Pendaftaran',
         );
     }
 
     public function build()
     {
-        return $this->subject('Pendaftaran Anda Diterima')
-                    ->view('mail.terima')
+        return $this->subject('Pendaftaran Anda Ditolak')
+                    ->view('mail.tolak')
                     ->with([
                         'nama' => $this->anggota->nama,
-                        'link_aktivasi' => route('anggota-aktivasi', ['token' => $this->token, 'email' => $this->anggota->email]),
                     ]);
     }
-   
 
     /**
      * Get the attachments for the message.

@@ -68,12 +68,12 @@
                                 <i class="fas fa-check-circle"></i> Terima
                             </button>
                         </form>
-                        {{-- <form action="{{ route('tolak-pendaftaran', $dtAnggota->id_anggota) }}" method="POST" class="d-inline">
+                        <form action="{{ route('tolak-pendaftaran', $dtAnggota->id_anggota) }}" method="POST" class="d-inline">
                             @csrf
                             <button class="btn btn-danger" onclick="return confirm('Apakah anda ingin menolak?')">
                                 <i class="fas fa-times-circle"></i> Tolak
                             </button>
-                        </form> --}}
+                        </form>
                     @elseif ($dtAnggota->status == 'diterima')
                         <span class="badge badge-success">Pendaftaran Diterima</span>
                     @elseif ($dtAnggota->status == 'ditolak')

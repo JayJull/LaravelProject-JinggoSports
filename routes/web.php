@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/',[TimeLineController::class, 'timeline'])->name('landing-page');
+Route::get('/login', function(){
+    return view('auth.login');
+})->name('login');
 
 // route timeline
 Route::group(['prefix' => 'admin'], function() {    
@@ -27,9 +30,11 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('/pendaftaran', [AnggotaController::class, 'index_pendaftaran'])->name('admin-pendaftaran');    
     Route::get('/pendaftaran/detail/{id}', [AnggotaController::class, 'detail_pendaftaran'])->name('admin-pendaftaran-detail');
     Route::post('/pendaftaran/terima/{id}', [AnggotaController::class, 'approve_pendaftaran'])->name('pendaftaran-terima');
+    Route::post('/pendaftaran/tolak/{id}', [AnggotaController::class, 'decline_pendaftaran'])->name('tolak-pendaftaran');
 });
 
 Route::get('/anggota/aktivasi/{token}/{email}', [AnggotaController::class, 'aktivasi'])->name('anggota-aktivasi');
+Route::post('/set-password', [AnggotaController::class, 'setpass'])->name('set-pass');
 
 Route::group(['prefix' => 'pengurus'], function() {
     Route::get('/pendaftaran', [AnggotaController::class, 'pendaftaran'])->name('view-pendaftaran');

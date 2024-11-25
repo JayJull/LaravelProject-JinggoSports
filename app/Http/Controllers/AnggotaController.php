@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ApprovePendaftaran;
+use App\Mail\DeclinePendaftaran;
 use App\Models\Anggota;
 use App\Models\Divisi;
 use App\Models\Prodi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -117,6 +119,25 @@ class AnggotaController extends Controller
         return view('content.pendaftaran.detail', compact('dtAnggota'));
     }
 
+    public function decline_pendaftaran($id)
+    {
+        try {
+            // Cari anggota berdasarkan ID
+            $anggota = Anggota::findOrFail($id);
+    
+            // Ubah status menjadi 'ditolak'
+            $anggota->status = 'ditolak';
+            $anggota->save();
+    
+            // Kirim email pemberitahuan penolakan
+            Mail::to($anggota->email)->send(new DeclinePendaftaran($anggota));
+    
+            return redirect()->route('admin-pendaftaran')->with('success', 'Pendaftaran berhasil ditolak. Email pemberitahuan telah dikirim.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin-pendaftaran')->with('error', 'Terjadi kesalahan saat menolak pendaftaran.');
+        }
+    }
+
     public function approve_pendaftaran($id)
     {
         $anggota = Anggota::findOrFail($id);
@@ -146,5 +167,35 @@ class AnggotaController extends Controller
             return redirect()->route('login')->with('error', 'Token aktivasi tidak valid.');
         }
         return view('auth.setpass', compact('token', 'email'));
+    }
+
+    public function setpass(Request $request)
+    {
+        // Validasi input
+        $this->validate($request, [
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min' => 'Kata sandi minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
+        ]);
+
+        // Cari user berdasarkan token dan email
+        $user = User::where('token', $request->token)
+            ->where('email', $request->email)
+            ->first();
+
+        // Periksa apakah user ditemukan
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Token tidak valid atau sudah digunakan.');
+        }
+
+        // Setel kata sandi baru
+        $user->password = Hash::make($request->password);
+        $user->token = null; // Hapus token setelah digunakan
+        $user->save();
+
+        // Berikan notifikasi berhasil
+        return redirect()->route('login')->with('success', 'Kata sandi berhasil diatur. Silakan login.');
     }
 }
