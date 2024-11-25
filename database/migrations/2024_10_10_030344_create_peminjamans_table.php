@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_peminjaman');
             $table->integer('jml_alat');
             $table->date('tggl_pinjam');
+            $table->string('status')->default('dipinjam');
             $table->unsignedBigInteger('petugas_id');
             $table->unsignedBigInteger('id_alat');
             $table->unsignedBigInteger('id_anggota');

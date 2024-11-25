@@ -31,13 +31,17 @@ class Pengembalian extends Model
         $validatedData = $request->validate([
             'id_peminjaman' => 'required|exists:peminjamans,id_peminjaman', 
             'tggl_kembali' => 'required|date',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
 
+        
         // Cek apakah ada file gambar yang diunggah
         if ($request->hasFile('image')) {
             // Simpan gambar ke folder 'public/pengembalian' dan simpan path-nya di $validatedData['image']
-            $validatedData['image'] = $request->file('image')->store('pengembalian', 'public');
+            $path = $request->file('image')->store('public/pengembalian');
+            
+            // Simpan path relatif (tanpa 'public/') ke dalam database
+            $validatedData['image'] = str_replace('public/', '', $path);
         }
 
         // Menambahkan ID petugas ke dalam data yang divalidasi
