@@ -28,9 +28,9 @@
                             <th>Tanggal Kembali</th>
                             <th>Gambar</th>
                             <th>Petugas</th>
-                        
+
                             <th>Aksi</th>
-                            
+
                         </tr>
                     </thead>
 
@@ -44,10 +44,12 @@
                         <td>{{$data->peminjaman->jml_alat}}</td>
                         <td>{{ date('d-m-Y', strtotime ($data->tggl_pinjam)) }}</td>
                         <td>{{ date('d-m-Y', strtotime ($data->tggl_kembali)) }}</td>
-                        <!-- <td>{{ $data->deskripsi }}</td> -->
+                       
                         <td class="px-4 py-3">
-                                <img src="{{ asset('storage/pengembalian/' . $data->image) }}" alt="Image" style="max-width: 100px; max-height: 100px;">
-                            </td>
+                            <img src="{{ asset('storage/' . $data->image) }}" alt="Image" style="max-width: 100px; max-height: 100px;">
+                            
+                        </td>
+
                         <td>{{ $data->petugas ? $data->petugas->name : 'N/A' }}</td>
                         <td class="text-center" style="width: 9%;">
                             <form onsubmit="return confirm('Apakah Anda Yakin Menghapus?');" action="{{ route('delete-pengembalian', $data->id_pengembalian) }}" method="POST">

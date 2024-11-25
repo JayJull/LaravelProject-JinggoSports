@@ -29,32 +29,9 @@ class PengembalianController extends Controller
 
     public function store(Request $request)
     {
-        // Mendapatkan ID pengguna yang sedang login
-        $userId = Auth::id();
-
-        // Validasi input dari request
-        $validatedData = $request->validate([
-            'id_peminjaman' => 'required|exists:peminjamans,id_peminjaman', // Memastikan ID peminjaman ada
-            'tggl_kembali' => 'required|date', // Validasi tanggal kembali
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi format gambar
-        ]);
-
-        // Cek apakah ada file gambar yang diunggah
-        if ($request->hasFile('image')) {
-            // Simpan gambar ke folder 'public/pengembalian' dan simpan path-nya di $validatedData['image']
-            $validatedData['image'] = $request->file('image')->store('pengembalian', 'public');
-        }
-
-        // Menambahkan ID petugas ke dalam data yang divalidasi
-        $validatedData['petugas_id'] = $userId;
-
-        // Menggunakan model Pengembalian untuk menyimpan data
-        try {
-            Pengembalian::kembali($validatedData);
+            Pengembalian::kembali($request);
             return redirect()->route('pengembalian')->with('toast_success', 'Data berhasil dikembalikan.');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
-        }
+       
     }
 
 
