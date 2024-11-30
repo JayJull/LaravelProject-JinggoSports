@@ -21,8 +21,7 @@ class UserSeeder extends Seeder
             DB::table('users')->insert([                            
                 'id_anggota' => $anggota->id_anggota,
                 'email' => $anggota->email,
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
+                'password' => Hash::make('password'),                
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
