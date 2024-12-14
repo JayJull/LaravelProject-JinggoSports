@@ -9,6 +9,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SwitchRoleController;
 use App\Http\Controllers\TimeLineController;
 use Illuminate\Support\Facades\Route;
 
@@ -52,9 +54,9 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
-// });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
+});
 
 
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:pengurus');
@@ -133,10 +135,10 @@ Route::group(['middleware'=> ['can:manage_pengurus']], function () {
 
 
 // *** PROFILE *** //
-// Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-// Route::put('/profile', [ProfileController::class, 'update'])->name('update-profile');
-// Route::post('/profile/update', [ProfileController::class, 'updateGambar'])->name('gambar-profile');
-// Route::post('/profile/delete', [ProfileController::class, 'deleteGambar'])->name('delete-profile');
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::put('/profile', [ProfileController::class, 'update'])->name('update-profile');
+Route::post('/profile/update', [ProfileController::class, 'updateGambar'])->name('gambar-profile');
+Route::post('/profile/delete', [ProfileController::class, 'deleteGambar'])->name('delete-profile');
 
 
 // *** MENDAFTAR *** //

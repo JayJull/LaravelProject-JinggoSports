@@ -173,7 +173,7 @@ class Presensi extends Model
     }
     public static function checkPresensi($index = 0) {
         $user = Auth::user();
-        $anggota = Anggota::find($user->id); // Cari anggota berdasarkan id user
+        $anggota = Anggota::find($user->id_user); // Cari anggota berdasarkan id user
     
         // Ambil id_divisi berdasarkan indeks
         $id_divisi = $anggota->divisi->pluck('id_divisi');
@@ -261,17 +261,18 @@ class Presensi extends Model
     public static function Scan($request){
         // dd($request);
         $userLogin = Auth::user();
-
+        $statusPresensi1 = Presensi::checkPresensi(0);//
+        $statusPresensi2 = Presensi::checkPresensi(1);//
         $anggota = Anggota::where('nim', $request)->first();
         // dd($anggota);
         if(!$anggota){
             return redirect()->route('scan-qr')->with('error', 'anda bukan anggota');
         }
-        if ($userLogin->nim != $anggota->nim) {
+        if ($userLogin->id_anggota != $anggota->id_anggota) {
             # code...
             return redirect()->route('scan-qr')->with('error', 'presensi harus menggunakan akun pribadi');
         }
         $dtAktifasi = Aktifasi::takeAktifasi();
-        return view('content.presensi.scanResult', compact('anggota','dtAktifasi'));
+        return view('content.presensi.scanResult', compact('anggota','dtAktifasi','statusPresensi1','statusPresensi2'));
     }
 }
