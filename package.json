@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "html5-qrcode": "^2.3.8",
+        "startbootstrap-sb-admin-2": "^4.1.4",
         "sweetalert2": "^11.6.13",
         "vite-plugin-static-copy": "^2.1.0"
     }

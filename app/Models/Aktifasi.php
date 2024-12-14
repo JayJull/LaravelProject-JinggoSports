@@ -24,7 +24,7 @@ class Aktifasi extends Model
     }
     public static function takeAktifasi(){
         $user = Auth::user();
-        $id = $user->id;
+        $id = $user->id_user;
         $anggota = Anggota::where('id_anggota', $id)->first();
         $divisi = $anggota->divisi->pluck('id_divisi');
         $namaDivisi1 = Divisi::where('id_divisi',$divisi[0])->get();

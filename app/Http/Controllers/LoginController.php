@@ -18,10 +18,8 @@ class LoginController extends Controller
 
     public function postlogin(Request $request)
     {
-
         $validate = User::validasi($request);
         return $validate;
-
     }
 
     public function logout()

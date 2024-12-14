@@ -144,9 +144,10 @@ class Presensi extends Model
     // }
     public static function takeJadwal2(){
         $user = Auth::user();
-        $anggota = Anggota::find($user->id);  // Cari anggota dengan id = 1
+        $anggota = Anggota::find($user->id_user);  // Cari anggota dengan id = 1
 
         // Ambil semua id_divisi yang terkait dengan anggota tersebut
+        // dd($user);
         $idDivisi = $anggota->divisi->pluck('id_divisi');
         
         // Ambil semua jadwal yang terkait dengan id_divisi yang didapat
@@ -156,14 +157,14 @@ class Presensi extends Model
     }
     public static function takeActiveDivisi(){
         $user = Auth::user();
-        $anggota = Anggota::find($user->id);
+        $anggota = Anggota::find($user->id_user);
         $idDivisi = $anggota->divisi->pluck('id_divisi');
         $namaDivisi = Divisi::whereIn('id_divisi', $idDivisi)->get();
         return $namaDivisi;
     }
     public static function takeNamaDivisi(){
         $user = Auth::user();
-        $anggota = Anggota::find($user->id);  // Cari anggota dengan id = 1
+        $anggota = Anggota::find($user->id_user);  // Cari anggota dengan id = 1
 
         // Ambil semua id_divisi yang terkait dengan anggota tersebut
         $divisi = $anggota->divisi->pluck('nama');

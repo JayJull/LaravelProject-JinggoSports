@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             DivisiSeeder::class,
             PresensiSeeder::class,
             PeminjamanSeeder::class,
-          //  PengembalianSeeder::class,
+            //  PengembalianSeeder::class,
             JadwalSeeder::class,
             JabatanSeeder::class,
             TimeLineSeeder::class,
