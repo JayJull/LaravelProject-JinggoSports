@@ -55,9 +55,9 @@ Route::get('/', function () {
     return view('home.main', compact('pembukaan1','pembukaan2','penutupan1','penutupan2','status1','status2','currentDate','gelombang1', 'gelombang2'));
 })->name('home');
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+// Route::get('/login', [LoginController::class, 'index'])->name('login');
+// Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
+// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // *** SWITCH ROLE ***//
 Route::middleware(['auth'])->group(function () {
@@ -152,7 +152,7 @@ Route::post('/profile/delete', [ProfileController::class, 'deleteGambar'])->name
 // Route::get('/pendaftaran2/create', [HomeController::class, 'formDaftar2'])->name('create-pendaftaran2');
 // Route::post('/pendaftaran/simpan', [PendaftaranController::class, 'store'])->name('store-pendaftaran');
 // Route::get('registered/akun/{token}', [PendaftaranController::class, 'view'])->name('form');
-Route::post('/verifikasi/{token}', [LoginController::class, 'verifikasi'])->name('verifikasi');
+// Route::post('/verifikasi/{token}', [LoginController::class, 'verifikasi'])->name('verifikasi');
 
 
 // *** PRESENSI *** //

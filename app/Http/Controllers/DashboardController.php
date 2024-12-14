@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Anggota;
 use App\Models\Divisi;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
