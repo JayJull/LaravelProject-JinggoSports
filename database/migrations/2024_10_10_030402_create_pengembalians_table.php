@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_peminjaman');
             $table->timestamps();
 
-            $table->foreign(columns: 'petugas_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign(columns: 'petugas_id')->references('id_user')->on('users')->onDelete('cascade');
             $table->foreign(columns: 'id_peminjaman')->references('id_peminjaman')->on('peminjamans')->onDelete('cascade');
         });
     }
