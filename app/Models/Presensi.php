@@ -148,7 +148,7 @@ class Presensi extends Model
 
         // Ambil semua id_divisi yang terkait dengan anggota tersebut
         $idDivisi = $anggota->divisi->pluck('id_divisi');
-        
+        // dd($idDivisi);
         // Ambil semua jadwal yang terkait dengan id_divisi yang didapat
         $jadwalDivisi = Jadwal::whereIn('id_divisi', $idDivisi)->get();
         
