@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anggota;
 use App\Models\Divisi;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -44,11 +45,12 @@ class DashboardController extends Controller
 
     public function index()
     {
+        // $user = Auth::user();
+        // dd($user);
         $totalPendaftar = Anggota::all()->count();
         $totalDivisi = Divisi::all()->count();
         $pendaftarTerima = Anggota::where('status', 'terima')->count();
         $pendaftarTolak = Anggota::where('status', 'tolak')->count();
-
         $persentaseTerima = ($pendaftarTerima / $totalPendaftar) * 100;
         $persentaseTolak = ($pendaftarTolak / $totalPendaftar) * 100;
 
