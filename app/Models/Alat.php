@@ -15,9 +15,15 @@ class Alat extends Model
         'nama_alat',
         'stok',
     ];
-
-    public function peminjaman()
+    public function kurangStok($quantity)
     {
-        return $this->hasMany(Peminjaman::class, 'id_peminjaman', 'id_peminjaman');
+        if ($this->stok < $quantity) {
+            throw new \Exception('Stok alat tidak mencukupi.');
+        }
+        
+        $this->stok -= $quantity;
+        $this->save();
     }
+   
 }
+

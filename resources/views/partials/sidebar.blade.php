@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item @if (request()->routeIs('dashboard')) active @endif">
-        <a class="nav-link" href="{{ route('dashboard') }}">
+        <a class="nav-link" href="#">
             <i class="fas fa-fw fa-home"></i>
             <span>Dashboard</span></a>
     </li>
@@ -35,6 +35,7 @@
             @includeIf('layouts.anggota')
         @endif
     @endif
+    
 
     <!-- Pembatas -->
     <hr class="sidebar-divider d-none d-md-block">

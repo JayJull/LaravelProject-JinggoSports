@@ -29,15 +29,13 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'nim',
-        'prodi',
+    protected $primaryKey = "id_user";
+    protected $fillable = [        
         'gambar',
         'email',
         'password',
         'current_role_id',
-        'remember_token',
+        'token',
     ];
     public function profile()
     {
@@ -103,7 +101,7 @@ class User extends Authenticatable
                     ]);
                 }
             }
-            return redirect()->route('view-presensi')->with('success', 'Kamu Berhasil Login');
+            return redirect()->route('dashboard')->with('success', 'Kamu Berhasil Login');
         } else {
             return redirect()->route('login')->with('error', 'Email atau Password Salah');
         }

@@ -15,9 +15,8 @@ class PengembalianSeeder extends Seeder
     {
         DB::table('pengembalians')->insert([
             [
-                'deskripsi' => 'Pengembalian alat dalam kondisi baik.',
                 'tggl_kembali' => '2024-10-07',
-                'bukti' => null,
+                'image' => null,
                 'petugas_id' => 1,
                 'id_peminjaman' => 1,
                 'created_at' => now(),

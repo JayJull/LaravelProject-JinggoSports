@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Dashboard')
 @section('content')
 
@@ -29,7 +29,7 @@
                             Banyuwangi</span>
                         @role('pengurus')
                         <div class="text-right">
-                            <a href="{{ route('pendaftaran') }}" class="btn btn-primary">
+                            <a href="{{ route('admin-pendaftaran') }}" class="btn btn-primary">
                                 Lihat pendaftar</a>
                         </div>
                         @endrole
@@ -98,7 +98,6 @@
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
                                                     <div class="progress-bar bg-success" role="progressbar"
-                                                        style="width: {{ $persentaseTerima }}%"
                                                         aria-valuenow="{{ $persentaseTerima }}" aria-valuemin="0"
                                                         aria-valuemax="100">
                                                     </div>
@@ -135,7 +134,7 @@
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
                                                     <div class="progress-bar bg-warning" role="progressbar"
-                                                        style="width: {{ $persentaseTolak }}%"
+                                                        
                                                         aria-valuenow="{{ $persentaseTolak }}" aria-valuemin="0"
                                                         aria-valuemax="1000">
                                                     </div>
