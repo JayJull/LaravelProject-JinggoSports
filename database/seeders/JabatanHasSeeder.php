@@ -12,12 +12,12 @@ class JabatanHasSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {
-        DB::table('jabatan_has_anggotas')->insert([
-            [
-                'id_jabatan' => 2,
-                'id_anggota' => 1,
-            ],                  
-        ]);
+     {
+//         DB::table('jabatan_has_anggotas')->insert([
+//             [
+//                 'id_jabatan' => 2,
+//                 'id_anggota' => 1,
+//             ],
+//         ]);
     }
 }

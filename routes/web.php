@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlatController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DivisiController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PeminjamanController;
@@ -60,17 +61,17 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:pengurus');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:admin');
 
-Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
+//Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
 
 
 // *** DIVISI *** //
-Route::group(['middleware' => ['can:manage_divisi']], function () {
-    Route::get('/divisi/create', [DivisiController::class, 'create'])->name('create-divisi');
-    Route::post('/divisi/simpan', [DivisiController::class, 'store'])->name('simpan-divisi');
-    Route::get('/divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
-    Route::post('/divisi/update/{id}', [DivisiController::class, 'update'])->name('update-divisi');
-    Route::delete('/divisi/delete/{id}', [DivisiController::class, 'destroy'])->name('delete-divisi');
-});
+// Route::group(['middleware' => ['can:manage_divisi']], function () {
+//     Route::get('/divisi/create', [DivisiController::class, 'create'])->name('create-divisi');
+//     Route::post('/divisi/simpan', [DivisiController::class, 'store'])->name('simpan-divisi');
+//     Route::get('/divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
+//     Route::post('/divisi/update/{id}', [DivisiController::class, 'update'])->name('update-divisi');
+//     Route::delete('/divisi/delete/{id}', [DivisiController::class, 'destroy'])->name('delete-divisi');
+// });
 
 
 // *** JADWAL *** //
@@ -164,4 +165,25 @@ Route::get('/get-status', [PresensiController::class, 'getStatus'])->name('get-s
 // Route::post('create/timeline2',[PendaftaranController::class, 'activasiPendaftaran2'])->name('aktivasi-timeLine2');
 
 
-Route::get('/divisi/{id}/anggota',[ DivisiController::class, 'viewAnggota'])->name('view-anggota');
+// Route::get('/divisi/{id}/anggota',[ DivisiController::class, 'viewAnggota'])->name('view-anggota')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
+
+Route::get('/divisi', [DivisiController::class, 'ViewDivisi'])->name('divisi');
+Route::get('/tambahdivisi', [DivisiController::class, 'CreateDivisi'])->name('tambahdivisi');
+Route::post('/storeDivisi', [DivisiController::class, 'storeDivisi'])->name('storeDivisi');
+Route::get('/editdivisi/{id_divisi}', [DivisiController::class, 'Editdivisi'])->name('editdivisi');
+Route::post('/ubahedit/{id_divisi}', [DivisiController::class, 'ubahedit'])->name('ubahedit');
+Route::delete('/hapusdivisi/{id_divisi}', [DivisiController::class, 'hapusdivisi'])->name('hapusdivisi');
+
+Route::get('/Alat', [AlatController::class, 'VeiwAlat'])->name('Alat');
+Route::get('/Fromalat', [AlatController::class, 'FormCalat'])->name('FormAlat');
+Route::post('/Store', [AlatController::class, 'StoreAlat'])->name('StoreAlat');
+Route::get('/editalat/{id_alat}', [AlatController::class, 'FindId'])->name('FindId');
+Route::post('/ediubah/{id_alat}', [AlatController::class, 'updatealat'])->name('updatealat');
+Route::delete('/hapusalat/{id_alat}', [AlatController::class, 'hapusalat'])->name('hapusalat');
+
+Route::get('/jabatan', [JabatanController::class, 'ViewJabatan'])->name('jabatan');
+Route::get('/editjabatan/{id_anggota}', [JabatanController::class, 'MenampilkanData'])->name('JabatanT');
+Route::post('/TambahJabatan/{id_anggota}', [JabatanController::class, 'JabatanTambah'])->name('JabatanTambah');
+Route::get('/deletejabatan/{id_anggota}', [JabatanController::class, 'delete'])->name('Delete');
+Route::post('/HapusJabatan/{id_anggota}', [JabatanController::class, 'JabatanHapus'])->name('JabatanHapus');
+

@@ -15,17 +15,34 @@ class AnggotaSeeder extends Seeder
     {
         DB::table('anggotas')->insert([
             [
-                'nama' => 'Anggota',
+                'nama' => 'ija',
                 'nim' => '362910229301',
                 'email' => 'testanggota@gmail.com',
                 'semester' => '3',
                 'no_telp' => '081234567890',
                 'cv' => null,
-                'status' => 'menunggu',
-                'id_prodi' => 1, 
+                'status' => 'terima',
+                'id_user'=> 1,
+                'id_prodi' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],           
+            ],
+        ]);
+
+        DB::table('anggotas')->insert([
+            [
+                'nama' => 'joko',
+                'nim' => '362910229301',
+                'email' => 'testanggota@gmail.com',
+                'semester' => '3',
+                'no_telp' => '081234567890',
+                'cv' => null,
+                'status' => 'terima',
+                'id_user'=> 2,
+                'id_prodi' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

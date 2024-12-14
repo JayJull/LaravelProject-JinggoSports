@@ -1,13 +1,13 @@
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<nav class="mb-4 bg-white shadow navbar navbar-expand navbar-light topbar static-top">
     <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <button id="sidebarToggleTop" class="mr-3 btn btn-link d-md-none rounded-circle">
         <i class="fa fa-bars"></i>
     </button>
 
     <!-- Topbar Search -->
-    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+    <form class="my-2 mr-auto d-none d-sm-inline-block form-inline ml-md-3 my-md-0 mw-100 navbar-search">
         <div class="input-group">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+            <input type="text" class="border-0 form-control bg-light small" placeholder="Search for..."
                 aria-label="Search" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="button">
@@ -18,48 +18,48 @@
     </form>
 
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto">
+    <ul class="ml-auto navbar-nav">
         {{-- Garis Pembatas --}}
         <div class="topbar-divider d-none d-sm-block"></div>
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <!-- bagian yang dihapus -->
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+            {{-- <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                <span class="mr-2 text-gray-600 d-none d-lg-inline small">{{ Auth::user()->name }}</span>
 
                 @if (Auth::user()->gambar !== null)
                     <img class="img-profile rounded-circle" src="{{ asset('storage/foto/' . Auth::user()->gambar) }}">
                 @else
                     <img class="img-profile rounded-circle" src="{{ asset('template/img/undraw_profile.svg') }}">
                 @endif
-            </a>
+            </a> --}}
 
 
             <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+            {{-- <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="{{ route('profile') }}">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <i class="mr-2 text-gray-400 fas fa-user fa-sm fa-fw"></i>
                     Profile
-                </a>
+                </a> --}}
 
                 <!-- bagian yang dihapus 2 -->
-                @if (auth()->user()->roles->count() > 1)
+                {{-- @if (auth()->user()->roles->count() > 1)
                     @foreach (auth()->user()->roles->where('id', '!=', auth()->user()->current_role_id) as $role)
                         <a class="dropdown-item" href="{{ route('switch.role', $role->id) }}">
-                            <i class="fas fa-exchange-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <i class="mr-2 text-gray-400 fas fa-exchange-alt fa-sm fa-fw"></i>
 
                             {{ __('Switch :name', ['name' => $role->name]) }}
                         </a>
                     @endforeach
-                @endif
+                @endif --}}
 
 
 
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <i class="mr-2 text-gray-400 fas fa-sign-out-alt fa-sm fa-fw"></i>
                     Logout
                 </a>
             </div>

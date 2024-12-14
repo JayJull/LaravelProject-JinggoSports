@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Anggota')
 @section('content')
 
@@ -6,14 +6,14 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800 mb-4">Tabel Pengurus</h1>
+        <h1 class="mb-2 mb-4 text-gray-800 h3">Tabel Pengurus</h1>
 
         <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <a href="{{ route('create-pengurus') }}" class="btn btn-primary btn-sm ml-auto"><i class="fas fa-plus"></i>
+        <div class="mb-4 shadow card">
+            <div class="py-3 card-header">
+                {{-- <a href="{{ route('create-pengurus') }}" class="ml-auto btn btn-primary btn-sm"><i class="fas fa-plus"></i>
                     Tambah</a>
-            </div>
+            </div> --}}
 
             <div class="card-body">
                 <div class="table-responsive">
@@ -24,8 +24,9 @@
                                 <th>Nama</th>
                                 <th>Nim</th>
                                 <th>Prodi</th>
-                                <th>Divisi 1</th>
-                                <th>Divisi 2</th>
+                                {{-- <th>Divisi</th> --}}
+                                <th>Jabatan</th>
+                                <th>Divisi</th>
                                 <th>Aksi</th>
 
                             </tr>
@@ -33,27 +34,35 @@
 
                         <tbody>
                             @foreach ($dtPengurus as $item)
-                                @if ($item->jabatan_2 == 'pengurus')
+                                {{-- @if ($item->jabatan_2 == 'pengurus') --}}
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->nama }}</td>
                                         <td>{{ $item->nim }}</td>
-                                        <td>{{ $item->prodi }}</td>
-                                        <td>{{ $item->divisi_1 }}</td>
+                                        <td>{{ $item->prodi ? $item->prodi->nama : 'belum memilih prodi' }}</td>
                                         <td>
-                                            @if ($item->divisi_2)
-                                                {{ $item->divisi_2 }}
-                                            @else
-                                                tidak memilih
-                                            @endif
+                                            <ul>
+                                                @forelse ($item->jabatan as $jabatan)
+                                                    <li>{{$jabatan->nama}}</li>
+                                                @empty
+                                                    <li>Tidak ada data jabatan</li>
+                                                @endforelse
+                                            </ul>
                                         </td>
 
-                                        <td class="text-center" style="width: 9%;">
-                                            <a href="{{ route('delete-pengurus', $item->id) }}"
-                                                class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus</a>
+                                        <td>
+                                                @foreach ($item->divisis as $divisis)
+                                                    <li>{{ $divisis->nama }}</li>
+                                                @endforeach
                                         </td>
+                                        <td>
+                                            <a href="{{ route('JabatanT', $item->id_anggota) }}" {{ $item->id_anggota }} class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Tambah Jabatan</a>
+                                            <a href="{{ route('Delete', $item->id_anggota) }}" {{ $item->id_anggota }} class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Hapus</button>
+                                        </td>
+
+                                    </form>
                                     </tr>
-                                @endif
+                                {{-- @endif --}}
                             @endforeach
                         </tbody>
 

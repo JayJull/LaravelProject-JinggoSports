@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Divisi')
 @section('content')
 
@@ -7,16 +7,16 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800 mb-4">Tabel Divisi</h1>
+    <h1 class="mb-2 mb-4 text-gray-800 h3">Tabel Divisi</h1>
 
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            @role('admin')
-            <a href="{{ route('create-divisi') }}" class="btn btn-primary btn-sm ml-auto"><i class="fas fa-plus"></i>
+    <div class="mb-4 shadow card">
+        <div class="py-3 card-header">
+            {{-- @role('admin') --}}
+            <a href="{{ route('tambahdivisi') }}" class="ml-auto btn btn-primary btn-sm"><i class="fas fa-plus"></i>
                 Tambah</a>
-            @endrole
+            {{-- @endrole --}}
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -25,41 +25,42 @@
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            @role('admin')
+                            {{-- @role('admin') --}}
                             <th>Aksi</th>
-                            @endrole
-                            @role('anggota')
-                            <th>anggota</th>
-                            @endrole
+                            {{-- @endrole
+                            @role('anggota') --}}
+                            {{-- <th>anggota</th> --}}
+                            {{-- @endrole --}}
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($dtDivisi as $item)
+                    @foreach ($dtDivisi as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
-                            @php $id = Crypt::encrypt($item->id); @endphp
-                            @role('anggota')
-                            <td>
+
+                            @php $id_divisi = Crypt::encrypt($item->id_divisi); @endphp
+                            {{-- @role('anggota') --}}
+                            {{-- <td>
                                 <a href="{{ route('view-anggota', $id) }}" class="btn btn-primary btn-sm"><i class="fas fa-user-friends"></i> anggota</a>
-                            </td>
-                            @endrole
+                            </td> --}}
+                            {{-- @endrole --}}
 
                             </td>
-                            @role('admin')
+                            {{-- @role('admin') --}}
                             <td class="text-center" style="width: 15%;">
 
-                                <form onsubmit="return confirm('Apakah Anda Yakin Menghapus?');" action="{{ route('delete-divisi', $item->id) }}" method="POST">
+                                <form onsubmit="return confirm('Apakah Anda Yakin Menghapus?');" action="{{ route('hapusdivisi', $item->id_divisi) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    @php $id = Crypt::encrypt($item->id); @endphp
-                                    <a href="{{ route('edit-divisi', $id) }}" {{ $id }} class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Edit</a>
+                                    @php $id_divisi = Crypt::encrypt($item->id_divisi); @endphp
 
                                     <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Hapus</button>
                                 </form>
+                                <a href="{{ route('editdivisi', $id_divisi) }}" {{ $id_divisi }} class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Edit</a>
                             </td>
-                            @endrole
+                            {{-- @endrole --}}
 
                         </tr>
                         @endforeach
