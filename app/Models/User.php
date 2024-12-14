@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $primaryKey = "id_user";
-    protected $fillable = [        
+    protected $fillable = [
         'gambar',
         'email',
         'password',
@@ -61,9 +61,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function anggota(){
+    public function anggota()
+    {
         return $this->belongsTo(Anggota::class, 'id_anggota', 'id_anggota');
     }
+
     public function currentRole()
     {
         return $this->belongsTo(Role::class, 'current_role_id');

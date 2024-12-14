@@ -18,7 +18,7 @@ class PresensiController extends Controller
     public function index(Request $request)
 {
     // $dtJadwal = Jadwal::all();//
-    
+
     // $pendaftar = Presensi::takePendaftar();//
     $jadwalDivisi2 = Presensi::takeJadwal2();
     // $dtDivisi = Divisi::all();//
@@ -26,7 +26,7 @@ class PresensiController extends Controller
     $statusPresensi1 = Presensi::checkPresensi(0);//
     $statusPresensi2 = Presensi::checkPresensi(1);//
     // $divisiAktif = Presensi::takeActiveDivisi();//
-    
+
     // $statusAktifasi = Jadwal::getAktifasiAttribute();
     // dd($namaDivisi);
     $dtAktifasi = Aktifasi::takeAktifasi();
@@ -41,7 +41,7 @@ class PresensiController extends Controller
                 // dd($dtAktifasi[$i][$j]);
             }
         }
-        
+
     }
     // dd($dtAktifasi);
     return view('content.presensi.index', compact('dtAktifasi','namaDivisi', 'jadwalDivisi2','statusPresensi1', 'statusPresensi2'));
@@ -57,11 +57,11 @@ class PresensiController extends Controller
         return view ('content.presensi.cetakPresensi', compact('data'));
     }
 
-    
+
     public function activatePresensiView()
 {
     $dtPresensi = Presensi::viewActivatePresensi();
-    
+
     return $dtPresensi;
 }
 
@@ -89,10 +89,11 @@ public function activate(Request $request, $id){
     return $aktivasi;
 }
 
-public function Scanner(Request $request){
-    // dd($request->nim);
-    $scan = Presensi::Scan($request->nim);
-    // dd($scan);
-    return $scan;
-}
+    public function Scanner(Request $request)
+    {
+        // dd($request->nim);
+        $scan = Presensi::Scan($request->nim);
+        // dd($scan);
+        return $scan;
+    }
 }
