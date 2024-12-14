@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Edit Data')
 @section('content')
 
@@ -19,7 +19,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <form action="{{ route('update-jadwal', $jadwals->id) }}" method="post">
+                    <form action="{{ route('update-jadwal', $jadwals->id_jadwal) }}" method="post">
                         {{ csrf_field() }}
 
                         <div class="form-group">
@@ -41,11 +41,11 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label for="divisi_id" style="font-weight: bold;">Pilih Divisi</label>
-                            <select name="divisi_id" id="divisi_id" class="form-control">
+                            <label for="id_divisi" style="font-weight: bold;">Pilih Divisi</label>
+                            <select name="id_divisi" id="id_divisi" class="form-control">
 
                                 @foreach ($divisis as $divisi)
-                                <option value="{{ $divisi->id }}" @if ($divisi->id == $jadwals->divisi_id)
+                                <option value="{{ $divisi->id_divisi }}" @if ($divisi->id_divisi == $jadwals->id_divisi)
                                     selected @endif>{{ $divisi->nama }}</option>
                                 @endforeach
                             </select>

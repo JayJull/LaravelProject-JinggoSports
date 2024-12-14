@@ -15,9 +15,9 @@ class AnggotaSeeder extends Seeder
     {
         DB::table('anggotas')->insert([
             [
-                'nama' => 'Anggota',
-                'nim' => '362910229301',
-                'email' => 'testanggota@gmail.com',
+                'nama' => 'Admin',
+                'nim' => '362258302111',
+                'email' => 'adminukm@gmail.com',
                 'semester' => '3',
                 'no_telp' => '081234567890',
                 'cv' => null,

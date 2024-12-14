@@ -12,30 +12,57 @@ class Peminjaman extends Model
     protected $table = 'peminjamans';
     protected $primaryKey = "id_peminjaman";
     protected $fillable = [
+        'id_anggota',
+        'id_alat',
         'jml_alat',
         'tggl_pinjam',
-        'petugas_id',
-        'id_alat',
-        'id_anggota'
+        'petugas_id'
     ];
 
-    public function anggota()
-    {
-        return $this->belongsTo(Anggota::class, 'id_anggota', 'id_anggota');
-    }
 
-    public function alat()
-    {
-        return $this->belongsTo(Alat::class, 'id_alat', 'id_alat',);
-    }
+     // Method yang menangani peminjaman kitaaaa
+     public static function pinjam($data)
+     {
+        $validatedData = $data->validate([
+            'id_anggota'=>'required',
+            'id_alat' => 'required|exists:alats,id_alat',
+            'jml_alat' => 'required|integer|min:1',
+            'tggl_pinjam' => 'required|date',
+        ]);
+            $validatedData['petugas_id'] = auth()->user()->id;
+         // melihat alat bedasarkan id
+         $alat = Alat::where('id_alat', $data['id_alat'])->firstOrFail();
+         
+         // memeriksa stok
+         $alat->kurangStok($data['jml_alat']);
 
-    public function pengembalian()
-    {
-        return $this->hasOne(Peminjaman::class, 'id_pengembalian', 'id_pengembalian');
-    }
-
+ 
+         // buat peminjaman
+         return self::create([
+             'id_anggota' => $validatedData['id_anggota'],
+             'id_alat' => $validatedData['id_alat'],
+             'jml_alat' => $validatedData['jml_alat'],
+             'tggl_pinjam' => $validatedData['tggl_pinjam'],
+             'petugas_id' => $validatedData['petugas_id'],
+             'status' => 'dipinjam',
+         ]);
+     }
     public function petugas()
     {
         return $this->belongsTo(User::class, 'petugas_id');
     }
+    public function alat()
+    {
+        return $this->belongsTo(Alat::class, 'id_alat');
+    }
+    public function anggota()
+    {
+        return $this->belongsTo(Anggota::class, 'id_anggota');
+    }
+    public function pengembalian()
+    {
+        return $this->hasOne(Pengembalian::class, 'id_peminjaman');
+    }
+
+
 }

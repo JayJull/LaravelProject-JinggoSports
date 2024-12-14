@@ -1,5 +1,5 @@
-@extends('master.main')
-@section('title', 'Alat')
+@extends('home.submain')
+@section('title', 'Create Data')
 @section('content')
 
     <!-- Begin Page Content -->
@@ -22,11 +22,11 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
+                                <th>Nama Anggota</th>
                                 <th>Nim</th>
                                 <th>Prodi</th>
-                                <th>Barang</th>
-                                <th>Jumlah Barang</th>
+                                <th>Alat</th>
+                                <th>Jumlah Alat</th>
                                 <th>Tanggal Pinjam</th>
                                 <th>Petugas</th>
                                  <th>Aksi</th>
@@ -34,19 +34,20 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($dtPeminjaman as $item)
+                        @foreach($peminjaman as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->nama }}</td>
-                                    <td>{{ $item->nim }}</td>
-                                    <td>{{ $item->prodi }}</td>
-                                    <td>{{ $item->nama_barang }}</td>
-                                    <td>{{ $item->jml_barang }}</td>
+                                    <td>{{ $item->anggota->nama }}</td>
+                                    <td>{{ $item->anggota->nim }}</td>
+                                    <td>{{ $item->anggota->prodi->nama }}</td>
+                                    <td>{{ $item->alat->nama_alat }}</td>
+                                    <td>{{ $item->jml_alat }}</td>
+                                    
                                     <td>{{ date('d-m-Y', strtotime($item->tggl_pinjam)) }}</td>
                                     <td>{{ $item->petugas ? $item->petugas->name : 'N/A' }}</td>
 
                                     <td class="text-center" style="width: 15%;">
-                                        <form action="{{ route('create-kembali', $item->id) }}">
+                                        <form action="{{ route('create-kembali', $item->id_peminjaman) }}">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-primary">
                                                 <i class="bi bi-arrow-return-left"></i> Kembalikan
@@ -69,5 +70,4 @@
 
     {{-- sweet alert --}}
     @include('sweetalert::alert')
-
-@endsection
+    @endsection

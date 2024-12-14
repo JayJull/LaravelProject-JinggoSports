@@ -12,6 +12,7 @@ class Divisi extends Model
     protected $table = 'divisis';
     protected $primaryKey = "id_divisi";
     protected $fillable = [
+        'id_divisi',
         'nama',
     ];
 

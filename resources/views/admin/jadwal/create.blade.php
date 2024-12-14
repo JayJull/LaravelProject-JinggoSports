@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Create Data')
 @section('content')
 
@@ -48,10 +48,10 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label for="divisi_id" style="font-weight: bold;">Pilih Divisi</label>
-                        <select name="divisi_id" id="divisi_id" class="form-control">
+                        <label for="id_divisi" style="font-weight: bold;">Pilih Divisi</label>
+                        <select name="id_divisi" id="id_divisi" class="form-control">
                             @foreach($divisis as $divisi)
-                                <option value="{{ $divisi->id }}" {{ old('divisi_id') == $divisi->id ? 'selected' : '' }}>{{ $divisi->nama }}</option>
+                                <option value="{{ $divisi->id_divisi }}" {{ old('id_divisi') == $divisi->id_divisi ? 'selected' : '' }}>{{ $divisi->nama }}</option>
                             @endforeach
                         </select>
                         @if ($errors->has('divisi_id'))

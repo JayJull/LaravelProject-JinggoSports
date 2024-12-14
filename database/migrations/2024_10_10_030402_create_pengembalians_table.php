@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('pengembalians', function (Blueprint $table) {
             $table->id('id_pengembalian');
-            $table->string('deskripsi');
             $table->date('tggl_kembali');
-            $table->binary('bukti')->nullable();
+            $table->string('image')->nullable();
             $table->unsignedBigInteger('petugas_id');
             $table->unsignedBigInteger('id_peminjaman');
             $table->timestamps();
