@@ -53,9 +53,9 @@ Route::group(['prefix' => 'pengurus'], function() {
     Route::post('/store-pendaftaran', [AnggotaController::class, 'create_pendaftaran'])->name('store-pendaftaran');
 });
 
-// Route::get('/login', [LoginController::class, 'index'])->name('login');
-// Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
-// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // *** SWITCH ROLE ***//
 Route::middleware(['auth'])->group(function () {

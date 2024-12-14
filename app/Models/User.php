@@ -101,7 +101,7 @@ class User extends Authenticatable
                     ]);
                 }
             }
-            return redirect()->route('view-presensi')->with('success', 'Kamu Berhasil Login');
+            return redirect()->route('dashboard')->with('success', 'Kamu Berhasil Login');
         } else {
             return redirect()->route('login')->with('error', 'Email atau Password Salah');
         }
