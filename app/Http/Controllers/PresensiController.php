@@ -23,8 +23,9 @@ class PresensiController extends Controller
     $jadwalDivisi2 = Presensi::takeJadwal2();
     $dtDivisi = Divisi::all();
     $namaDivisi = Presensi::takeNamaDivisi();
-    $statusPresensi1 = Presensi::takeCek1();
-    $statusPresensi2 = Presensi::takeCek2();
+
+    $statusPresensi1 = Presensi::checkPresensi(0);//
+    $statusPresensi2 = Presensi::checkPresensi(1);//
     $divisiAktif = Presensi::takeActiveDivisi();
     
     // $statusAktifasi = Jadwal::getAktifasiAttribute();

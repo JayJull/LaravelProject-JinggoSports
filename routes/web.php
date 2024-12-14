@@ -1,24 +1,5 @@
 <?php
 
-use App\Http\Controllers\AnggotaController;
-use App\Http\Controllers\TimeLineController;
-use App\Models\Anggota;
-use App\Http\Controllers\AlatController;
-use App\Http\Controllers\BuatAkunController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DivisiController;
-use App\Http\Controllers\JadwalController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\PeminjamanController;
-use App\Http\Controllers\PengembalianController;
-use App\Http\Controllers\PresensiController;
-
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SwitchRoleController;
-use App\Http\Controllers\TimeLineController
-use App\Models\Timeline;
-use Carbon\Carbon;
-
 use App\Http\Controllers\AlatController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BuatAkunController;
@@ -29,12 +10,10 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\PresensiController;
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SwitchRoleController;
 use App\Http\Controllers\TimeLineController;
-use App\Models\Timeline;
-use Carbon\Carbon;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,31 +27,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('home.main');
-// });
-// Route::get('/login', function () {
-//     return view('auth.login');
-// });
 
-Route::get('/', function () {
-    // $cek = timeLine::first();
-    // $pembukaan = Carbon::parse($cek->waktu_mulai)->format('Y-m-d');
-    // $penutupan = Carbon::parse($cek->waktu_berakhir)->format('Y-m-d');
-    // $status = $cek->status;
+Route::get('/',[TimeLineController::class, 'timeline'])->name('landing-page');
+Route::get('/login', function(){
+    return view('auth.login');
+})->name('login');
 
-    $currentDate = Carbon::now()->format('Y-m-d');
-    $gelombang1 = Timeline::find(1);
-    $pembukaan1 = $gelombang1->waktu_mulai;
-    $penutupan1 = $gelombang1->waktu_berakhir;
-    $status1 = $gelombang1->status;
-    $gelombang2 = timeLine::find(2);
-    $pembukaan2 = $gelombang2->waktu_mulai;
-    $penutupan2 = $gelombang2->waktu_berakhir;
-    $status2 = $gelombang2->status;
+// *** Time Line ***//
+Route::group(['prefix' => 'admin'], function() {    
+    Route::get('/timeline', [TimeLineController::class, 'index'])->name('view-timeLine');    
+    Route::post('/timeline/update/{id}', [TimeLineController::class, 'update'])->name('timeline-update');
+    Route::get('/pendaftaran', [AnggotaController::class, 'index_pendaftaran'])->name('admin-pendaftaran');  
+    Route::get('/pendaftaran/diterima', [AnggotaController::class, 'index_pendaftaran_diterima'])->name('admin-pendaftaran-terima'); 
+    Route::get('/pendaftaran/ditolak', [AnggotaController::class, 'index_pendaftaran_ditolak'])->name('admin-pendaftaran-tolak'); 
+    Route::get('/pendaftaran/detail/{id}', [AnggotaController::class, 'detail_pendaftaran'])->name('admin-pendaftaran-detail');
+    Route::post('/pendaftaran/terima/{id}', [AnggotaController::class, 'approve_pendaftaran'])->name('pendaftaran-terima');
+    Route::post('/pendaftaran/tolak/{id}', [AnggotaController::class, 'decline_pendaftaran'])->name('tolak-pendaftaran');
+});
 
-    return view('home.main', compact('pembukaan1','pembukaan2','penutupan1','penutupan2','status1','status2','currentDate','gelombang1', 'gelombang2'));
-})->name('home');
+Route::get('/anggota/aktivasi/{token}/{email}', [AnggotaController::class, 'aktivasi'])->name('anggota-aktivasi');
+Route::post('/set-password', [AnggotaController::class, 'setpass'])->name('set-pass');
+
+Route::group(['prefix' => 'pengurus'], function() {
+    Route::get('/pendaftaran', [AnggotaController::class, 'pendaftaran'])->name('view-pendaftaran');
+    Route::post('/store-pendaftaran', [AnggotaController::class, 'create_pendaftaran'])->name('store-pendaftaran');
+});
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
@@ -83,8 +62,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
 });
 
-
-// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:pengurus');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
@@ -113,15 +90,15 @@ Route::group(['middleware' => ['can:manage_jadwal']], function () {
 
 //*** PENDAFTARAN *** //
 Route::group(['middleware' => ['can:manage_pendaftar']], function () {
-    Route::get('/pendaftaran', [AnggotaController::class, 'index'])->name('pendaftaran');
-    Route::get('/pendaftaran/detail/{id}', [AnggotaController::class, 'detail'])->name('detail-pendaftaran');
+    // Route::get('/pendaftaran', [AnggotaController::class, 'index'])->name('pendaftaran');
+    // Route::get('/pendaftaran/detail/{id}', [AnggotaController::class, 'detail'])->name('detail-pendaftaran');
 
-    // UPDATE STATUS
-    Route::post('/pendaftaran/diterima/{id}', [AnggotaController::class, 'updateterima'])->name('terima-pendaftaran');
-    Route::post('/pendaftaran/ditolak/{id}', [AnggotaController::class, 'updatetolak'])->name('tolak-pendaftaran');
-    // VIEW ANGGOTA
-    Route::get('/pendaftaran/diterima', [AnggotaController::class, 'terima'])->name('detail-terima');
-    Route::get('/pendaftaran/ditolak', [AnggotaController::class, 'tolak'])->name('detail-tolak');
+    // // UPDATE STATUS
+    // Route::post('/pendaftaran/diterima/{id}', [AnggotaController::class, 'updateterima'])->name('terima-pendaftaran');
+    // Route::post('/pendaftaran/ditolak/{id}', [AnggotaController::class, 'updatetolak'])->name('tolak-pendaftaran');
+    // // VIEW ANGGOTA
+    // Route::get('/pendaftaran/diterima', [AnggotaController::class, 'terima'])->name('detail-terima');
+    // Route::get('/pendaftaran/ditolak', [AnggotaController::class, 'tolak'])->name('detail-tolak');
 
     // memang di komen //
     // Route::get('/pendaftaran/edit/{id}', [PendaftaranController::class, 'edit'])->name('edit-pendaftaran');
@@ -187,15 +164,6 @@ Route::post('/scan-result', [PresensiController::class, 'Scanner'])->name('scan-
 Route::get('/scan-qr', function () {
     return view('content.presensi.scan'); // Halaman untuk memindai QR atau Barcode
 })->name('scan-qr');
-
-
-
-
-
-// *** TIMELINE *** //
-Route::get('view/timeline',[TimeLineController::class, 'timeLine'])->name('view-timeLine');
-Route::post('create/timeline1',[TimeLineController::class, 'activasiPendaftaran1'])->name('aktivasi-timeLine1');
-Route::post('create/timeline2',[TimeLineController::class, 'activasiPendaftaran2'])->name('aktivasi-timeLine2');
 
 
 Route::get('/divisi/{id}/anggota',[ DivisiController::class, 'viewAnggota'])->name('view-anggota');

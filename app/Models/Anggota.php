@@ -145,6 +145,18 @@ class Anggota extends Model
         return view('content.pendaftaran.index', compact('dtPendaftaran'));
     }
 
+    public static function getIndexPendaftaranDiterima()
+    {
+        $dtPendaftaran = Anggota::where('status', 'diterima')->get();
+        return view('content.pendaftaran.index', compact('dtPendaftaran'));
+    }
+
+    public static function getIndexPendaftaranDitolak()
+    {
+        $dtPendaftaran = Anggota::where('status', 'ditolak')->get();
+        return view('content.pendaftaran.index', compact('dtPendaftaran'));
+    }
+
     public static function getDetailDataPendaftaran($id)
     {
         $dtAnggota = Anggota::with(['divisi', 'prodi'])->findOrFail($id);

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password')->nullable();            
             $table->string('gambar')->nullable();
-            $table->string('token')->nullable();
-            
+            $table->string('token')->nullable();            
+            $table->foreignId('current_role_id')->nullable()->constrained('roles');
             $table->foreign('id_anggota')->references('id_anggota')->on('anggotas')->onDelete('cascade');            
             $table->timestamps();
         });

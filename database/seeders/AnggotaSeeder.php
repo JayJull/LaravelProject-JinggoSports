@@ -27,7 +27,7 @@ class AnggotaSeeder extends Seeder
                 'updated_at' => now(),
             ],           
             [
-                'nama' => 'Anggota2',
+                'nama' => 'Anggota',
                 'nim' => '362910229320',
                 'email' => 'testanggota2@gmail.com',
                 'semester' => '3',

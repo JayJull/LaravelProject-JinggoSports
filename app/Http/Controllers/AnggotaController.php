@@ -26,6 +26,16 @@ class AnggotaController extends Controller
         return Anggota::getIndexPendaftaran();
     }
 
+    public function index_pendaftaran_diterima()
+    {
+        return Anggota::getIndexPendaftaranDiterima();
+    }
+
+    public function index_pendaftaran_ditolak()
+    {
+        return Anggota::getIndexPendaftaranDitolak();
+    }
+
     public function detail_pendaftaran($id)
     {
         return Anggota::getDetailDataPendaftaran($id);

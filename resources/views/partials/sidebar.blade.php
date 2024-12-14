@@ -24,7 +24,7 @@
     </div>
 
     <!-- Menampilkan Navigasi Berdasarkan Role -->
-    {{-- @if (auth()->check())
+    @if (auth()->check())
         @if (auth()->user()->current_role_id)
             @includeIf('layouts.' . auth()->user()->currentRole->name)
         @elseif (auth()->user()->hasRole('admin'))
@@ -34,8 +34,8 @@
         @elseif (auth()->user()->hasRole('anggota'))
             @includeIf('layouts.anggota')
         @endif
-    @endif --}}
-    @includeIf('layouts.pengurus')
+    @endif
+    
 
     <!-- Pembatas -->
     <hr class="sidebar-divider d-none d-md-block">

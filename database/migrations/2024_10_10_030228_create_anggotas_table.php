@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('anggotas', function (Blueprint $table) {
             $table->id('id_anggota');
+            $table->unsignedBigInteger('id_prodi');            
             $table->string('nama');
             $table->char('nim');
             $table->string('email');
@@ -20,10 +21,8 @@ return new class extends Migration
             $table->char('no_telp');
             $table->binary('cv')->nullable();
             $table->string('status')->default('menunggu');
-            $table->unsignedBigInteger('id_prodi');            
             $table->timestamps();
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+
             $table->foreign('id_prodi')->references('id_prodi')->on('prodis')->onDelete('cascade');
         });
     }

@@ -8,8 +8,8 @@
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{ route('admin-pendaftaran') }}">Data Pendaftar</a>
-            <a class="collapse-item" href="#">Diterima</a>
-            <a class="collapse-item" href="#">Ditolak</a>
+            <a class="collapse-item" href="{{ route('admin-pendaftaran-terima') }}">Diterima</a>
+            <a class="collapse-item" href="{{ route('admin-pendaftaran-tolak') }}">Ditolak</a>
         </div>
     </div>
 </li>

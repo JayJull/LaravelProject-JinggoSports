@@ -123,9 +123,10 @@ class Presensi extends Model
     // }
     public static function takeJadwal2(){
         $user = Auth::user();
-        $anggota = Anggota::find($user->id);  // Cari anggota dengan id = 1
+        $anggota = Anggota::find($user->id_user);  // Cari anggota dengan id = 1
 
         // Ambil semua id_divisi yang terkait dengan anggota tersebut
+        // dd($user);
         $idDivisi = $anggota->divisi->pluck('id_divisi');
         
         // Ambil semua jadwal yang terkait dengan id_divisi yang didapat
@@ -135,61 +136,41 @@ class Presensi extends Model
     }
     public static function takeActiveDivisi(){
         $user = Auth::user();
-        $anggota = Anggota::find($user->id);
+        $anggota = Anggota::find($user->id_user);
         $idDivisi = $anggota->divisi->pluck('id_divisi');
         $namaDivisi = Divisi::whereIn('id_divisi', $idDivisi)->get();
         return $namaDivisi;
     }
     public static function takeNamaDivisi(){
         $user = Auth::user();
-        $anggota = Anggota::find($user->id);  // Cari anggota dengan id = 1
+        $anggota = Anggota::find($user->id_user);  // Cari anggota dengan id = 1
 
         // Ambil semua id_divisi yang terkait dengan anggota tersebut
         $divisi = $anggota->divisi->pluck('nama');
         // dd($divisi);
         return $divisi;
     }
-    public static function takeCek1(){
+    public static function checkPresensi($index = 0) {
         $user = Auth::user();
-        $anggota = Anggota::find($user->id);  // Cari anggota dengan id = 1
-
+        $anggota = Anggota::find($user->id_user); // Cari anggota berdasarkan id user
+    
+        // Ambil id_divisi berdasarkan indeks
         $id_divisi = $anggota->divisi->pluck('id_divisi');
-        // dd($id_divisi[0]);
+        // dd($id_divisi);
+        // Pastikan indeks yang diminta tersedia
+        if (!isset($id_divisi[$index])) {
+            return 'belum presensi'; // Jika id_divisi dengan indeks tersebut tidak ada, dianggap belum presensi
+        }
+    
         $currentDate = Carbon::now()->format('Y-m-d');
-        $currentTime = Carbon::now()->format('H:i:00'); // Ambil waktu sekarang
-        $cek1 = Presensi::where([
+        $cek = Presensi::where([
             'tanggal' => $currentDate,
             'id_anggota' => $anggota->id_anggota,
-            'id_divisi'=>$id_divisi[0],
+            'id_divisi' => $id_divisi[$index],
         ])->first();
-
-        $statusPresensi1 = 'belum presensi';
-        
-        if ($cek1) {
-            # code...
-            $statusPresensi1 = 'sudah presensi';
-        }
-        return $statusPresensi1;
-}
-public static function takeCek2(){
-    $statusPresensi2 = '';
-    $user = Auth::user();
-    $anggota = Anggota::find($user->id);  // Cari anggota dengan id = 1
-    $id_divisi = $anggota->divisi->pluck('id_divisi');
-    // dd($id_divisi[0]);
-        $currentDate = Carbon::now()->format('Y-m-d');
-        $currentTime = Carbon::now()->format('H:i:00'); // Ambil waktu sekarang
-
-    $cek2 = Presensi::where([
-        'tanggal' => $currentDate,
-        'id_anggota' => $anggota->id_anggota,
-        'id_divisi'=>$id_divisi[1],
-    ])->first();
-    if ($cek2) {
-        $statusPresensi2 = 'sudah presensi';   
+    
+        return $cek ? 'sudah presensi' : 'belum presensi';
     }
-    return $statusPresensi2;
-}
     // public static function input(Request $request){
     //     $presensi = Presensi::store($request);
     //         return redirect()->route('view-presensi');
