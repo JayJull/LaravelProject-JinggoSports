@@ -168,14 +168,14 @@ class Anggota extends Model
 
     public static function postDeclinePendaftar($id)
     {
-        try {            
+        try {
             $anggota = Anggota::findOrFail($id);
-                        
+
             $anggota->status = 'ditolak';
             $anggota->save();
-                
+
             Mail::to($anggota->email)->send(new DeclinePendaftaran($anggota));
-    
+
             return redirect()->route('admin-pendaftaran')->with('success', 'Pendaftaran berhasil ditolak. Email pemberitahuan telah dikirim.');
         } catch (\Exception $e) {
             return redirect()->route('admin-pendaftaran')->with('error', 'Terjadi kesalahan saat menolak pendaftaran.');
@@ -214,7 +214,7 @@ class Anggota extends Model
     }
 
     public static function postSetPassword(Request $request)
-    {        
+    {
         $request->validate([
             'password' => 'required|string|min:8|confirmed',
         ], [
@@ -222,7 +222,7 @@ class Anggota extends Model
             'password.min' => 'Kata sandi minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
-        
+
         $user = User::where('token', $request->token)
             ->where('email', $request->email)
             ->first();
@@ -233,8 +233,9 @@ class Anggota extends Model
 
         $user->password = Hash::make($request->password);
         $user->token = null; // Hapus token setelah digunakan
+        $user->assignRole('anggota');
         $user->save();
-        
+
         return redirect()->route('login')->with('success', 'Kata sandi berhasil diatur. Silakan login.');
     }
 }

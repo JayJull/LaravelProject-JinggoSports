@@ -31,7 +31,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="text-center">
-                                        <h5 class="font-weight-bold">{{ Auth::user()->name }}</h5>
+                                        <h5 class="font-weight-bold">{{ Auth::user()->anggota->nama }}</h5>
                                         <p class="font-weight">{{ Auth::user()->role }}</p>
 
                                         <div class="mb-3">
@@ -82,7 +82,7 @@
                                             <label class="form-control-label" for="name">Nama<span
                                                     class="small text-danger">*</span></label>
                                             <input type="text" id="name" class="form-control" name="name"
-                                                placeholder="Name" value="{{ old('name', Auth::user()->name) }}">
+                                                placeholder="Name" value="{{ old('name', Auth::user()->anggota->nama) }}">
                                         </div>
                                     </div>
                                 </div>
