@@ -28,54 +28,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($pendaftar)
-                                <tr>
-                                    <td>1</td>
-                                    <td>{{ $namaDivisi[0] }}</td>
-                                    <td>
-                                        <ul>
-                                            <li>{{ $jadwalDivisi2[0]->hari }}: {{ $jadwalDivisi2[0]->waktu_mulai }} -
-                                                {{ $jadwalDivisi2[0]->waktu_selesai }}
-                                            </li>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        @if ($statusPresensi1 == 'sudah presensi')
-                                        <span class="badge badge-success" style="padding: 4px 10px;"> Sudah Presensi
-                                    </span>
-                                        @else
-                                        <span class="badge badge-danger" style="padding: 4px 14px;"> Belum Presensi
-                                            </span>
-                                        @endif
-                                        
-                                    </td>
-                                </tr>
-                                @endif
-                                @if ($pendaftar)
-                                <tr>
-                                    <td>2</td>
-                                    <td>{{ $namaDivisi[1] }}</td>
-                                    <td>
-                                        <ul>
-                                            <li>{{ $jadwalDivisi2[1]->hari }}: {{ $jadwalDivisi2[1]->waktu_mulai }} -
-                                                {{ $jadwalDivisi2[1]->waktu_selesai }}
-                                            </li>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                    @if ($statusPresensi2 == 'sudah presensi')
-                                    <span class="badge badge-success" style="padding: 4px 10px;"> Sudah Presensi
-                                    </span>
-                                        @else
-                                        <span class="badge badge-danger" style="padding: 4px 14px;"> Belum Presensi
-                                            </span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endif
-
-
+                                @foreach ($namaDivisi as $index => $nama)
+                                    @if ($nama !== 'None')
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $nama }}</td>
+                                            <td>
+                                                @if (isset($jadwalDivisi2[$index]))
+                                                    <ul>
+                                                        <li>{{ $jadwalDivisi2[$index]->hari }}: {{ $jadwalDivisi2[$index]->waktu_mulai }} - {{ $jadwalDivisi2[$index]->waktu_selesai }}</li>
+                                                    </ul>
+                                                @else
+                                                    Jadwal tidak tersedia
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $statusPresensi = ${"statusPresensi" . ($index + 1)} ?? 'belum presensi';
+                                                @endphp
+                                                @if ($statusPresensi == 'sudah presensi')
+                                                    <span class="badge badge-success" style="padding: 4px 10px;"> Sudah Presensi </span>
+                                                @else
+                                                    <span class="badge badge-danger" style="padding: 4px 14px;"> Belum Presensi </span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
                             </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -110,15 +91,18 @@
 
                                 <!-- Dropdown untuk memilih id_aktifasi -->
                                 <select name="aktifasi_id" id="divisi" class="form-control">
-                                    @if ($dtAktifasi != null)
+                                    @if ($dtAktifasi != null )
                                         @foreach ($dtAktifasi as $aktifasiCollection)
                                             @foreach (collect($aktifasiCollection) as $aktifasi)
                                                 @if(isset($aktifasi->pertemuan))
-                                                    <option 
-                                                        value="{{ $aktifasi->id_aktifasi }}" 
-                                                        data-id-divisi="{{ $aktifasi->id_divisi }}"> <!-- Menyimpan id_divisi dalam atribut data -->
-                                                        {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )({{$aktifasi->id_aktifasi}})
-                                                    </option>
+                                                    @if($aktifasi->status == 1)
+                                                        <option 
+                                                            value="{{ $aktifasi->id_aktifasi }}" 
+                                                            data-id-divisi="{{ $aktifasi->id_divisi }}"> <!-- Menyimpan id_divisi dalam atribut data -->
+                                                            {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )({{$aktifasi->id_aktifasi}})
+                                                        </option>
+                                                    @endif
+                                                       
                                                 @else
                                                     <option value="">Pertemuan tidak tersedia</option>
                                                 @endif

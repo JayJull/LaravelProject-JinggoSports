@@ -25,4 +25,14 @@ class Divisi extends Model
     {
         return $this->hasMany(Jadwal::class);
     }
+    public static function hapusDivisiNoneDiDataJadwal($dtJadwal){
+        // dd($dtJadwal);
+        $length = count($dtJadwal);
+        for ($i = 0; $i<$length; $i++){//untuk menghilangkan divisi_id 11 dari data jadwal
+            if($dtJadwal[$i]->id_divisi == 11){
+                unset($dtJadwal[$i]);
+            }
+
+        }
+    }
 }

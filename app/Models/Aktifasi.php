@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class Aktifasi extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id_aktifasi';
     protected $fillable = [
-        'id_aktifasi',
+        // 'id_aktifasi',
         'tenggat',
         'status',
         'pertemuan',
@@ -32,6 +33,7 @@ class Aktifasi extends Model
         $id_jadwal2 = Jadwal::where('id_divisi', $divisi[1])->first();
         $aktifasi1 = Aktifasi::where('jadwal_id', $id_jadwal1->id_jadwal)->get();
         $aktifasi2 = Aktifasi::where('jadwal_id', $id_jadwal2->id_jadwal)->get();
+        
         foreach ($aktifasi1 as $item) {
             $item->nama = $namaDivisi1[0]->nama;
             $item->id_divisi = $namaDivisi1[0]->id_divisi;

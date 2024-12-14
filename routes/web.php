@@ -153,10 +153,12 @@ Route::get('/presensi', [PresensiController::class, 'index'])->name('view-presen
 Route::post('presensi/store',[PresensiController::class, 'inputPresensi'])->name('store-presensi');
 Route::get('/data/presensi', [PresensiController::class, 'view'])->name('data-presensi');
 Route::get('aktifasi/presensi',[PresensiController::class, 'activatePresensiView'])->name('aktif-presensi');
-Route::post('/toggle-status', [PresensiController::class, 'toggleStatus'])->name('toggle-status');
-Route::get('/get-status', [PresensiController::class, 'getStatus'])->name('get-status');
+Route::post('/updateStatus', [PresensiController::class, 'toggleStatus'])->name('update-status');
+// Route::get('/get-status', [PresensiController::class, 'getStatus'])->name('get-status');
 Route::post('/activate/{id}', [PresensiController::class, 'activate'])->name('aktivasi');
 Route::post('/scan-result', [PresensiController::class, 'Scanner'])->name('scan-result');
+Route::get('/cetak/presensi', [PresensiController::class, 'cetak_presensi'])->name('cetak-presensi');
+
 // routes/web.php
 Route::get('/scan-qr', function () {
     return view('content.presensi.scan'); // Halaman untuk memindai QR atau Barcode

@@ -29,12 +29,33 @@ class Presensi extends Model
     {
         return $this->belongsTo(Anggota::class, 'id_anggota', 'id_anggota');
     }
+    public static function cetakPresensi(){
+        $dtPresensi = Presensi::dataPresensi();
+        // dd($dtPresensi);
+        return $dtPresensi;
+    }
 
-    
+    public static function dataPresensi(){
+        $data = Presensi::all();
+        $length = count($data);
+        $dataDivisi = array();  
+        for($i = 0; $i<$length; $i++){
+
+            $namaDivisi = Divisi::where('id_divisi', $data[$i]->id_divisi)->first();
+            $namaAnggota = Anggota::where('id_anggota', $data[$i]->id_anggota)->first();
+            // array_push($dataDivisi, $namaDivisi);
+            $data[$i]['nama_divisi'] = $namaDivisi->nama;
+            $data[$i]['nama_anggota'] = $namaAnggota->nama;
+            
+            unset($data[$i]['id_divisi'], $data[$i]['aktifasi_id'], $data[$i]['id_anggota']);
+        }
+
+        return view('content.presensi.show', compact('data'));
+    }
 
     public static function store(Request $request){
         $user = Auth()->user();
-        $anggota = Anggota::where('id_user', $user->id)->first();
+        $anggota = Anggota::where('id_anggota', $user->id_anggota)->first();
         $idDivisi = $anggota->divisi->pluck('id_divisi');
         
         $data_jadwal = Jadwal::whereIn('id_divisi', $idDivisi)->first();
@@ -149,53 +170,34 @@ class Presensi extends Model
         // dd($divisi);
         return $divisi;
     }
-    public static function takeCek1(){
+    public static function checkPresensi($index = 0) {
         $user = Auth::user();
-        $anggota = Anggota::find($user->id);  // Cari anggota dengan id = 1
-
+        $anggota = Anggota::find($user->id); // Cari anggota berdasarkan id user
+    
+        // Ambil id_divisi berdasarkan indeks
         $id_divisi = $anggota->divisi->pluck('id_divisi');
-        // dd($id_divisi[0]);
+        // dd($id_divisi);
+        // Pastikan indeks yang diminta tersedia
+        if (!isset($id_divisi[$index])) {
+            return 'belum presensi'; // Jika id_divisi dengan indeks tersebut tidak ada, dianggap belum presensi
+        }
+    
         $currentDate = Carbon::now()->format('Y-m-d');
-        $currentTime = Carbon::now()->format('H:i:00'); // Ambil waktu sekarang
-        $cek1 = Presensi::where([
+        $cek = Presensi::where([
             'tanggal' => $currentDate,
             'id_anggota' => $anggota->id_anggota,
-            'id_divisi'=>$id_divisi[0],
+            'id_divisi' => $id_divisi[$index],
         ])->first();
-
-        $statusPresensi1 = 'belum presensi';
-        
-        if ($cek1) {
-            # code...
-            $statusPresensi1 = 'sudah presensi';
-        }
-        return $statusPresensi1;
-}
-public static function takeCek2(){
-    $statusPresensi2 = '';
-    $user = Auth::user();
-    $anggota = Anggota::find($user->id);  // Cari anggota dengan id = 1
-    $id_divisi = $anggota->divisi->pluck('id_divisi');
-    // dd($id_divisi[0]);
-        $currentDate = Carbon::now()->format('Y-m-d');
-        $currentTime = Carbon::now()->format('H:i:00'); // Ambil waktu sekarang
-
-    $cek2 = Presensi::where([
-        'tanggal' => $currentDate,
-        'id_anggota' => $anggota->id_anggota,
-        'id_divisi'=>$id_divisi[1],
-    ])->first();
-    if ($cek2) {
-        $statusPresensi2 = 'sudah presensi';   
+    
+        return $cek ? 'sudah presensi' : 'belum presensi';
     }
-    return $statusPresensi2;
-}
+    
     // public static function input(Request $request){
     //     $presensi = Presensi::store($request);
     //         return redirect()->route('view-presensi');
     // }
 
-    public static function viewPresensi() {
+    public static function viewActivatePresensi() {
         $dtJadwal = Jadwal::with('divisi')->get();
         
         // Ambil semua jadwal_id dari $dtJadwal
@@ -204,8 +206,9 @@ public static function takeCek2(){
         // Ambil data Aktifasi untuk jadwal yang ada
         $dtAktifasi = Aktifasi::whereIn('jadwal_id', $jadwalIds)->get()->groupBy('jadwal_id');
         
-        $dtDivisi = Divisi::all();
-        return view('content.presensi.aktivasi', compact('dtJadwal', 'dtDivisi', 'dtAktifasi'));
+        Divisi::hapusDivisiNoneDiDataJadwal($dtJadwal);
+        // dd($dtJadwal);
+        return view('content.presensi.aktivasi', compact('dtJadwal', 'dtAktifasi'));
     }
     
 

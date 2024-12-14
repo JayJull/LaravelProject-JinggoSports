@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->unsignedBigInteger('id_anggota');
+            $table->foreign('id_anggota')->references('id_anggota')->on('anggotas')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

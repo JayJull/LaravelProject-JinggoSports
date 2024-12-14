@@ -22,8 +22,7 @@ return new class extends Migration
             $table->string('status')->default('menunggu');
             $table->unsignedBigInteger('id_prodi');
             $table->timestamps();
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+
             $table->foreign('id_prodi')->references('id_prodi')->on('prodis')->onDelete('cascade');
         });
     }
