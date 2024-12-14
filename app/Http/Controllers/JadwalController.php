@@ -20,6 +20,7 @@ class JadwalController extends Controller
     public function create() // relasi untuk menampilkan divisi
     {
         $divisis = Divisi::all();
+        Divisi::hapusDivisiNoneDiDataJadwal($divisis);
         return view ('admin.jadwal.create', compact('divisis'));
     }
 

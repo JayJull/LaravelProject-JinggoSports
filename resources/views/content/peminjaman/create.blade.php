@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <label for="searchInput">Nama Anggota</label>
                         <select name="id_anggota" class="form-control selectpicker" id="nama" onchange="updateDetails()" data-live-search="true" required>
-                            <option value="">Ketik Nama Anggota</option>
+                            <option value="">Pilih Anggota</option>
                             @foreach ($anggota as $anggotas)
                             <option value="{{ $anggotas->id_anggota }}" data-nim="{{ $anggotas->nim }}" data-prodi="{{ $anggotas->prodi->nama }}">
                                 {{ $anggotas->nama }}

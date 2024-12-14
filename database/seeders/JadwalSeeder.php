@@ -68,6 +68,15 @@ class JadwalSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'hari' => 'Sabtu',
+                'waktu_mulai' => '08:30:00',
+                'waktu_selesai' => '11:00:00',
+                'aktifasi' => 0,
+                'id_divisi' => 11,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

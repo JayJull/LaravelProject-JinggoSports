@@ -29,7 +29,7 @@
                             Banyuwangi</span>
                         @role('pengurus')
                         <div class="text-right">
-                            <a href="{{ route('pendaftaran') }}" class="btn btn-primary">
+                            <a href="{{ route('admin-pendaftaran') }}" class="btn btn-primary">
                                 Lihat pendaftar</a>
                         </div>
                         @endrole

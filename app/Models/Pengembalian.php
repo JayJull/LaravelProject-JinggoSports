@@ -1,7 +1,10 @@
 <?php
 
+
 namespace App\Models;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,21 +22,44 @@ class Pengembalian extends Model
         'petugas_id'
     ];
 
-    public static function kembali($data)
+    public static function kembali(Request $request)
     {
-        // Create a new Pengembalian entry
-        $pengembalian = self::create($data);
+        // user login
+        $userId = Auth::id();
 
-        // Update the Peminjaman status to 'dikembalikan'
-        $peminjaman = Peminjaman::find($data['id_peminjaman']);
+        // Validasi input dari request
+        $validatedData = $request->validate([
+            'id_peminjaman' => 'required|exists:peminjamans,id_peminjaman', 
+            'tggl_kembali' => 'required|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+        ]);
+
+        
+        // Cek apakah ada file gambar yang diunggah
+        if ($request->hasFile('image')) {
+            // Simpan gambar ke folder 'public/pengembalian' dan simpan path-nya di $validatedData['image']
+            $path = $request->file('image')->store('public/pengembalian');
+            
+            // Simpan path relatif (tanpa 'public/') ke dalam database
+            $validatedData['image'] = str_replace('public/', '', $path);
+        }
+
+        // Menambahkan ID petugas ke dalam data yang divalidasi
+        $validatedData['petugas_id'] = $userId;
+
+        // buat pengembalian
+        $pengembalian = self::create($validatedData);
+
+        // Ubah status to 'dikembalikan' agar tidak tampil lagi di view peminjaman
+        $peminjaman = Peminjaman::find($validatedData['id_peminjaman']);
         if ($peminjaman) {
             $peminjaman->status = 'dikembalikan';
             $peminjaman->save();
 
-            // Update the Alat stock
-            $alat = Alat::find($peminjaman->id_alat); // Assuming 'id_alat' refers to id in the alat table
+            // ubah stok alat
+            $alat = Alat::find($peminjaman->id_alat); 
             if ($alat) {
-                $alat->stok += $peminjaman->jml_alat; // Add the returned alat quantity back to stock
+                $alat->stok += $peminjaman->jml_alat; //kembalikan jumlah alat yang dikembalikan oleh stok
                 $alat->save();
             }
         }

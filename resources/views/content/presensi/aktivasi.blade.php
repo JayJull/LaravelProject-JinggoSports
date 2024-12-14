@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800 mb-4">Tabel Divisi</h1>
+    <h1 class="h3 mb-2 text-gray-800 mb-4">Tabel Aktifasi</h1>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -26,66 +26,39 @@
                         </tr>
                     </thead>
                     @foreach ($dtJadwal as $item)
-                    <!-- <form action="{{ route('aktivasi', $item->id_jadwal) }}" method="post">
-                    {{ csrf_field() }}
+                    @php
+                    $aktifasiData = $dtAktifasi[$item->id_jadwal] ?? collect();
+                    @endphp
                     <tbody>
-                            <tr>
+                        <tr>
+
+                            <form action="{{ route('aktivasi', $item->id_jadwal) }}" method="post">
+                                @csrf
                                 <td>{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $item->divisi->nama ?? 'Divisi Tidak Ditemukan' }}</td>
                                 <td class="text-left" style="width: 30%;">
-                                    <input type="time" name="tenggat" 
-                                        class="form-control" value="{{ $item->tenggat }}" 
-                                        placeholder="tenggat" style="width: 50%;" required>
+                                    <input type="time" name="tenggat" class="form-control" value="{{ $aktifasiData->first()->tenggat ?? '' }}" placeholder="tenggat" style="width: 50%;" required>
                                 </td>
-                                <td class="text-left " style="width: 30%;">
-                                    <select name="pertemuan" id="" class="form-control">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
+                                <td class="text-left" style="width: 30%;">
+                                    <select name="pertemuan" id="pertemuanSelect" class="form-control" onchange="updateTenggat(this)">
+                                        @foreach (range(1, 5) as $i)
+                                        @php
+                                        $tenggat = $aktifasiData->where('pertemuan', $i)->first()->tenggat ?? '';
+                                        @endphp
+                                        <option value="{{ $i }}" data-tenggat="{{ $tenggat }}">{{ $i }}</option>
+                                        @endforeach
                                     </select>
                                 </td>
                                 <td class="text-center" style="width: 15%;">
-                                    
-                                <button type="submit">aktifkan</button>
+                                    <button type="submit" class="btn btn-primary">aktifkan</button>
                                 </td>
-                            </tr>
-                        </tbody>
-                    </form> -->
-                    @php
-                        $aktifasiData = $dtAktifasi[$item->id_jadwal] ?? collect();
-                    @endphp
-                    <tr>
-                        <td>
-                            <form action="{{ route('aktivasi', $item->id_jadwal) }}" method="post">
-                                @csrf
-                                <tbody>
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td class="text-center">{{ $item->divisi->nama ?? 'Divisi Tidak Ditemukan' }}</td>
-                                        <td class="text-left" style="width: 30%;">
-                                            <input type="time" name="tenggat" class="form-control" value="{{ $aktifasiData->first()->tenggat ?? '' }}" placeholder="tenggat" style="width: 50%;" required>
-                                        </td>
-                                        <td class="text-left" style="width: 30%;">
-                                            <select name="pertemuan" id="pertemuanSelect" class="form-control" onchange="updateTenggat(this)">
-                                                @foreach (range(1, 5) as $i)
-                                                    @php
-                                                        $tenggat = $aktifasiData->where('pertemuan', $i)->first()->tenggat ?? '';
-                                                    @endphp
-                                                    <option value="{{ $i }}" data-tenggat="{{ $tenggat }}">{{ $i }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td class="text-center" style="width: 15%;">
-                                            <button type="submit" class="btn btn-primary">aktifkan</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
+
                             </form>
-                        </td>
-                    </tr>
-                    @endforeach
+
+                        </tr>
+                        @endforeach
+                    </tbody>
+
                 </table>
             </div>
         </div>
@@ -94,16 +67,25 @@
 </div>
 <!-- /.container-fluid -->
 
+
+
+
+
+
+
+
+
+
+
 {{-- sweet alert --}}
 @include('sweetalert::alert')
 
 <script>
     function updateTenggat(selectElement) {
-    const selectedOption = selectElement.options[selectElement.selectedIndex];
-    const tenggatInput = selectElement.closest('tr').querySelector('input[name="tenggat"]');
-    tenggatInput.value = selectedOption.getAttribute('data-tenggat') || '';
-}
-
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const tenggatInput = selectElement.closest('tr').querySelector('input[name="tenggat"]');
+        tenggatInput.value = selectedOption.getAttribute('data-tenggat') || '';
+    }
 </script>
 
 

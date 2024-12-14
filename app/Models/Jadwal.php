@@ -48,6 +48,7 @@ class Jadwal extends Model
 
     public static function viewJadwal(){
         $dtJadwal = Jadwal::all();
+        Divisi::hapusDivisiNoneDiDataJadwal($dtJadwal);
         $user = auth()->user();
         $logName = $user->name;
         activity()->inLog($logName)->log('mengakses jadwal');
@@ -70,13 +71,18 @@ class Jadwal extends Model
                 ->withErrors($validator)
                 ->withInput();
         }
-    
-        Jadwal::create([
-            'hari' => $request->hari,
-            'waktu_mulai' => $request->waktu_mulai,
-            'waktu_selesai' => $request->waktu_selesai,
-            'id_divisi' => $request->id_divisi,
-        ]);
+        if($request->id_divisi != 12){
+
+            Jadwal::create([
+                'hari' => $request->hari,
+                'waktu_mulai' => $request->waktu_mulai,
+                'waktu_selesai' => $request->waktu_selesai,
+                'id_divisi' => $request->id_divisi,
+            ]);
+        }
+        else{
+            return redirect('jadwal')->with('error', 'Divisi None tidak boleh memiliki jadwal');
+        }
     
         $user = auth()->user();
         $logName = $user->name;
