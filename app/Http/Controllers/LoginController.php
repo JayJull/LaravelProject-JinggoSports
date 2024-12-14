@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Aktifasi;
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,11 @@ class LoginController extends Controller
 
     public function postlogin(Request $request)
     {
+
+        $validate = User::validasi($request);
+        return $validate;
+
+
         $validator = Validator::make($request->all(), [
             'email'     => 'required|email',
             'password'  => 'required',
@@ -60,6 +66,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/')->with('success', 'Kamu Berhasil Logout');
+        return redirect('/');
     }
 }

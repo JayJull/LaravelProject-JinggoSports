@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
+use App\Models\Divisi;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
+    // public function index()
+    // {
         // dd(auth()->user()->getRoleNames());
         // $totalPendaftar = Pendaftaran::all()->count();
         // $totalDivisi = Divisi::all()->count();
@@ -28,7 +30,35 @@ class DashboardController extends Controller
         // $logName = $user->name;
         // activity()->inLog($logName)->log('membuka beranda');
         // return view('layouts.dashboard');
-        return view("layouts.dashboard");
+
+
+
+
+        // return view("welcome");
+
+    // }
+
+
+
+
+
+
+    public function index()
+    {
+        $totalPendaftar = Anggota::all()->count();
+        $totalDivisi = Divisi::all()->count();
+        $pendaftarTerima = Anggota::where('status', 'terima')->count();
+        $pendaftarTolak = Anggota::where('status', 'tolak')->count();
+
+        $persentaseTerima = ($pendaftarTerima / $totalPendaftar) * 100;
+        $persentaseTolak = ($pendaftarTolak / $totalPendaftar) * 100;
+
+
+        // $user = auth()->user();
+        // $logName = $user->name;
+        // activity()->inLog($logName)->log('membuka beranda');
+        return view('layouts.dashboard', compact('totalPendaftar', 'totalDivisi', 'pendaftarTerima', 'pendaftarTolak', 'persentaseTerima', 'persentaseTolak'));
 
     }
+
 }
