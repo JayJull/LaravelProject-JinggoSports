@@ -19,8 +19,12 @@ class DivisiHasSeeder extends Seeder
                 'id_anggota' => 1,
             ],
             [
-                'id_divisi' => 2,
-                'id_anggota' => 1,
+                'id_divisi' => 3,
+                'id_anggota' => 2,
+            ],            
+            [
+                'id_divisi' => 4,
+                'id_anggota' => 2,
             ],            
         ]);
     }

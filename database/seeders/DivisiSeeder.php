@@ -64,6 +64,11 @@ class DivisiSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],            
+            [
+                'nama' => 'None',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],            
         ]);
     }
 }

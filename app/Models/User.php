@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
@@ -85,7 +87,23 @@ class User extends Authenticatable
             'password' => $request->password,
         ];
         if (Auth::attempt($data)) {
-            return redirect()->route('dashboard')->with('success', 'Kamu Berhasil Login');
+            //setelah login update status pada aktifasi menjadi 0 jika sudah melewati tenggat
+            $currentTime = Carbon::now()->format('H:i:s'); // Ambil waktu sekarang
+            $currentDate = Carbon::now()->format('Y-m-d');//Ambil tanggal sekarang
+            $aktifasi = Aktifasi::all();
+            // dd($aktifasi);
+            $length = count($aktifasi);
+            for ($i = 0; $i<$length; $i++){
+
+                $tanggalAktifasi = $aktifasi[$i]->tanggal;
+                $tenggatAktifasi = $aktifasi[$i]->tenggat;
+                if($currentDate>$tanggalAktifasi || $currentTime>$tenggatAktifasi){
+                    $aktifasi[$i]->update([
+                        'status'=>0,
+                    ]);
+                }
+            }
+            return redirect()->route('view-presensi')->with('success', 'Kamu Berhasil Login');
         } else {
             return redirect()->route('login')->with('error', 'Email atau Password Salah');
         }

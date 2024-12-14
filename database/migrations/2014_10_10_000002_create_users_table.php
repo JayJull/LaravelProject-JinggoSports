@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreignId('current_role_id')->nullable()->constrained('roles');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->unsignedBigInteger('id_anggota');
+            $table->foreign('id_anggota')->references('id_anggota')->on('anggotas')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
