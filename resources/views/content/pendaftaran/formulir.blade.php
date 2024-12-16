@@ -77,7 +77,7 @@
                                                 class="form-control form-control-lg">
                                                 <option value="">Pilih Prodi</option>
                                                 @foreach ($prodi as $prodis)
-                                                    <option value={{ $prodis->id_prodi }}>{{ $prodis->nama }}</option>
+                                                    <option value='{{ $prodis->id_prodi }}'>{{ $prodis->nama }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -122,7 +122,7 @@
                                             <select name="divisi_1" id="divisi_1" class="form-control form-control-lg">
                                                 <option value="">Pilih Divisi</option>
                                                 @foreach ($divisi as $divisis)
-                                                    <option value={{ $divisis->id_divisi }}>{{ $divisis->nama }}
+                                                    <option value='{{ $divisis->id_divisi }}'>{{ $divisis->nama }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -134,9 +134,9 @@
                                                 Divisi 2</label>
                                             <select name="divisi_2" id="divisi_2"
                                                 class="form-control form-control-lg">
-                                                <option value="">None</option>
+                                                <option value="11">None</option>
                                                 @foreach ($divisi as $divisis)
-                                                    <option value={{ $divisis->id_divisi }}>{{ $divisis->nama }}
+                                                    <option value="{{ $divisis->id_divisi }}">{{ $divisis->nama }}
                                                     </option>
                                                 @endforeach
                                             </select>

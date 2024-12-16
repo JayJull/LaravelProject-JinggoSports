@@ -17,13 +17,13 @@
 </li>
 
 <li class="nav-item @if (request()->routeIs('jadwal', 'create-jadwal', 'edit-jadwal')) active @endif">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{ route('jadwal') }}">
         <i class="fas fa-calendar-alt"></i>
         <span>Jadwal Latihan</span></a>
 </li>
-
 <li class="nav-item @if (request()->routeIs('view-timeLine')) active @endif">
-    <a class="nav-link" href="{{ route("view-timeLine") }}">
+    <a class="nav-link" href="{{ route('view-timeLine') }}">
         <i class="fas fa-history"></i>
         <span>Time Line</span></a>
 </li>
+

@@ -42,15 +42,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
 });
 
-// *** MENDAFTAR ***//
+// * MENDAFTAR *//
 Route::get('/pendaftaran/form', [AnggotaController::class, 'pendaftaran'])->name('view-pendaftaran');
 Route::post('/store-pendaftaran', [AnggotaController::class, 'create_pendaftaran'])->name('store-pendaftaran');
 
-Route::get('/pendaftaran', [AnggotaController::class, 'pendaftaran'])->name('view-pendaftaran');
-Route::post('/store-pendaftaran', [AnggotaController::class, 'create_pendaftaran'])->name('store-pendaftaran');
 
-
-//*** PENDAFTARAN *** /
+//* PENDAFTARAN * /
 Route::group(['middleware' => ['can:manage_pendaftar']], function () {
     Route::get('/pendaftaran', [AnggotaController::class, 'index_pendaftaran'])->name('admin-pendaftaran');
     Route::get('/pendaftaran/diterima', [AnggotaController::class, 'index_pendaftaran_diterima'])->name('admin-pendaftaran-terima');
@@ -61,13 +58,13 @@ Route::group(['middleware' => ['can:manage_pendaftar']], function () {
 });
 
 
-// *** PASSWORD ***//
+// * PASSWORD *//
 Route::get('/anggota/aktivasi/{token}/{email}', [AnggotaController::class, 'aktivasi'])->name('anggota-aktivasi');
 Route::post('/set-password', [AnggotaController::class, 'setpass'])->name('set-pass');
 
 
 
-// *** TIMELINE ***//
+// * TIMELINE *//
 Route::group(['middleware' => ['can:manage_timeline']], function () {
     Route::get('/timeline', [TimeLineController::class, 'index'])->name('view-timeLine');
     Route::post('/timeline/update/{id}', [TimeLineController::class, 'update'])->name('timeline-update');
@@ -88,7 +85,7 @@ Route::group(['middleware' => ['can:manage_divisi']], function () {
 });
 
 
-// *** JADWAL *** //
+// * JADWAL * //
 Route::group(['middleware' => ['can:manage_jadwal']], function () {
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal');
     Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('create-jadwal');
@@ -123,7 +120,7 @@ Route::group(['middleware'=> ['can:transaksi']], function () {
 });
 
 
-// *** BUAT AKUN *** //
+// * BUAT AKUN * //
 Route::group(['middleware'=> ['can:manage_pengurus']], function () {
     Route::get('/pengurus', [BuatAkunController::class, 'index'])->name('pengurus');
     Route::get('/pengurus/create', [BuatAkunController::class, 'create'])->name('create-pengurus');
