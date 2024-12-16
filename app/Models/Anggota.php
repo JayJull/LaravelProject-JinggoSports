@@ -85,11 +85,10 @@ class Anggota extends Model
 
         $anggota = Anggota::with(['jabatan', 'user'])->findOrFail($id_anggota);
 
-        if ($anggota->jabatan->contains('id', $request->jabatan)) {
-            return false;
+        if ($anggota->jabatan->contains('id_jabatan', $request->jabatan)) {
+            return redirect()->back()->withErrors(['jabatan' => 'Jabatan ini sudah diberikan kepada anggota.']);
         }
 
-        // Tambahkan jabatan ke tabel pivot
         $anggota->jabatan()->attach($request->jabatan);
 
         // Ambil user dari anggota

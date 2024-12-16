@@ -1,5 +1,5 @@
-<li class="nav-item @if (request()->routeIs('pengurus')) active @endif">
-    <a class="nav-link" href="{{ route('pengurus') }}">
+<li class="nav-item @if (request()->routeIs('jabatan')) active @endif">
+    <a class="nav-link" href="{{ route('jabatan') }}">
         <i class="fas fa-user-plus"></i>
         <span>Buat Akun</span></a>
 </li>
@@ -22,8 +22,8 @@
         <span>Jadwal Latihan</span></a>
 </li>
 
-<li class="nav-item @if (request()->routeIs('view-timeLine')) active @endif">
+{{-- <li class="nav-item @if (request()->routeIs('view-timeLine')) active @endif">
     <a class="nav-link" href="{{ route('view-timeLine') }}">
         <i class="fas fa-history"></i>
         <span>Time Line</span></a>
-</li>
+</li> --}}

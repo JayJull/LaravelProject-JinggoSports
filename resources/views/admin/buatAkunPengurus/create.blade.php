@@ -45,13 +45,9 @@
                 @csrf
                 <!-- Pilih Jabatan -->
                 <div class="form-group">
-                    <label for="jabatan" style="font-weight: bold;">Pilih Jabatan</label>
-                    <select name="jabatan" id="jabatan" class="form-control" required>
-                        <option value="" selected disabled>Pilih jabatan</option>
-                        @foreach ($jabatans as $jabatan)
-                            <option value="{{ $jabatan->id_jabatan }}">{{ $jabatan->nama }}</option>
-                        @endforeach
-                    </select>
+                    <label for="jabatan">Jabatan yang Akan Dihapus:</label>
+                    <input type="text" name="jabatan_readonly" id="jabatan" class="form-control" value="Pengurus Harian" readonly>
+                    <input type="hidden" name="jabatan" value="1">
                 </div>
 
                 @if ($errors->has('jabatan_id'))

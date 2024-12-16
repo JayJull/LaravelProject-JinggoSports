@@ -1,15 +1,14 @@
-
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion fixed-sidebar" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-volleyball-ball"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">UKM OLAHRAGA</div>
+        <div class="mx-3 sidebar-brand-text">UKM OLAHRAGA</div>
     </a>
 
     <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+    <hr class="my-0 sidebar-divider">
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item @if (request()->routeIs('dashboard')) active @endif">
@@ -41,7 +40,7 @@
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        <button class="border-0 rounded-circle" id="sidebarToggle"></button>
     </div>
 </ul>
 
