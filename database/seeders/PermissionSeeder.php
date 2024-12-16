@@ -21,13 +21,13 @@
 
 //         // Buat permission jika belum ada
 //         $permissions = [
-//             'view_dashboard', 
-//             'manage_divisi', 
-//             'manage_jadwal', 
-//             'manage_pendaftar', 
-//             'transaksi', 
-//             'view_anggota', 
-//             'view_jadwal', 
+//             'view_dashboard',
+//             'manage_divisi',
+//             'manage_jadwal',
+//             'manage_pendaftar',
+//             'transaksi',
+//             'view_anggota',
+//             'view_jadwal',
 //             'manage_pengurus'
 //         ];
 
@@ -77,31 +77,42 @@ class PermissionSeeder extends Seeder
         ////////////////////////////////////////////////////////////////////////////
 
         $permission = Permission::updateOrCreate(['name' => 'view_dashboard']);
+
+        //== Admin ==//
         $permission2 = Permission::updateOrCreate(['name' => 'manage_divisi']);
         $permission3 = Permission::updateOrCreate(['name' => 'manage_jadwal']);
+        $permission8 = Permission::updateOrCreate(['name'=> 'manage_pengurus']);
+        $permission9 = Permission::updateOrCreate(['name'=> 'manage_alat']);
+        $permission12 = Permission::updateOrCreate(['name'=> 'manage_timeline']);
 
+        //== Pengurus ==//
         $permission4 = Permission::updateOrCreate(['name'=> 'manage_pendaftar']);
         $permission5 = Permission::updateOrCreate(['name'=> 'transaksi']);
+        $permission11 = Permission::updateOrCreate(['name'=> 'manage_presensi']);
 
+        //== Anggota ==//
         $permission6 = Permission::updateOrCreate(['name'=> 'view_anggota']);
         $permission7 = Permission::updateOrCreate(['name'=> 'view_jadwal']);
-        $permission8 = Permission::updateOrCreate(['name'=> 'manage_pengurus']);
+        $permission10 = Permission::updateOrCreate(['name' => 'presensi']);
 
         ////////////////////////////////////////////////////////////////////////////
 
         $role_admin -> givePermissionTo($permission);
         $role_admin -> givePermissionTo($permission2);
         $role_admin -> givePermissionTo($permission3);
-        // $role_admin -> givePermissionTo($permission5);
         $role_admin -> givePermissionTo($permission8);
+        $role_admin -> givePermissionTo($permission9);
+        $role_admin -> givePermissionTo($permission12);
 
         $role_pengurus -> givePermissionTo($permission);
         $role_pengurus -> givePermissionTo($permission4);
         $role_pengurus -> givePermissionTo($permission5);
+        $role_pengurus -> givePermissionTo($permission11);
 
-
+        // anggota gapunya akses dashboard
         $role_anggota -> givePermissionTo($permission6);
         $role_anggota -> givePermissionTo($permission7);
+        $role_anggota -> givePermissionTo($permission10);
 
         ////////////////////////////////////////////////////////////////////////////
 
@@ -110,7 +121,7 @@ class PermissionSeeder extends Seeder
         // $user3 = User::find(3);
         // $user4 = User::find(4);
 
-        $user->assignRole('admin');
+        $user->assignRole('admin', 'anggota', 'pengurus');
         // $user2->assignRole('pengurus');
         // $user3->assignRole('anggota');
         // $user2->assignRole('anggota', 'pengurus');
