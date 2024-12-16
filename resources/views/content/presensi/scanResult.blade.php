@@ -69,15 +69,18 @@
                                 @csrf
                                 <!-- Dropdown untuk memilih id_aktifasi -->
                                 <select name="aktifasi_id" id="divisi" class="form-control">
-                                    @if ($dtAktifasi != null)
+                                    @if ($dtAktifasi != null )
                                         @foreach ($dtAktifasi as $aktifasiCollection)
                                             @foreach (collect($aktifasiCollection) as $aktifasi)
                                                 @if(isset($aktifasi->pertemuan))
-                                                    <option 
-                                                        value="{{ $aktifasi->id_aktifasi }}" 
-                                                        data-id-divisi="{{ $aktifasi->id_divisi }}">
-                                                        {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )
-                                                    </option>
+                                                    @if($aktifasi->status == 1)
+                                                        <option 
+                                                            value="{{ $aktifasi->id_aktifasi }}" 
+                                                            data-id-divisi="{{ $aktifasi->id_divisi }}"> <!-- Menyimpan id_divisi dalam atribut data -->
+                                                            {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )
+                                                        </option>
+                                                    @endif
+                                                       
                                                 @else
                                                     <option value="">Pertemuan tidak tersedia</option>
                                                 @endif

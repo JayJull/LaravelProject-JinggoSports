@@ -15,16 +15,17 @@
 </li>
 
 <li class="nav-item @if (request()->routeIs('aktif-presensi')) active @endif">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{ route('aktif-presensi') }}">
         <i class="fas fa-fw fa-calendar-check"></i>
         <span>Aktifasi</span></a>
 </li>
 
 <li class="nav-item @if (request()->routeIs('data-presensi')) active @endif">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{ route('data-presensi') }}">
         <i class="fas fa-fw fa-clipboard-list"></i>
         <span>Data Presensi</span></a>
 </li>
+
 
 
 

@@ -99,7 +99,7 @@
                                                         <option 
                                                             value="{{ $aktifasi->id_aktifasi }}" 
                                                             data-id-divisi="{{ $aktifasi->id_divisi }}"> <!-- Menyimpan id_divisi dalam atribut data -->
-                                                            {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )({{$aktifasi->id_aktifasi}})
+                                                            {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )
                                                         </option>
                                                     @endif
                                                        

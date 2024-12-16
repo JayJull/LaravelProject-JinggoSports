@@ -147,10 +147,12 @@
                         @endif
                         <div class="mt-4 flex justify-end">
                             <button id="closepopup2" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded mr-2">Close</button>
-                            @if ($currentDate >= $gelombang_1->waktu_mulai && $currentDate <= $gelombang_1->waktu_berakhir && $gelombang_1->status == 1) <a class="bg-customColor-hijau text-white px-4 py-2 rounded mr-2" href="{{ route('view-pendaftaran') }}">Daftar</a>
-                                @endif
-                            @if ($currentDate >= $gelombang_2->waktu_mulai && $currentDate <= $gelombang_2->waktu_berakhir && $gelombang_2->status == 1) <a class="bg-customColor-hijau text-white px-4 py-2 rounded mr-2" href="{{ route('view-pendaftaran') }}">Daftar</a>
-                                @endif
+                            @if ($currentDate >= $gelombang_1->waktu_mulai && $currentDate <= $gelombang_1->waktu_berakhir && $gelombang_1->status == 1) 
+                                <a class="bg-customColor-hijau text-white px-4 py-2 rounded mr-2" href="{{ route('view-pendaftaran') }}">Daftar</a>
+                            @endif
+                            @if ($currentDate >= $gelombang_2->waktu_mulai && $currentDate <= $gelombang_2->waktu_berakhir && $gelombang_2->status == 1) 
+                                <a class="bg-customColor-hijau text-white px-4 py-2 rounded mr-2" href="{{ route('view-pendaftaran') }}">Daftar</a>
+                            @endif
                         </div>
 
         </div>
