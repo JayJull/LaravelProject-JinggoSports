@@ -44,7 +44,7 @@
                                     <td>{{ $item->jml_alat }}</td>
                                     
                                     <td>{{ date('d-m-Y', strtotime($item->tggl_pinjam)) }}</td>
-                                    <td>{{ $item->petugas ? $item->petugas->name : 'N/A' }}</td>
+                                    <td>{{ $item->nama_petugas ? $item->nama_petugas : 'N/A' }}</td>
 
                                     <td class="text-center" style="width: 15%;">
                                         <form action="{{ route('create-kembali', $item->id_peminjaman) }}">
