@@ -77,11 +77,12 @@ Route::get('/divisi/{id}/anggota',[ DivisiController::class, 'viewAnggota'])->na
 
 // * DIVISI * //
 Route::group(['middleware' => ['can:manage_divisi']], function () {
-    Route::get('/divisi/create', [DivisiController::class, 'create'])->name('create-divisi');
-    Route::post('/divisi/simpan', [DivisiController::class, 'store'])->name('simpan-divisi');
-    Route::get('/divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
-    Route::post('/divisi/update/{id}', [DivisiController::class, 'update'])->name('update-divisi');
-    Route::delete('/divisi/delete/{id}', [DivisiController::class, 'destroy'])->name('delete-divisi');
+    Route::get('/divisi', [DivisiController::class, 'ViewDivisi'])->name('divisi');
+    Route::get('/tambahdivisi', [DivisiController::class, 'CreateDivisi'])->name('tambahdivisi');
+    Route::post('/storeDivisi', [DivisiController::class, 'storeDivisi'])->name('storeDivisi');
+    Route::get('/editdivisi/{id_divisi}', [DivisiController::class, 'Editdivisi'])->name('editdivisi');
+    Route::post('/ubahedit/{id_divisi}', [DivisiController::class, 'ubahedit'])->name('ubahedit');
+    Route::delete('/hapusdivisi/{id_divisi}', [DivisiController::class, 'hapusdivisi'])->name('hapusdivisi');
 });
 
 
@@ -98,12 +99,12 @@ Route::group(['middleware' => ['can:manage_jadwal']], function () {
 
 // * ALAT * //
 Route::group(['middleware'=> ['can:manage_alat']], function () {
-    Route::get('/alat', [AlatController::class, 'index'])->name('alat');
-    Route::get('/alat/create', [AlatController::class, 'create'])->name('create-alat');
-    Route::post('/alat/simpan', [AlatController::class, 'store'])->name('simpan-alat');
-    Route::get('/alat/edit/{id}', [AlatController::class, 'edit'])->name('edit-alat');
-    Route::post('/alat/update/{id}', [AlatController::class, 'update'])->name('update-alat');
-    Route::delete('/alat/delete/{id}', [AlatController::class, 'destroy'])->name('delete-alat');
+    Route::get('/Alat', [AlatController::class, 'VeiwAlat'])->name('Alat');
+Route::get('/Fromalat', [AlatController::class, 'FormCalat'])->name('FormAlat');
+Route::post('/Store', [AlatController::class, 'StoreAlat'])->name('StoreAlat');
+Route::get('/editalat/{id_alat}', [AlatController::class, 'FindId'])->name('FindId');
+Route::post('/ediubah/{id_alat}', [AlatController::class, 'updatealat'])->name('updatealat');
+Route::delete('/hapusalat/{id_alat}', [AlatController::class, 'hapusalat'])->name('hapusalat');
 });
 
 
@@ -122,11 +123,11 @@ Route::group(['middleware'=> ['can:transaksi']], function () {
 
 // * BUAT AKUN * //
 Route::group(['middleware'=> ['can:manage_pengurus']], function () {
-    Route::get('/pengurus', [BuatAkunController::class, 'index'])->name('pengurus');
-    Route::get('/pengurus/create', [BuatAkunController::class, 'create'])->name('create-pengurus');
-    Route::get('/pengurus/detail/{id}', [BuatAkunController::class, 'detail'])->name('detail-pengurus');
-    Route::put('/pengurus/update/{id}', [BuatAkunController::class, 'update'])->name('update-pengurus');
-    Route::get('/pengurus/delete/{id}', [BuatAkunController::class, 'destroy'])->name('delete-pengurus');
+    Route::get('/jabatan', [BuatAkunController::class, 'ViewJabatan'])->name('jabatan');
+Route::get('/editjabatan/{id_anggota}', [BuatAkunController::class, 'MenampilkanData'])->name('JabatanT');
+Route::post('/TambahJabatan/{id_anggota}', [BuatAkunController::class, 'JabatanTambah'])->name('JabatanTambah');
+Route::get('/deletejabatan/{id_anggota}', [BuatAkunController::class, 'delete'])->name('Delete');
+Route::post('/HapusJabatan/{id_anggota}', [BuatAkunController::class, 'JabatanHapus'])->name('JabatanHapus');
 });
 
 

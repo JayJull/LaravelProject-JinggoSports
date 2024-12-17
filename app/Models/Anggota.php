@@ -47,9 +47,19 @@ class Anggota extends Model
         return $this->hasMany(Peminjaman::class, 'id_anggota', 'id_anggota');
     }
 
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function presensi()
     {
         return $this->hasMany(Presensi::class, 'id_anggota', 'id_anggota');
+    }
+
+    public function jabatan()
+    {
+        return $this->belongsToMany(Jabatan::class, 'jabatan_has_anggotas', 'id_anggota', 'id_jabatan');
     }
 
     public static function getFormPendaftaran()
@@ -142,6 +152,7 @@ class Anggota extends Model
     public static function getIndexPendaftaran()
     {
         $dtPendaftaran = Anggota::all();
+        //dd($dtPendaftaran);
         return view('content.pendaftaran.index', compact('dtPendaftaran'));
     }
 
@@ -238,4 +249,93 @@ class Anggota extends Model
 
         return redirect()->route('login')->with('success', 'Kata sandi berhasil diatur. Silakan login.');
     }
+
+
+    // BUAT AKUN PENGURUS ////////////////////////
+
+    public static function ViewJabatan()
+    {
+        $dtPengurus = Anggota::with(['jabatan', 'divisi'])->get();
+        return $dtPengurus;
+    }
+
+    public static function TambahJabatan($id_anggota)
+    {
+        $dtAnggota = Anggota::with(['jabatan', 'divisi'])->findOrFail($id_anggota);
+        $jabatans = Jabatan::all();
+        $divisi = Divisi::all();
+        // dd($dtAnggota->id_anggota);
+        return [
+            'dtAnggota' => $dtAnggota,
+            'jabatans' => $jabatans,
+            'divisi' => $divisi,
+        ];
+    }
+
+    public static function InsertJabatan(Request $request, $id_anggota)
+    {
+        $request->validate([
+            'jabatan' => 'required|exists:jabatans,id_jabatan',
+        ]);
+
+        $anggota = Anggota::with(['jabatan', 'user'])->findOrFail($id_anggota);
+
+        if ($anggota->jabatan->contains('id_jabatan', $request->jabatan)) {
+            return redirect()->back()->withErrors(['jabatan' => 'Jabatan ini sudah diberikan kepada anggota.']);
+        }
+
+        $anggota->jabatan()->attach($request->jabatan);
+
+        // Ambil user dari anggota
+        $user = $anggota->user;
+
+
+        $pendaftar = User::find($id_anggota);
+        // dd($pendaftar);
+        $pendaftar->assignRole('pengurus');
+
+        $pendaftar = Anggota::find($id_anggota);
+        $pendaftar->update([
+            'jabatan' => "pengurus",
+        ]);
+        // $user = auth()->user();
+        // $logName = $user->name;
+        // activity()->withProperties($pendaftar)->inLog($logName)->log('membuat akun pengurus pada user '.$pendaftar->nama);
+        return true;
+    }
+
+    public static function RemoveJabatan(Request $request, $id_anggota)
+    {
+        $request->validate([
+            'jabatan' => 'required|exists:jabatans,id_jabatan',
+        ]);
+
+        $anggota = Anggota::with(['jabatan', 'user'])->findOrFail($id_anggota);
+
+        // Hapus jabatan yang sudah ada di tabel pivot jika ada
+        if ($anggota->jabatan->contains('id', $request->jabatan)) {
+            $anggota->jabatan()->detach($request->jabatan);  // Menghapus jabatan yang sudah ada
+        }
+
+        // Tambahkan jabatan ke tabel pivot
+        $anggota->jabatan()->detach ($request->jabatan);
+
+        // Ambil user dari anggota
+        $user = $anggota->user;
+
+        $pengurus = User::findOrFail($id_anggota);
+        $pengurus->removeRole('pengurus');
+
+        $pendaftar = Anggota::find($id_anggota);
+        $pendaftar->update([
+            'jabatan' => NULL,
+        ]);
+
+        // Optional: Menambahkan log aktivitas (jika diperlukan)
+        // $logName = auth()->user()->name;
+        // activity()->withProperties($anggota)->inLog($logName)->log('Menambahkan jabatan pengurus pada anggota '.$anggota->nama);
+
+        return true;
+    }
+
 }

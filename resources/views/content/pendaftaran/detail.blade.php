@@ -12,7 +12,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-striped mb-5">
-                    <tbody>                                                                                  
+                    <tbody>
                         <tr>
                             <td>Nama</td>
                             <td>: {{ $dtAnggota->nama }}</td>
@@ -48,17 +48,17 @@
                         <tr>
                             <td>Email</td>
                             <td>: {{ $dtAnggota->email }}</td>
-                        </tr>                                                                                    
+                        </tr>
                         <tr>
                             <td>Divisi 1</td>
-                            <td>: {{ $dtAnggota->divisi->get(0)->nama }}</td>                                
-                        </tr> 
+                            <td>: {{ $dtAnggota->divisi->get(0)->nama }}</td>
+                        </tr>
                         <tr>
                             <td>Divisi 2</td>
-                            <td>: {{ $dtAnggota->divisi->get(1)->nama ?? 'None'}}</td>                                
-                        </tr>                                                                                                        
-                    </tbody>                        
-                </table>                    
+                            <td>: {{ $dtAnggota->divisi->get(1)->nama ?? 'None'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <div class="text-right">
                     @if ($dtAnggota->status == 'menunggu')
@@ -80,10 +80,10 @@
                         <span class="badge badge-danger">Pendaftaran Ditolak</span>
                     @endif
                 </div>
-              
-            </div>                
+
+            </div>
         </div>
-    </div>        
+    </div>
 
 </div>
 <!-- /.container-fluid -->

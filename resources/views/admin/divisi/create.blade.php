@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Create Data')
 @section('content')
 
@@ -19,7 +19,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <form action="{{ route('simpan-divisi')}}" method="post">
+                    <form action="{{ route('storeDivisi')}}" method="post">
                         {{ csrf_field() }}
 
                         <div class="form-group">
