@@ -1,5 +1,5 @@
 <li class="nav-item @if (request()->routeIs('pengurus')) active @endif">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{ route("pengurus") }}">
         <i class="fas fa-user-plus"></i>
         <span>Buat Akun</span></a>
 </li>
@@ -12,7 +12,7 @@
 
 <li class="nav-item @if (request()->routeIs('alat', 'create-alat', 'edit-alat')) active @endif">
     <a class="nav-link" href="#">
-        <i class="fas fa-fw fa-box-open "></i>
+        <i class="fas fa-fw fa-box-open"></i>
         <span>Alat</span></a>
 </li>
 

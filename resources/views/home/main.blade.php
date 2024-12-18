@@ -120,7 +120,7 @@
 
                 @elseif($currentDate >= $gelombang_1->waktu_mulai && $currentDate <= $gelombang_1->waktu_berakhir && $gelombang_1->status == 1)
                 <p>Pendaftaran masih dibuka, ayo bergabung!!</p>
-                
+
                 @endif
 
             @if ($currentDate < $gelombang_2->waktu_mulai && $gelombang_2->status == 0)
@@ -134,8 +134,8 @@
                 <p>Pendaftaran berakhir pada {{$gelombang_2->waktu_berakhir}}</p>
 
                 @elseif($currentDate >= $gelombang_2->waktu_mulai && $currentDate <= $gelombang_2->waktu_berakhir && $gelombang_2->status == 1)
-                <p>Pendaftaran masih dibuka, ayo bergabung!!</p>                
-                
+                <p>Pendaftaran masih dibuka, ayo bergabung!!</p>
+
                 @endif
 
              @if ($currentDate < $gelombang_1->waktu_mulai || $gelombang_2->waktu_mulai)

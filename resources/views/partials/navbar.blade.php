@@ -50,7 +50,6 @@
                     @foreach (auth()->user()->roles->where('id', '!=', auth()->user()->current_role_id) as $role)
                         <a class="dropdown-item" href="{{ route('switch.role', $role->id) }}">
                             <i class="fas fa-exchange-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-
                             {{ __('Switch :name', ['name' => $role->name]) }}
                         </a>
                     @endforeach

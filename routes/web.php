@@ -34,20 +34,20 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// * DASHBOARD *//
+// *** DASHBOARD ***//
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// * SWITCH ROLE *//
+// *** SWITCH ROLE ***//
 Route::middleware(['auth'])->group(function () {
     Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
 });
 
-// * MENDAFTAR *//
+// * MENDAFTAR * //
 Route::get('/pendaftaran/form', [AnggotaController::class, 'pendaftaran'])->name('view-pendaftaran');
 Route::post('/store-pendaftaran', [AnggotaController::class, 'create_pendaftaran'])->name('store-pendaftaran');
 
 
-//* PENDAFTARAN * /
+//* PENDAFTARAN * //
 Route::group(['middleware' => ['can:manage_pendaftar']], function () {
     Route::get('/pendaftaran', [AnggotaController::class, 'index_pendaftaran'])->name('admin-pendaftaran');
     Route::get('/pendaftaran/diterima', [AnggotaController::class, 'index_pendaftaran_diterima'])->name('admin-pendaftaran-terima');
@@ -58,13 +58,13 @@ Route::group(['middleware' => ['can:manage_pendaftar']], function () {
 });
 
 
-// * PASSWORD *//
+// * PASSWORD * //
 Route::get('/anggota/aktivasi/{token}/{email}', [AnggotaController::class, 'aktivasi'])->name('anggota-aktivasi');
 Route::post('/set-password', [AnggotaController::class, 'setpass'])->name('set-pass');
 
 
 
-// * TIMELINE *//
+// * TIMELINE * //
 Route::group(['middleware' => ['can:manage_timeline']], function () {
     Route::get('/timeline', [TimeLineController::class, 'index'])->name('view-timeLine');
     Route::post('/timeline/update/{id}', [TimeLineController::class, 'update'])->name('timeline-update');
@@ -75,7 +75,7 @@ Route::group(['middleware' => ['can:manage_timeline']], function () {
 Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
 Route::get('/divisi/{id}/anggota',[ DivisiController::class, 'viewAnggota'])->name('view-anggota');
 
-// * DIVISI * //
+// *** DIVISI *** //
 Route::group(['middleware' => ['can:manage_divisi']], function () {
     Route::get('/divisi/create', [DivisiController::class, 'create'])->name('create-divisi');
     Route::post('/divisi/simpan', [DivisiController::class, 'store'])->name('simpan-divisi');
@@ -96,7 +96,7 @@ Route::group(['middleware' => ['can:manage_jadwal']], function () {
 });
 
 
-// * ALAT * //
+// *** ALAT *** //
 Route::group(['middleware'=> ['can:manage_alat']], function () {
     Route::get('/alat', [AlatController::class, 'index'])->name('alat');
     Route::get('/alat/create', [AlatController::class, 'create'])->name('create-alat');
@@ -107,7 +107,7 @@ Route::group(['middleware'=> ['can:manage_alat']], function () {
 });
 
 
-// * PEMINJAMAN * //
+// *** PEMINJAMAN *** //
 Route::group(['middleware'=> ['can:transaksi']], function () {
     Route::get('/pinjam', [PeminjamanController::class, 'index'])->name('peminjaman');
     Route::get('/pinjam/create', [PeminjamanController::class, 'create'])->name('create-pinjam');
@@ -130,7 +130,7 @@ Route::group(['middleware'=> ['can:manage_pengurus']], function () {
 });
 
 
-// * PRESENSI * //
+// *** PRESENSI *** //
 Route::group(['middleware'=> ['can:presensi']], function () {
     Route::get('/presensi', [PresensiController::class, 'index'])->name('view-presensi');
     Route::post('presensi/store',[PresensiController::class, 'inputPresensi'])->name('store-presensi');
@@ -148,8 +148,9 @@ Route::group(['middleware'=> ['can:manage_presensi']], function () {
 });
 
 
-// * PROFILE * //
+// *** PROFILE *** //
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('/profile', [ProfileController::class, 'update'])->name('update-profile');
 Route::post('/profile/update', [ProfileController::class, 'updateGambar'])->name('gambar-profile');
 Route::post('/profile/delete', [ProfileController::class, 'deleteGambar'])->name('delete-profile');
+

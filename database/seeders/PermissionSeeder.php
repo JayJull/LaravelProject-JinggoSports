@@ -21,17 +21,17 @@ class PermissionSeeder extends Seeder
 
         // Buat permission jika belum ada
         $permissions = [
-            'view_dashboard', 
-            'manage_divisi', 
+            'view_dashboard',
+            'manage_divisi',
             'manage_jadwal',
             'manage_pengurus',
             'manage_alat',
             'manage_timeline',
-            'manage_pendaftar', 
+            'manage_pendaftar',
             'transaksi',
-            'manage_presensi', 
-            'view_anggota', 
-            'view_jadwal', 
+            'manage_presensi',
+            'view_anggota',
+            'view_jadwal',
             'presensi'
         ];
 

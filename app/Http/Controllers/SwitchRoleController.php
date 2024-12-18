@@ -14,6 +14,6 @@ class SwitchRoleController extends Controller
 
         auth()->user()->update(['current_role_id' => $role->id]);
 
-        return to_route('dashboard'); // Replace this with your own home route
+        return to_route('dashboard')->with('toast_success', 'Kamu Berhasil Switch'); // Replace this with your own home route
     }
 }
