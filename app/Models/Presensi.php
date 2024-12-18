@@ -258,7 +258,7 @@ class Presensi extends Model
         return redirect()->route('aktif-presensi')->with('success', 'berhasil aktifasi');
     }
 
-    public static function Scan($request){
+    public static function Scan($request){//ubah ini
         // dd($request);
         $userLogin = Auth::user();
 
