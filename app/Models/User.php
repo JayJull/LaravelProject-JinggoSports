@@ -84,7 +84,7 @@ class User extends Authenticatable
             return redirect()->route('login')
                 ->withErrors($validator)
                 ->withInput()
-                ->with('error', 'Mohon konfirmasi bahwa anda bukan robot.');
+                ->with('error', 'Mohon konfirmasi bahwa anda bukan robot.');
         }
         $data = [
             'email' => $request->email,

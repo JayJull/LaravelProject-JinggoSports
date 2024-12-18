@@ -49,18 +49,7 @@
 
 
     @include('partials.script')
-
-    @if ($message = Session::get('succes'))
-    <script>
-        Swal.fire({
-        position: "top-center",
-        icon: "success",
-        title: "Kamu Berhasil Login",
-        showConfirmButton: false,
-        timer: 1500
-      });
-    </script>
-    @endif
+    @include('sweetalert::alert')
 
     @if ($message = Session::get('sukses'))
     <script>
