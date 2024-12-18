@@ -19,7 +19,7 @@ class PeminjamanController extends Controller
     public function index()
     {
         $peminjaman = Peminjaman::with('anggota', 'alat')->where('status', 'dipinjam')->get();
-      
+
         // dd($peminjaman);
         $length = count($peminjaman);
         for($i = 0; $i<$length;  $i++){
@@ -34,7 +34,7 @@ class PeminjamanController extends Controller
         // foreach($peminjaman as  $pinjam){
         //     dd($pinjam);
         // }
-        
+
         return view('content.peminjaman.index', compact('peminjaman', 'petugas',));
     }
 
@@ -53,6 +53,6 @@ class PeminjamanController extends Controller
     {
             Peminjaman::pinjam($request);
 
-            return redirect()->route('peminjaman')->with('success', 'Peminjaman berhasil dibuat');
+            return redirect()->route('peminjaman')->with('toast_success', 'Peminjaman berhasil dibuat');
     }
 }

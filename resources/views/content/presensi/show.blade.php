@@ -13,7 +13,7 @@
         <div class="card shadow mb-4">
         <div class="card-header py-3">
             <!-- Optional header -->
-            <a href="{{route('cetak-presensi')}}" target="_blank" class="btn btn-success">cetak <i class="fa-solid fa-print"></i></a>
+            <a href="{{route('cetak-presensi')}}" target="_blank" class="btn btn-success">cetak <i class="fas fa-print"></i></a>
 
         </div>
             <div class="card-body">
@@ -36,7 +36,7 @@
                                     <td class="nama">{{ $item->nama_anggota }}</td>
                                     <td class="divisi">{{ $item->nama_divisi }}</td>
                                     <td class="tanggal">{{ $item->tanggal }}</td>
-                                    
+
 
                                     <td>
                                     @if ($item->bukti)

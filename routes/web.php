@@ -72,12 +72,12 @@ Route::group(['middleware' => ['can:manage_timeline']], function () {
 
 
 
-Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
+// Route::get('/divisi', action: [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
 Route::get('/divisi/{id}/anggota', [DivisiController::class, 'viewAnggota'])->name('view-anggota');
+Route::get('/divisi', [DivisiController::class, 'ViewDivisi'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
 
 // *** DIVISI *** //
 Route::group(['middleware' => ['can:manage_divisi']], function () {
-    Route::get('/divisi', [DivisiController::class, 'ViewDivisi'])->name('divisi');
     Route::get('/tambahdivisi', [DivisiController::class, 'CreateDivisi'])->name('tambahdivisi');
     Route::post('/storeDivisi', [DivisiController::class, 'storeDivisi'])->name('storeDivisi');
     Route::get('/editdivisi/{id_divisi}', [DivisiController::class, 'Editdivisi'])->name('editdivisi');

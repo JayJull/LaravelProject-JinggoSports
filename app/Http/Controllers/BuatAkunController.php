@@ -14,47 +14,47 @@ class BuatAkunController extends Controller
         return view('admin.buatAkunPengurus.index', compact('dtPengurus'));
     }
 
-        public function MenampilkanData($id_anggota)
-        {
-            $data = Anggota::TambahJabatan($id_anggota);
+    public function MenampilkanData($id_anggota)
+    {
+        $data = Anggota::TambahJabatan($id_anggota);
 
-            return view('admin.buatAkunPengurus.create', [
-                'dtAnggota' => $data['dtAnggota'],
-                'jabatans' => $data['jabatans'],
-                'divisi' => $data['divisi']
-            ]);
+        return view('admin.buatAkunPengurus.create', [
+            'dtAnggota' => $data['dtAnggota'],
+            'jabatans' => $data['jabatans'],
+            'divisi' => $data['divisi']
+        ]);
+    }
+
+    public function JabatanTambah(Request $request, $id_anggota)
+    {
+        $result = Anggota::InsertJabatan($request, $id_anggota);
+
+        if (!$result) {
+            return redirect()->back()->withErrors(['jabatan' => 'Anggota sudah memiliki jabatan ini atau data user tidak ditemukan.']);
         }
 
-        public function JabatanTambah(Request $request, $id_anggota)
-        {
-            $result = Anggota::InsertJabatan($request, $id_anggota);
+        return redirect()->route('jabatan')->with('toast_success', 'Jabatan berhasil ditambahkan.');
+    }
 
-            if (!$result) {
-                return redirect()->back()->withErrors(['jabatan' => 'Anggota sudah memiliki jabatan ini atau data user tidak ditemukan.']);
-            }
+    public function delete($id_anggota)
+    {
+        $data = Anggota::TambahJabatan($id_anggota);
 
-            return redirect()->route('jabatan')->with('success', 'Jabatan berhasil ditambahkan dan role diperbarui.');
+        return view('admin.buatAkunPengurus.detail', [
+            'dtAnggota' => $data['dtAnggota'],
+            'jabatans' => $data['jabatans'],
+            'divisi' => $data['divisi']
+        ]);
+    }
+
+    public function JabatanHapus(Request $request, $id_anggota)
+    {
+        $result = Anggota::RemoveJabatan($request, $id_anggota);
+
+        if (!$result) {
+            return redirect()->back()->withErrors(['jabatan' => 'Jabatan tidak ditemukan atau sudah dihapus.']);
         }
 
-        public function delete($id_anggota)
-        {
-            $data = Anggota::TambahJabatan($id_anggota);
-
-            return view('admin.buatAkunPengurus.detail', [
-                'dtAnggota' => $data['dtAnggota'],
-                'jabatans' => $data['jabatans'],
-                'divisi' => $data['divisi']
-            ]);
-        }
-
-        public function JabatanHapus(Request $request, $id_anggota)
-        {
-            $result = Anggota::RemoveJabatan($request, $id_anggota);
-
-            if (!$result) {
-                return redirect()->back()->withErrors(['jabatan' => 'Jabatan tidak ditemukan atau sudah dihapus.']);
-            }
-
-            return redirect()->route('jabatan')->with('toast_success', 'Jabatan berhasil dihapus dan role diturunkan menjadi anggota.');
-        }
+        return redirect()->route('jabatan')->with('toast_success', 'Jabatan berhasil dihapus.');
+    }
 }

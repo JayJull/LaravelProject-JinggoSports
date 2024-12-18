@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
-class Presensi extends Model    
+class Presensi extends Model
 {
     use HasFactory;
 
@@ -38,7 +38,7 @@ class Presensi extends Model
     public static function dataPresensi(){
         $data = Presensi::all();
         $length = count($data);
-        $dataDivisi = array();  
+        $dataDivisi = array();
         for($i = 0; $i<$length; $i++){
 
             $namaDivisi = Divisi::where('id_divisi', $data[$i]->id_divisi)->first();
@@ -46,7 +46,7 @@ class Presensi extends Model
             // array_push($dataDivisi, $namaDivisi);
             $data[$i]['nama_divisi'] = $namaDivisi->nama;
             $data[$i]['nama_anggota'] = $namaAnggota->nama;
-            
+
             unset($data[$i]['id_divisi'], $data[$i]['aktifasi_id'], $data[$i]['id_anggota']);
         }
 
@@ -57,7 +57,7 @@ class Presensi extends Model
         $user = Auth()->user();
         $anggota = Anggota::where('id_anggota', $user->id_anggota)->first();
         $idDivisi = $anggota->divisi->pluck('id_divisi');
-        
+
         $data_jadwal = Jadwal::whereIn('id_divisi', $idDivisi)->first();
         $tenggat = $data_jadwal->waktu_selesai;
         // dd($request->all());
@@ -73,7 +73,7 @@ class Presensi extends Model
         $currentDate = Carbon::now()->format('Y-m-d');
         $currentTime = Carbon::now()->format('H:i:00'); // Ambil waktu sekarang
 
-       
+
         //dd($currentTime);
         if ($validator->fails()) {
             return redirect()->route('view-presensi')->with('error', 'data kurang lengkap');
@@ -86,7 +86,7 @@ class Presensi extends Model
 
         $namaFileUnik = Str::uuid() . '' . time() . '' . $fotoFile->getClientOriginalName();
         $fotoPath = $fotoFile->storeAs('public/buktiPresensi', $namaFileUnik);
-        
+
         $deadLine = Aktifasi::where('id_aktifasi', $request->aktifasi_id)->first();
         // dd($deadLine->tenggat);
         $tenggatDate = Carbon::parse($deadLine->tenggat)->format('Y-m-d'); // Convert tenggat to Y-m-d format
@@ -100,7 +100,7 @@ class Presensi extends Model
             'tanggal' => $currentDate,
             'aktifasi_id'=>$request->aktifasi_id
         ])->first();
-        
+
         if ($cek) {
             return redirect()->route('view-presensi')->with('error', 'Anda sudah presensi');
         } else {
@@ -125,7 +125,7 @@ class Presensi extends Model
         $user = Auth::user();
         $anggota = Anggota::find($user->id);
         // $pendaftar = Anggota::where('nim', $anggota->nim)->first();
-        // dd($anggota);    
+        // dd($anggota);
         return $anggota;
     }
     // public static function takeJadwal1(){
@@ -149,10 +149,10 @@ class Presensi extends Model
         // Ambil semua id_divisi yang terkait dengan anggota tersebut
         // dd($user);
         $idDivisi = $anggota->divisi->pluck('id_divisi');
-        
+
         // Ambil semua jadwal yang terkait dengan id_divisi yang didapat
         $jadwalDivisi = Jadwal::whereIn('id_divisi', $idDivisi)->get();
-        
+
         return $jadwalDivisi;
     }
     public static function takeActiveDivisi(){
@@ -174,7 +174,7 @@ class Presensi extends Model
     public static function checkPresensi($index = 0) {
         $user = Auth::user();
         $anggota = Anggota::find($user->id_user); // Cari anggota berdasarkan id user
-    
+
         // Ambil id_divisi berdasarkan indeks
         $id_divisi = $anggota->divisi->pluck('id_divisi');
         // dd($id_divisi);
@@ -182,17 +182,17 @@ class Presensi extends Model
         if (!isset($id_divisi[$index])) {
             return 'belum presensi'; // Jika id_divisi dengan indeks tersebut tidak ada, dianggap belum presensi
         }
-    
+
         $currentDate = Carbon::now()->format('Y-m-d');
         $cek = Presensi::where([
             'tanggal' => $currentDate,
             'id_anggota' => $anggota->id_anggota,
             'id_divisi' => $id_divisi[$index],
         ])->first();
-    
+
         return $cek ? 'sudah presensi' : 'belum presensi';
     }
-    
+
     // public static function input(Request $request){
     //     $presensi = Presensi::store($request);
     //         return redirect()->route('view-presensi');
@@ -200,29 +200,29 @@ class Presensi extends Model
 
     public static function viewActivatePresensi() {
         $dtJadwal = Jadwal::with('divisi')->get();
-        
+
         // Ambil semua jadwal_id dari $dtJadwal
         $jadwalIds = $dtJadwal->pluck('id_jadwal')->toArray();
-    
+
         // Ambil data Aktifasi untuk jadwal yang ada
         $dtAktifasi = Aktifasi::whereIn('jadwal_id', $jadwalIds)->get()->groupBy('jadwal_id');
-        
+
         Divisi::hapusDivisiNoneDiDataJadwal($dtJadwal);
         // dd($dtJadwal);
         return view('content.presensi.aktivasi', compact('dtJadwal', 'dtAktifasi'));
     }
-    
+
 
     public static function updateStatus(Request $request){
         $request->validate([
             'tenggat' => 'required|date_format:H:i',  // Validasi format waktu
         ]);
-    
+
         $jadwal = Jadwal::findOrFail($request->id);
         $jadwal->aktifasi = ($request->status === 'active');
         $jadwal->tenggat = $request->tenggat;
         $jadwal->save();
-    
+
         return response()->json([
             'message' => 'Status dan tenggat berhasil diperbarui!',
             'status' => $jadwal->aktifasi ? 'active' : 'inactive'
@@ -231,7 +231,7 @@ class Presensi extends Model
 
     public static function takeStatus(Request $request){
         $jadwal = Jadwal::findOrFail($request->id);
-    
+
         // Gunakan accessor di model untuk status
         return response()->json(['status' => $jadwal->aktifasi ? 'active' : 'inactive']);
     }
@@ -255,7 +255,7 @@ class Presensi extends Model
             'tanggal'=>$currentDate,
             'jadwal_id'=>$id
         ]);
-        return redirect()->route('aktif-presensi')->with('success', 'berhasil aktifasi');
+        return redirect()->route('aktif-presensi')->with('toast_success', 'berhasil aktifasi');
     }
 
     public static function Scan($request){//ubah ini tamnbai
