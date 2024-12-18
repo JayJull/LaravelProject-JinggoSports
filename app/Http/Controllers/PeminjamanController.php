@@ -19,8 +19,23 @@ class PeminjamanController extends Controller
     public function index()
     {
         $peminjaman = Peminjaman::with('anggota', 'alat')->where('status', 'dipinjam')->get();
+      
+        // dd($peminjaman);
+        $length = count($peminjaman);
+        for($i = 0; $i<$length;  $i++){
 
-        return view('content.peminjaman.index', compact('peminjaman'));
+            $petugas = User::where('id_user',$peminjaman[$i]->petugas_id )->get();
+            // dd($petugas);
+            $namaPetugas = Anggota::where('id_anggota', $petugas[0]->id_anggota)->get();
+            $peminjaman[$i]['nama_petugas'] = $namaPetugas[0]->nama;
+        }
+        // dd($peminjaman[3]->nama_petugas);
+        // dd($petugas[0]->id_anggota);
+        // foreach($peminjaman as  $pinjam){
+        //     dd($pinjam);
+        // }
+        
+        return view('content.peminjaman.index', compact('peminjaman', 'petugas',));
     }
 
 

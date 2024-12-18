@@ -50,7 +50,7 @@
                             
                         </td>
 
-                        <td>{{ $data->petugas ? $data->petugas->name : 'N/A' }}</td>
+                        <td>{{ $data->nama_petugas ? $data->nama_petugas : 'N/A' }}</td>
                         <td class="text-center" style="width: 9%;">
                             <form onsubmit="return confirm('Apakah Anda Yakin Menghapus?');" action="{{ route('delete-pengembalian', $data->id_pengembalian) }}" method="POST">
                                 @csrf

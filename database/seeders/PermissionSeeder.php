@@ -46,6 +46,6 @@ class PermissionSeeder extends Seeder
 
         // Assign role ke user
         $user = User::find(1);
-        $user->assignRole('admin', 'pengurus', 'anggota');
+        $user->assignRole('admin', 'pengurus','anggota');
     }
 }

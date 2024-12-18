@@ -29,7 +29,7 @@ class Peminjaman extends Model
             'jml_alat' => 'required|integer|min:1',
             'tggl_pinjam' => 'required|date',
         ]);
-            $validatedData['petugas_id'] = auth()->user()->id;
+            $validatedData['petugas_id'] = auth()->user()->id_user;
          // melihat alat bedasarkan id
          $alat = Alat::where('id_alat', $data['id_alat'])->firstOrFail();
          
@@ -49,8 +49,9 @@ class Peminjaman extends Model
      }
     public function petugas()
     {
-        return $this->belongsTo(User::class, 'petugas_id');
+        return $this->belongsTo(User::class, 'id_anggota');
     }
+
     public function alat()
     {
         return $this->belongsTo(Alat::class, 'id_alat');
