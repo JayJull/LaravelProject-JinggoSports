@@ -16,7 +16,6 @@ class Divisi extends Model
         'id_divisi',
         'nama',
     ];
-
     public function anggota()
     {
         return $this->belongsToMany(Anggota::class, 'divisi_has_anggotas', 'id_divisi', 'id_anggota');
@@ -36,7 +35,7 @@ class Divisi extends Model
 
         }
     }
-    
+
     public static function ViewDivisi()
     {
         // $user = auth()->user();
@@ -95,5 +94,4 @@ class Divisi extends Model
         // activity()->inLog($logName)->log('menambah divisi');
         return $divisis;
     }
-    
 }

@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/',[TimeLineController::class, 'timeline'])->name('landing-page');
+Route::get('/', [TimeLineController::class, 'timeline'])->name('landing-page');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
@@ -73,7 +73,7 @@ Route::group(['middleware' => ['can:manage_timeline']], function () {
 
 
 Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
-Route::get('/divisi/{id}/anggota',[ DivisiController::class, 'viewAnggota'])->name('view-anggota');
+Route::get('/divisi/{id}/anggota', [DivisiController::class, 'viewAnggota'])->name('view-anggota');
 
 // *** DIVISI *** //
 Route::group(['middleware' => ['can:manage_divisi']], function () {
@@ -98,7 +98,7 @@ Route::group(['middleware' => ['can:manage_jadwal']], function () {
 
 
 // *** ALAT *** //
-Route::group(['middleware'=> ['can:manage_alat']], function () {
+Route::group(['middleware' => ['can:manage_alat']], function () {
     Route::get('/Alat', [AlatController::class, 'VeiwAlat'])->name('Alat');
     Route::get('/Fromalat', [AlatController::class, 'FormCalat'])->name('FormAlat');
     Route::post('/Store', [AlatController::class, 'StoreAlat'])->name('StoreAlat');
@@ -109,7 +109,7 @@ Route::group(['middleware'=> ['can:manage_alat']], function () {
 
 
 // *** PEMINJAMAN *** //
-Route::group(['middleware'=> ['can:transaksi']], function () {
+Route::group(['middleware' => ['can:transaksi']], function () {
     Route::get('/pinjam', [PeminjamanController::class, 'index'])->name('peminjaman');
     Route::get('/pinjam/create', [PeminjamanController::class, 'create'])->name('create-pinjam');
     Route::post('/pinjam/simpan', [PeminjamanController::class, 'store'])->name('simpan-pinjam');
@@ -122,7 +122,7 @@ Route::group(['middleware'=> ['can:transaksi']], function () {
 
 
 // * BUAT AKUN * //
-Route::group(['middleware'=> ['can:manage_pengurus']], function () {
+Route::group(['middleware' => ['can:manage_pengurus']], function () {
     Route::get('/jabatan', [BuatAkunController::class, 'ViewJabatan'])->name('jabatan');
     Route::get('/editjabatan/{id_anggota}', [BuatAkunController::class, 'MenampilkanData'])->name('JabatanT');
     Route::post('/TambahJabatan/{id_anggota}', [BuatAkunController::class, 'JabatanTambah'])->name('JabatanTambah');
@@ -132,17 +132,17 @@ Route::group(['middleware'=> ['can:manage_pengurus']], function () {
 
 
 // *** PRESENSI *** //
-Route::group(['middleware'=> ['can:presensi']], function () {
+Route::group(['middleware' => ['can:presensi']], function () {
     Route::get('/presensi', [PresensiController::class, 'index'])->name('view-presensi');
-    Route::post('presensi/store',[PresensiController::class, 'inputPresensi'])->name('store-presensi');
+    Route::post('presensi/store', [PresensiController::class, 'inputPresensi'])->name('store-presensi');
     Route::post('/scan-result', [PresensiController::class, 'Scanner'])->name('scan-result');
     Route::get('/scan-qr', function () {
         return view('content.presensi.scan'); // Halaman untuk memindai QR atau Barcode
     })->name('scan-qr');
 });
-Route::group(['middleware'=> ['can:manage_presensi']], function () {
+Route::group(['middleware' => ['can:manage_presensi']], function () {
     Route::get('/data/presensi', [PresensiController::class, 'view'])->name('data-presensi');
-    Route::get('aktifasi/presensi',[PresensiController::class, 'activatePresensiView'])->name('aktif-presensi');
+    Route::get('aktifasi/presensi', [PresensiController::class, 'activatePresensiView'])->name('aktif-presensi');
     Route::post('/updateStatus', [PresensiController::class, 'toggleStatus'])->name('update-status');
     Route::post('/activate/{id}', [PresensiController::class, 'activate'])->name('aktivasi');
     Route::get('/cetak/presensi', [PresensiController::class, 'cetak_presensi'])->name('cetak-presensi');
@@ -154,4 +154,3 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('/profile', [ProfileController::class, 'update'])->name('update-profile');
 Route::post('/profile/update', [ProfileController::class, 'updateGambar'])->name('gambar-profile');
 Route::post('/profile/delete', [ProfileController::class, 'deleteGambar'])->name('delete-profile');
-

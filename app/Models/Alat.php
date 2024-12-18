@@ -34,7 +34,6 @@ class Alat extends Model
             $dtAlat = Alat::all();
             return $dtAlat;
     }
-
     public static function StoreAlat(Request $request)
     {
         $request->validate([
@@ -78,6 +77,5 @@ class Alat extends Model
         // activity()->inLog($logName)->log('menghapusalat');
         return $alats;
     }
-   
 }
 

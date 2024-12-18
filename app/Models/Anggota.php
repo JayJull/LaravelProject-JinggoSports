@@ -336,4 +336,6 @@ class Anggota extends Model
 
         return redirect()->route('jabatan')->with('toast_success', 'Jabatan berhasil dihapus dan role diturunkan menjadi anggota.');
     }
+
+    
 }

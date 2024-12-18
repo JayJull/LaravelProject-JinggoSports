@@ -19,4 +19,5 @@ class Jabatan extends Model
     {
         return $this->belongsToMany(Anggota::class, 'jabatan_has_anggota', 'id_jabatan', 'id_anggota');
     }
+    
 }

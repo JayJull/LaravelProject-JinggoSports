@@ -1,9 +1,5 @@
 <li class="nav-item @if (request()->routeIs('pengurus')) active @endif">
-<<<<<<< HEAD
     <a class="nav-link" href="{{ route('jabatan') }}">
-=======
-    <a class="nav-link" href="{{ route("pengurus") }}">
->>>>>>> 275aaa35385e8243f8277a3f35d9fd4a8be1f36a
         <i class="fas fa-user-plus"></i>
         <span>Buat Akun</span></a>
 </li>
@@ -15,13 +11,8 @@
 </li>
 
 <li class="nav-item @if (request()->routeIs('alat', 'create-alat', 'edit-alat')) active @endif">
-<<<<<<< HEAD
     <a class="nav-link" href="{{ route('Alat') }}">
         <i class="fas fa-fw fa-box-open "></i>
-=======
-    <a class="nav-link" href="#">
-        <i class="fas fa-fw fa-box-open"></i>
->>>>>>> 275aaa35385e8243f8277a3f35d9fd4a8be1f36a
         <span>Alat</span></a>
 </li>
 
