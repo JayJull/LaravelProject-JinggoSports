@@ -25,6 +25,10 @@ class DivisiHasSeeder extends Seeder
                 'id_divisi' => 4,
                 'id_anggota' => 2,
             ],            
+            [
+                'id_divisi' => 5,
+                'id_anggota' => 2,
+            ],            
         ]);
     }
 }

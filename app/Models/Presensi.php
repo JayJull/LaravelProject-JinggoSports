@@ -258,11 +258,11 @@ class Presensi extends Model
         return redirect()->route('aktif-presensi')->with('success', 'berhasil aktifasi');
     }
 
-    public static function Scan($request){
+    public static function Scan($request){//ubah ini tamnbai
         // dd($request);
         $userLogin = Auth::user();
 
-        $anggota = Anggota::where('id_anggota', $userLogin->id_anggota)->first();
+        $anggota = Anggota::where('nim', $request)->first();
         // dd($anggota);
         if(!$anggota){
             return redirect()->route('scan-qr')->with('error', 'anda bukan anggota');
