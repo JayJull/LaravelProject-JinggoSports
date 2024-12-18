@@ -1,75 +1,68 @@
-@extends('master.main')
-@section('title', 'Anggota')
+@extends('home.submain')
+@section('title', 'Tambah Jabatan')
 @section('content')
 
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800 mb-4">Tabel Anggota</h1>
+    <!-- Page Heading -->
+    <h1 class="mb-4 text-gray-800 h3">Tambah Jabatan</h1>
 
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-            {{-- <div class="card-header py-3">
-                <a href="#" class="btn btn-primary btn-sm ml-auto"><i class="fas fa-plus"></i>
-                    Tambah</a>
-            </div> --}}
-            <div class="card-header py-3">
+    <!-- Card untuk Form -->
+    <div class="mb-4 shadow card">
+        <div class="py-3 card-header">
+            <h6 class="m-0 font-weight-bold text-primary">Form Tambah Jabatan</h6>
+        </div>
+        <div class="card-body">
 
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Nim</th>
-                                <th>Prodi</th>
-                                <th>Divisi 1</th>
-                                <th>Divisi 2</th>
+            <h5>Data Anggota</h5>
+            <ul>
+                <li><strong>Nama:</strong> {{ $dtAnggota->nama }}</li>
+                <li><strong>Nim:</strong> {{ $dtAnggota->nim }}</li>
+                <li><strong>Semester:</strong> {{ $dtAnggota->semester }}</li>
+            </ul>
 
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
+            <h5>Jabatan Saat Ini:</h5>
+            <ul>
+                @forelse ($dtAnggota->jabatan as $jabatan)
+                <li>{{$jabatan->nama}}</li>
+                @empty
+                    <li>Tidak ada data jabatan</li>
+                @endforelse
+            </ul>
 
-                        <tbody>
-                            @foreach ($dtAnggota as $item)
-                                @if ($item->status == 'terima')
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->nama }}</td>
-                                        <td>{{ $item->nim }}</td>
-                                        <td>{{ $item->prodi }}</td>
-                                        <td>{{ $item->divisi_1 }}</td>
-                                        <td>
-                                            @if ($item->divisi_2)
-                                                {{ $item->divisi_2 }}
-                                            @else
-                                                tidak memilih
-                                            @endif
-                                        </td>
+            <h5>Divisi Saat Ini:</h5>
+            <ul>
+                @forelse ($dtAnggota->divisi as $divisi)
+                    <li>{{ $divisi->nama }}</li>
+                @empty
+                    <li>Belum memiliki divisi.</li>
+                @endforelse
+            </ul>
 
-
-                                        <td class="text-center" style="width: 9%;">
-                                        @php $id = Crypt::encrypt($item->id); @endphp
-                                            <a href="{{ route('detail-pengurus', $id) }}"
-                                                class="btn btn-primary btn-sm"><i class="fas fa-eye"></i> Detail</a>
-
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-
-                    </table>
+            <!-- Form Tambah Jabatan -->
+            <form action="{{ route('JabatanTambah', $dtAnggota->id_anggota) }}" method="post">
+                @csrf
+                <!-- Pilih Jabatan -->
+                <div class="form-group">
+                    <label for="jabatan">Jabatan yang Akan Dihapus:</label>
+                    <input type="text" name="jabatan_readonly" id="jabatan" class="form-control" value="Pengurus Harian" readonly>
+                    <input type="hidden" name="jabatan" value="1">
                 </div>
-            </div>
+
+                @if ($errors->has('jabatan_id'))
+                    <span class="text-danger">{{ $errors->first('jabatan') }}</span>
+                @endif
+
+                <!-- Tombol Submit -->
+                <div class="mt-3 form-group">
+                    <button type="submit" class="btn btn-success">Simpan Jabatan</button>
+                </div>
+            </form>
         </div>
     </div>
-    <!-- /.container-fluid -->
 
-    {{-- sweet alert --}}
-    @include('sweetalert::alert')
+</div>
+<!-- /.container-fluid -->
 
 @endsection

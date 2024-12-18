@@ -1,112 +1,67 @@
-@extends('master.main')
-@section('title', 'Pengurus')
+@extends('home.submain')
+@section('title', 'Tambah Jabatan')
 @section('content')
 
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800 mb-4">Detail Anggota</h1>
+    <!-- Page Heading -->
+    <h1 class="mb-4 text-gray-800 h3">Hapus Jabatan</h1>
 
-
-
-
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-
-
-
-
-                    <div class="card-body">
-
-                        <form method="POST" action="{{ route('update-pengurus', $detail->id) }}" autocomplete="off">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                            <input type="hidden" name="_method" value="PUT">
-
-
-                            {{-- Form --}}
-                            {{-- <div> --}}
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label">Nama</label>
-                                        <input class="form-control" value="{{ $detail->nama }}" readonly>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label">Nim</label>
-                                        <input class="form-control" value="{{ $detail->nim }}" readonly>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label">Divisi 1</label>
-                                        <input class="form-control" value="{{ $detail->divisi_1 }}" readonly>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label">Divisi 2</label>
-                                        <input class="form-control" value="{{ $detail->divisi_2 }}" readonly>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label">Jabatan 1</label>
-                                        <input class="form-control" value="{{ $detail->jabatan }}" readonly>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-group focused">
-                                        <label class="form-control-label">Jabatan 2</label>
-                                        <select class="form-control" name="jabatan_2" aria-label="Default select example">
-                                            <option selected>-- PILIH JABATAN --</option>
-                                            <option value="Pengurus">Pengurus</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- </div> --}}
-
-                            <!-- Button -->
-                            <div class="pl-lg-4">
-                                <div class="row">
-                                    <div class="col text-center">
-                                        <button type="submit" class="btn btn-primary">Ubah Data</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
-
-                </div>
-            </div>
+    <!-- Card untuk Form -->
+    <div class="mb-4 shadow card">
+        <div class="py-3 card-header">
+            <h6 class="m-0 font-weight-bold text-primary">Form Hapus Jabatan</h6>
         </div>
+        <div class="card-body">
 
+            <h5>Data Anggota</h5>
+            <ul>
+                <li><strong>Nama:</strong> {{ $dtAnggota->nama }}</li>
+                <li><strong>Nim:</strong> {{ $dtAnggota->nim }}</li>
+                <li><strong>Semester:</strong> {{ $dtAnggota->semester }}</li>
+            </ul>
 
+            <h5>Jabatan Saat Ini:</h5>
+            <ul>
+                @forelse ($dtAnggota->jabatan as $jabatan)
+                <li>{{$jabatan->nama}}</li>
+                @empty
+                    <li>Tidak ada data jabatan</li>
+                @endforelse
+            </ul>
 
+            <h5>Divisi Saat Ini:</h5>
+            <ul>
+                @forelse ($dtAnggota->divisi as $divisi)
+                    <li>{{ $divisi->nama }}</li>
+                @empty
+                    <li>Belum memiliki divisi.</li>
+                @endforelse
+            </ul>
 
+            <!-- Form Tambah Jabatan -->
+            <form action="{{ route('JabatanHapus', $dtAnggota->id_anggota) }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label for="jabatan">Jabatan yang Akan Dihapus:</label>
+                    <input type="text" name="jabatan_readonly" id="jabatan" class="form-control" value="Pengurus Harian" readonly>
+                    <input type="hidden" name="jabatan" value="1">
+                </div>
+
+                @if ($errors->has('jabatan_id'))
+                    <span class="text-danger">{{ $errors->first('jabatan') }}</span>
+                @endif
+
+                <!-- Tombol Submit -->
+                <div class="mt-3 form-group">
+                    <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <!-- /.container-fluid -->
 
-    {{-- sweet alert --}}
-    @include('sweetalert::alert')
+</div>
+<!-- /.container-fluid -->
 
 @endsection
