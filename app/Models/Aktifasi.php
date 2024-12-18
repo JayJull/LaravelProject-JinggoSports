@@ -28,6 +28,7 @@ class Aktifasi extends Model
         $anggota = Anggota::where('id_anggota', $id)->first();
         $divisi = $anggota->divisi->pluck('id_divisi');
         $namaDivisi1 = Divisi::where('id_divisi',$divisi[0])->get();
+        // dd($divisi);
         $namaDivisi2 = Divisi::where('id_divisi',$divisi[1])->get();
         $id_jadwal1 = Jadwal::where('id_divisi', $divisi[0])->first();
         $id_jadwal2 = Jadwal::where('id_divisi', $divisi[1])->first();
