@@ -43,7 +43,7 @@ class PeminjamanController extends Controller
     {
 
         $alat = Alat::all();
-        $anggota = Anggota::with('prodi')->get();
+        $anggota = Anggota::with('prodi')->orderBy('nama', 'asc')->get();
         //  dd($anggota);
         return view('content.peminjaman.create', compact('alat', 'anggota'));
     }
