@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Timeline;
+use App\Models\TimeLine;
 use Illuminate\Http\Request;
 
 class TimeLineController extends Controller
