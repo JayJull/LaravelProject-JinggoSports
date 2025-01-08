@@ -1,4 +1,4 @@
-@extends('master.main')
+@extends('home.submain')
 @section('title', 'Create Data')
 @section('content')
 
@@ -7,24 +7,24 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">Create Data Alat</h1>
+    <h1 class="mb-4 text-gray-800 h3">Create Data Alat</h1>
 
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
+    <div class="mb-4 shadow card">
+        <div class="py-3 card-header">
             <h6 class="m-0 font-weight-bold text-primary"></h6>
 
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <form action="{{ route('simpan-alat') }}" method="post">
+                    <form action="{{ route('StoreAlat') }}" method="post">
                         {{ csrf_field() }}
 
                         <div class="form-group">
-                            <label for="nama_barang" style="font-weight: bold;"> Nama</label>
-                            <input type="text" name="nama_barang" id="nama_barang" class="form-control" placeholder="Masukkan Nama Alat" required>
+                            <label for="nama_alat" style="font-weight: bold;"> Nama</label>
+                            <input type="text" name="nama_alat" id="nama_alat" class="form-control" placeholder="Masukkan Nama Alat" required>
                         </div>
                         <div class="form-group">
                             <label for="stok" style="font-weight: bold;"> Stok</label>
@@ -33,11 +33,6 @@
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group">
-                            <label for="tggl_masuk" style="font-weight: bold;"> Tanggal Masuk</label>
-                            <input type="date" name="tggl_masuk" id="tggl_masuk" class="form-control" placeholder="Masukkan Waktu Selesai" required>
-                        </div>
-
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Simpan Data</button>
                         </div>

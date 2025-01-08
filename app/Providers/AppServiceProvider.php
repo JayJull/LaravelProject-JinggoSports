@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Menambahkan aturan validasi kustom bernama 'recaptcha' menggunakan metode validate pada kelas ReCaptcha
-        Validator::extend('recaptcha', 'App\validator\Recaptcha@validate');
+        Validator::extend('recaptcha', 'App\validator\ReCaptcha@validate');
     }
 
 }

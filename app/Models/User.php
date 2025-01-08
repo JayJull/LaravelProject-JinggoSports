@@ -80,12 +80,12 @@ class User extends Authenticatable
             // 'g-recaptcha-response' => 'required|recaptcha',
         ]);
 
-        // if ($validator->fails()) {
-        //     return redirect()->route('login')
-        //         ->withErrors($validator)
-        //         ->withInput()
-        //         ->with('error', 'Mohon konfirmasi bahwa anda bukan robot.');
-        // }
+        if ($validator->fails()) {
+            return redirect()->route('login')
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Mohon konfirmasi bahwa anda bukan robot.');
+        }
         $data = [
             'email' => $request->email,
             'password' => $request->password,

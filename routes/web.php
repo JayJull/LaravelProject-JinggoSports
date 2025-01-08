@@ -28,26 +28,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/',[TimeLineController::class, 'timeline'])->name('landing-page');
+Route::get('/', [TimeLineController::class, 'timeline'])->name('landing-page');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// * DASHBOARD *//
+// *** DASHBOARD ***//
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// * SWITCH ROLE *//
+// *** SWITCH ROLE ***//
 Route::middleware(['auth'])->group(function () {
     Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
 });
 
-// * MENDAFTAR *//
+// * MENDAFTAR * //
 Route::get('/pendaftaran/form', [AnggotaController::class, 'pendaftaran'])->name('view-pendaftaran');
 Route::post('/store-pendaftaran', [AnggotaController::class, 'create_pendaftaran'])->name('store-pendaftaran');
 
 
-//* PENDAFTARAN * /
+//* PENDAFTARAN * //
 Route::group(['middleware' => ['can:manage_pendaftar']], function () {
     Route::get('/pendaftaran', [AnggotaController::class, 'index_pendaftaran'])->name('admin-pendaftaran');
     Route::get('/pendaftaran/diterima', [AnggotaController::class, 'index_pendaftaran_diterima'])->name('admin-pendaftaran-terima');
@@ -58,13 +58,13 @@ Route::group(['middleware' => ['can:manage_pendaftar']], function () {
 });
 
 
-// * PASSWORD *//
+// * PASSWORD * //
 Route::get('/anggota/aktivasi/{token}/{email}', [AnggotaController::class, 'aktivasi'])->name('anggota-aktivasi');
 Route::post('/set-password', [AnggotaController::class, 'setpass'])->name('set-pass');
 
 
 
-// * TIMELINE *//
+// * TIMELINE * //
 Route::group(['middleware' => ['can:manage_timeline']], function () {
     Route::get('/timeline', [TimeLineController::class, 'index'])->name('view-timeLine');
     Route::post('/timeline/update/{id}', [TimeLineController::class, 'update'])->name('timeline-update');
@@ -72,16 +72,17 @@ Route::group(['middleware' => ['can:manage_timeline']], function () {
 
 
 
-Route::get('/divisi', [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
-Route::get('/divisi/{id}/anggota',[ DivisiController::class, 'viewAnggota'])->name('view-anggota');
+// Route::get('/divisi', action: [DivisiController::class, 'index'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
+Route::get('/divisi/{id}/anggota', [DivisiController::class, 'viewAnggota'])->name('view-anggota');
+Route::get('/divisi', [DivisiController::class, 'ViewDivisi'])->name('divisi')->middleware('role_or_permission:pengurus|anggota|manage_divisi');
 
-// * DIVISI * //
+// *** DIVISI *** //
 Route::group(['middleware' => ['can:manage_divisi']], function () {
-    Route::get('/divisi/create', [DivisiController::class, 'create'])->name('create-divisi');
-    Route::post('/divisi/simpan', [DivisiController::class, 'store'])->name('simpan-divisi');
-    Route::get('/divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
-    Route::post('/divisi/update/{id}', [DivisiController::class, 'update'])->name('update-divisi');
-    Route::delete('/divisi/delete/{id}', [DivisiController::class, 'destroy'])->name('delete-divisi');
+    Route::get('/tambahdivisi', [DivisiController::class, 'CreateDivisi'])->name('tambahdivisi');
+    Route::post('/storeDivisi', [DivisiController::class, 'storeDivisi'])->name('storeDivisi');
+    Route::get('/editdivisi/{id_divisi}', [DivisiController::class, 'Editdivisi'])->name('editdivisi');
+    Route::post('/ubahedit/{id_divisi}', [DivisiController::class, 'ubahedit'])->name('ubahedit');
+    Route::delete('/hapusdivisi/{id_divisi}', [DivisiController::class, 'hapusdivisi'])->name('hapusdivisi');
 });
 
 
@@ -96,19 +97,19 @@ Route::group(['middleware' => ['can:manage_jadwal']], function () {
 });
 
 
-// * ALAT * //
-Route::group(['middleware'=> ['can:manage_alat']], function () {
-    Route::get('/alat', [AlatController::class, 'index'])->name('alat');
-    Route::get('/alat/create', [AlatController::class, 'create'])->name('create-alat');
-    Route::post('/alat/simpan', [AlatController::class, 'store'])->name('simpan-alat');
-    Route::get('/alat/edit/{id}', [AlatController::class, 'edit'])->name('edit-alat');
-    Route::post('/alat/update/{id}', [AlatController::class, 'update'])->name('update-alat');
-    Route::delete('/alat/delete/{id}', [AlatController::class, 'destroy'])->name('delete-alat');
+// *** ALAT *** //
+Route::group(['middleware' => ['can:manage_alat']], function () {
+    Route::get('/Alat', [AlatController::class, 'VeiwAlat'])->name('Alat');
+    Route::get('/Fromalat', [AlatController::class, 'FormCalat'])->name('FormAlat');
+    Route::post('/Store', [AlatController::class, 'StoreAlat'])->name('StoreAlat');
+    Route::get('/editalat/{id_alat}', [AlatController::class, 'FindId'])->name('FindId');
+    Route::post('/ediubah/{id_alat}', [AlatController::class, 'updatealat'])->name('updatealat');
+    Route::delete('/hapusalat/{id_alat}', [AlatController::class, 'hapusalat'])->name('hapusalat');
 });
 
 
-// * PEMINJAMAN * //
-Route::group(['middleware'=> ['can:transaksi']], function () {
+// *** PEMINJAMAN *** //
+Route::group(['middleware' => ['can:transaksi']], function () {
     Route::get('/pinjam', [PeminjamanController::class, 'index'])->name('peminjaman');
     Route::get('/pinjam/create', [PeminjamanController::class, 'create'])->name('create-pinjam');
     Route::post('/pinjam/simpan', [PeminjamanController::class, 'store'])->name('simpan-pinjam');
@@ -121,27 +122,27 @@ Route::group(['middleware'=> ['can:transaksi']], function () {
 
 
 // * BUAT AKUN * //
-Route::group(['middleware'=> ['can:manage_pengurus']], function () {
-    Route::get('/pengurus', [BuatAkunController::class, 'index'])->name('pengurus');
-    Route::get('/pengurus/create', [BuatAkunController::class, 'create'])->name('create-pengurus');
-    Route::get('/pengurus/detail/{id}', [BuatAkunController::class, 'detail'])->name('detail-pengurus');
-    Route::put('/pengurus/update/{id}', [BuatAkunController::class, 'update'])->name('update-pengurus');
-    Route::get('/pengurus/delete/{id}', [BuatAkunController::class, 'destroy'])->name('delete-pengurus');
+Route::group(['middleware' => ['can:manage_pengurus']], function () {
+    Route::get('/jabatan', [BuatAkunController::class, 'ViewJabatan'])->name('jabatan');
+    Route::get('/editjabatan/{id_anggota}', [BuatAkunController::class, 'MenampilkanData'])->name('JabatanT');
+    Route::post('/TambahJabatan/{id_anggota}', [BuatAkunController::class, 'JabatanTambah'])->name('JabatanTambah');
+    Route::get('/deletejabatan/{id_anggota}', [BuatAkunController::class, 'delete'])->name('Delete');
+    Route::post('/HapusJabatan/{id_anggota}', [BuatAkunController::class, 'JabatanHapus'])->name('JabatanHapus');
 });
 
 
-// * PRESENSI * //
-Route::group(['middleware'=> ['can:presensi']], function () {
+// *** PRESENSI *** //
+Route::group(['middleware' => ['can:presensi']], function () {
     Route::get('/presensi', [PresensiController::class, 'index'])->name('view-presensi');
-    Route::post('presensi/store',[PresensiController::class, 'inputPresensi'])->name('store-presensi');
+    Route::post('presensi/store', [PresensiController::class, 'inputPresensi'])->name('store-presensi');
     Route::post('/scan-result', [PresensiController::class, 'Scanner'])->name('scan-result');
     Route::get('/scan-qr', function () {
         return view('content.presensi.scan'); // Halaman untuk memindai QR atau Barcode
     })->name('scan-qr');
 });
-Route::group(['middleware'=> ['can:manage_presensi']], function () {
+Route::group(['middleware' => ['can:manage_presensi']], function () {
     Route::get('/data/presensi', [PresensiController::class, 'view'])->name('data-presensi');
-    Route::get('aktifasi/presensi',[PresensiController::class, 'activatePresensiView'])->name('aktif-presensi');
+    Route::get('aktifasi/presensi', [PresensiController::class, 'activatePresensiView'])->name('aktif-presensi');
     Route::post('/updateStatus', [PresensiController::class, 'toggleStatus'])->name('update-status');
     Route::post('/activate/{id}', [PresensiController::class, 'activate'])->name('aktivasi');
     Route::get('/cetak/presensi', [PresensiController::class, 'cetak_presensi'])->name('cetak-presensi');
@@ -154,7 +155,7 @@ Route::group(['middleware'=> ['can:manage_presensi']], function () {
 });
 
 
-// * PROFILE * //
+// *** PROFILE *** //
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('/profile', [ProfileController::class, 'update'])->name('update-profile');
 Route::post('/profile/update', [ProfileController::class, 'updateGambar'])->name('gambar-profile');
