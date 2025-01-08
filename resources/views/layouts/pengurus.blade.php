@@ -20,10 +20,20 @@
         <span>Aktifasi</span></a>
 </li>
 
-<li class="nav-item @if (request()->routeIs('data-presensi')) active @endif">
-    <a class="nav-link" href="{{ route('data-presensi') }}">
-        <i class="fas fa-fw fa-clipboard-list"></i>
-        <span>Data Presensi</span></a>
+
+<li class="nav-item @if (request()->routeIs('presensi',)) active @endif">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse" aria-expanded="true"
+        aria-controls="collapse">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>Data Presensi</span>
+    </a>
+    <div id="collapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{{ route('data-presensi') }}">Data Presensi</a>
+            <a class="collapse-item" href="{{ route('data-presensi-valid') }}">Valid</a>
+            <a class="collapse-item" href="{{ route('data-presensi-invalid') }}">Invalid</a>
+        </div>
+    </div>
 </li>
 
 

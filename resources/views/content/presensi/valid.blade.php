@@ -14,8 +14,11 @@
         <div class="card-header py-3">
             <!-- Optional header -->
              <div class="row d-flex justify-content-center align-items-center">
-
-             <form action="{{ route('cetak-presensi') }}" method="GET" target="_blank" style="display: inline;">
+            @foreach($data as $item)
+                @if ($item->status == 'valid')
+             <form action="{{ route('cetak-presensi-filter', $item->status) }}" method="GET" target="_blank" style="display: inline;">
+                @endif
+             @endforeach
                 <input type="hidden" name="tanggal" id="tanggal-filter-hidden">
                 <button type="submit" class="btn btn-sm btn-secondary">
                     <i class="fas fa-print"></i> cetak
@@ -46,6 +49,7 @@
 
                         <tbody>
                             @foreach ($data as $item)
+                                @if ($item->status == 'valid')
                                 <tr class="data">
                                     <td>{{ $loop->iteration }}</td>
                                     <td class="nama">{{ $item->nama_anggota }}</td>
@@ -56,11 +60,8 @@
 
                                         @if ($item->status == 'valid')
                                             <span class="badge badge-success" style="padding: 4px 10px;"> valid </span>
-                                        @elseif ($item->status == 'invalid')
-                                            <span class="badge badge-danger" style="padding: 4px 14px;"> invalid </span>
                                         @else
-                                            <span class="badge badge-warning" style="padding: 4px 14px;"> menunggu </span>
-
+                                            <span class="badge badge-danger" style="padding: 4px 14px;"> invalid </span>
                                         @endif
                                     </td>
 
@@ -76,6 +77,7 @@
                                     </td>
 
                                 </tr>
+                                @endif
                             @endforeach
                         </tbody>
 
@@ -90,38 +92,37 @@
     {{-- sweet alert --}}
     @include('sweetalert::alert')
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Ambil elemen input tanggal
-        const filterTanggalInput = document.querySelector('input[name="filter-tanggal"]');
-        const rows = document.querySelectorAll('.data'); // Ambil semua baris data
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ambil elemen input tanggal
+            const filterTanggalInput = document.querySelector('input[name="filter-tanggal"]');
+            const rows = document.querySelectorAll('.data'); // Ambil semua baris data
 
-        // Tambahkan event listener untuk perubahan tanggal
-        filterTanggalInput.addEventListener('change', function () {
-            const filterTanggal = this.value; // Ambil nilai tanggal dari input
-            
-            rows.forEach(row => {
-                const tanggalCell = row.querySelector('.tanggal'); // Ambil sel tanggal
-                const rowTanggal = tanggalCell ? tanggalCell.textContent.trim() : '';
+            // Tambahkan event listener untuk perubahan tanggal
+            filterTanggalInput.addEventListener('change', function () {
+                const filterTanggal = this.value; // Ambil nilai tanggal dari input
+                
+                rows.forEach(row => {
+                    const tanggalCell = row.querySelector('.tanggal'); // Ambil sel tanggal
+                    const rowTanggal = tanggalCell ? tanggalCell.textContent.trim() : '';
 
-                // Tampilkan atau sembunyikan baris berdasarkan tanggal
-                if (filterTanggal === '' || rowTanggal === filterTanggal) {
-                    row.style.display = ''; // Tampilkan baris
-                } else {
-                    row.style.display = 'none'; // Sembunyikan baris
-                }
+                    // Tampilkan atau sembunyikan baris berdasarkan tanggal
+                    if (filterTanggal === '' || rowTanggal === filterTanggal) {
+                        row.style.display = ''; // Tampilkan baris
+                    } else {
+                        row.style.display = 'none'; // Sembunyikan baris
+                    }
+                });
             });
         });
-    });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const filterTanggalInput = document.querySelector('input[name="filter-tanggal"]');
-        const hiddenTanggalInput = document.getElementById('tanggal-filter-hidden');
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterTanggalInput = document.querySelector('input[name="filter-tanggal"]');
+            const hiddenTanggalInput = document.getElementById('tanggal-filter-hidden');
 
-        filterTanggalInput.addEventListener('change', function () {
-            hiddenTanggalInput.value = this.value;
+            filterTanggalInput.addEventListener('change', function () {
+                hiddenTanggalInput.value = this.value;
+            });
         });
-    });
-</script>
-
+    </script>
 
 @endsection

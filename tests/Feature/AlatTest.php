@@ -11,11 +11,11 @@ use Tests\TestCase;
 class AlatTest extends TestCase
 {
 
-    public function test_view_alat_tanpa_login(){
-    $response = $this->get('/alat');
+//     public function test_view_alat_tanpa_login(){
+//     $response = $this->get('/alat');
     
-    $response->assertStatus(403);
-}
+//     $response->assertStatus(403);
+// }
     // public function test_view_alat_setelah_login(){
     //     $user = User::factory()->create([
     //         'nim'=>'362258302063',

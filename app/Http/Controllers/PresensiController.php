@@ -50,10 +50,16 @@ class PresensiController extends Controller
         $presensi = Presensi::store($request);
         return $presensi;
     }
-    public function cetak_presensi(){
-        $dtPresensi = Presensi::cetakPresensi();
-        $data = $dtPresensi['data'];
-        // dd($data);
+    public function cetak_presensi(Request $request){
+        $dtPresensi = Presensi::cetakPresensi($request);
+        // dd($dtPresensi);
+        $data = $dtPresensi;
+        return view ('content.presensi.cetakPresensi', compact('data'));
+    }
+    public function cetak_presensi_filter(Request $request, $status){
+        $dtPresensi = Presensi::cetakPresensiFilter($request, $status);
+        // dd($dtPresensi);
+        $data = $dtPresensi;
         return view ('content.presensi.cetakPresensi', compact('data'));
     }
 
@@ -84,10 +90,10 @@ public function toggleStatus(Request $request)
 //     $status = Presensi::takeStatus($request);
 //     return $status;
 // }
-public function activate(Request $request, $id){
-    $aktivasi = Presensi::aktifasi($request, $id);
-    return $aktivasi;
-}
+    public function activate(Request $request, $id){
+        $aktivasi = Presensi::aktifasi($request, $id);
+        return $aktivasi;
+    }
 
     public function Scanner(Request $request)
     {
@@ -96,4 +102,25 @@ public function activate(Request $request, $id){
         // dd($scan);
         return $scan;
     }
+    public function validasi($id){
+        $validasi = Presensi::updateValidasi($id);
+        return $validasi;
+    }
+    public function invalidasi($id){
+        $invalid = Presensi::updateInvalid($id);
+        return $invalid;
+    }
+    public function detail($id){
+        $detail = Presensi::detail_presensi($id);
+        return $detail;
+    }
+    public function valid(){
+        $valid = Presensi::valid_presensi();
+        return $valid;
+    }
+    public function invalid(){
+        $valid = Presensi::invalid_presensi();
+        return $valid;
+    }
+
 }

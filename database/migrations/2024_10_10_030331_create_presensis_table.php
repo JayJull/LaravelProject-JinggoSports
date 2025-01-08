@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_divisi');
             $table->unsignedBigInteger('aktifasi_id')->nullable();
             $table->foreign('aktifasi_id')->references('id_aktifasi')->on('aktifasis')->onDelete('cascade');
+            $table->string('status')->default('menunggu');
             $table->timestamps();
             $table->foreign('id_divisi')->references('id_divisi')->on('divisis')->onDelete('cascade');
             $table->foreign(columns: 'id_anggota')->references('id_anggota')->on('anggotas')->onDelete('cascade');

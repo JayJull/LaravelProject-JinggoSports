@@ -20,8 +20,14 @@ class Aktifasi extends Model
     ];
 
     public function jadwal(){
-        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
+        return $this->belongsTo(Jadwal::class, 'jadwal_id', 'id_jadwal');
     }
+    public function presensi()
+    {
+        return $this->hasMany(Presensi::class, 'aktifasi_id', 'id_aktifasi');
+    }
+    
+    
     public static function takeAktifasi(){
         $user = Auth::user();
         $id = $user->id_user;

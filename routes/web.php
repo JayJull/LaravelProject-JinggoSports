@@ -145,6 +145,12 @@ Route::group(['middleware'=> ['can:manage_presensi']], function () {
     Route::post('/updateStatus', [PresensiController::class, 'toggleStatus'])->name('update-status');
     Route::post('/activate/{id}', [PresensiController::class, 'activate'])->name('aktivasi');
     Route::get('/cetak/presensi', [PresensiController::class, 'cetak_presensi'])->name('cetak-presensi');
+    Route::get('/cetak/presensi/filter{status}', [PresensiController::class, 'cetak_presensi_filter'])->name('cetak-presensi-filter');
+    Route::post('/validasi/{id}', [PresensiController::class, 'validasi'])->name('validasi-presensi');
+    Route::post('/invalid/presensi/{id}', [PresensiController::class, 'invalidasi'])->name('invalidasi-presensi');
+    Route::get('/presensi/validation', [PresensiController::class, 'valid'])->name('data-presensi-valid');
+    Route::get('/presensi/invalid', [PresensiController::class, 'invalid'])->name('data-presensi-invalid');
+    Route::get('/presensi/detail/{id}', [PresensiController::class, 'detail'])->name('detail-presensi');
 });
 
 

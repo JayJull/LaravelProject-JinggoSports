@@ -17,6 +17,8 @@
 <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
 <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
 {{-- Sweetalert --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

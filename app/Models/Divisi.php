@@ -23,7 +23,7 @@ class Divisi extends Model
 
     public function jadwal()
     {
-        return $this->hasMany(Jadwal::class);
+        return $this->hasMany(Jadwal::class, 'id_divisi', 'id_divisi');
     }
     public static function hapusDivisiNoneDiDataJadwal($dtJadwal){
         // dd($dtJadwal);

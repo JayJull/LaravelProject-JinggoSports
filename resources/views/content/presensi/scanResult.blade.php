@@ -77,7 +77,7 @@
                                                         <option 
                                                             value="{{ $aktifasi->id_aktifasi }}" 
                                                             data-id-divisi="{{ $aktifasi->id_divisi }}"> <!-- Menyimpan id_divisi dalam atribut data -->
-                                                            {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} )
+                                                            {{$aktifasi->nama}} ( {{ $aktifasi->pertemuan }} ) 
                                                         </option>
                                                     @endif
                                                        
@@ -170,6 +170,26 @@
         }
         return new Blob([ab], { type: 'image/jpeg' });
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil elemen dropdown dan input hidden
+        const divisiDropdown = document.getElementById('divisi');
+        const idDivisiHidden = document.getElementById('id_divisi');
+
+        // Fungsi untuk memperbarui nilai id_divisi
+        function updateIdDivisi() {
+            const selectedOption = divisiDropdown.options[divisiDropdown.selectedIndex];
+            const idDivisi = selectedOption.getAttribute('data-id-divisi');
+            idDivisiHidden.value = idDivisi;
+        }
+
+        // Panggil fungsi pertama kali untuk set nilai default saat halaman dimuat
+        updateIdDivisi();
+
+        // Tambahkan event listener untuk memperbarui nilai saat dropdown berubah
+        divisiDropdown.addEventListener('change', updateIdDivisi);
+    });
 </script>
 
 @endsection

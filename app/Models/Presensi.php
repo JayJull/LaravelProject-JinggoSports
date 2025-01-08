@@ -29,45 +29,93 @@ class Presensi extends Model
     {
         return $this->belongsTo(Anggota::class, 'id_anggota', 'id_anggota');
     }
-    public static function cetakPresensi(){
-        $dtPresensi = Presensi::dataPresensi();
-        // dd($dtPresensi);
-        return $dtPresensi;
+
+    public function divisi()
+    {
+        return $this->belongsTo(Divisi::class, 'id_divisi', 'id_divisi');
+    }
+    public function aktifasirelation()
+    {
+        return $this->belongsTo(Aktifasi::class, 'aktifasi_id', 'id_aktifasi');
+    }
+
+
+    public static function cetakPresensi(Request $request){
+        $query = Presensi::with(['divisi', 'anggota']);
+        // Filter berdasarkan tanggal jika ada
+        if ($request->has('tanggal') && $request->tanggal != '') {
+            $query->whereDate('tanggal', $request->tanggal);
+        }
+        $data = $query->get();
+        
+        foreach ($data as $item) {
+            $item['nama_divisi'] = $item->divisi ? $item->divisi->nama : 'Tidak diketahui';
+            $item['nama_anggota'] = $item->anggota ? $item->anggota->nama : 'Tidak diketahui';
+            $item['pertemuan'] = $item->aktifasirelation ? $item->aktifasirelation->pertemuan : 'Tidak diketahui';
+        }
+        // dd($data);
+        return $data;
+    }
+
+    public static function cetakPresensiFilter(Request $request, $status){
+        $query = Presensi::with(['divisi', 'anggota'])->where('status', $status);
+        // Filter berdasarkan tanggal jika ada
+        if ($request->has('tanggal') && $request->tanggal != '') {
+            $query->whereDate('tanggal', $request->tanggal);
+        }
+        $data = $query->get();
+        
+        foreach ($data as $item) {
+            $item['nama_divisi'] = $item->divisi ? $item->divisi->nama : 'Tidak diketahui';
+            $item['nama_anggota'] = $item->anggota ? $item->anggota->nama : 'Tidak diketahui';
+            $item['pertemuan'] = $item->aktifasirelation ? $item->aktifasirelation->pertemuan : 'Tidak diketahui';
+        }
+        // dd($data);
+        return $data;
+    }
+
+
+
+    public static function detail_presensi($id){
+        $data = Presensi::with(['divisi', 'anggota'])->where('id_presensi', $id)->first();
+        $data['nama_divisi'] = $data->divisi ? $data->divisi->nama : 'Tidak diketahui';
+        $data['nama_anggota'] = $data->anggota ? $data->anggota->nama : 'Tidak diketahui';
+        $data['pertemuan'] = $data->aktifasirelation ? $data->aktifasirelation->pertemuan : 'Tidak diketahui';
+        unset($data['id_divisi'], $data['aktifasi_id'], $data['id_anggota']);
+        // dd($data);
+        return view('content.presensi.detail', compact('data'));
+        // return $data;
     }
 
     public static function dataPresensi(){
-        $data = Presensi::all();
-        $length = count($data);
-        $dataDivisi = array();  
-        for($i = 0; $i<$length; $i++){
-
-            $namaDivisi = Divisi::where('id_divisi', $data[$i]->id_divisi)->first();
-            $namaAnggota = Anggota::where('id_anggota', $data[$i]->id_anggota)->first();
-            // array_push($dataDivisi, $namaDivisi);
-            $data[$i]['nama_divisi'] = $namaDivisi->nama;
-            $data[$i]['nama_anggota'] = $namaAnggota->nama;
-            
-            unset($data[$i]['id_divisi'], $data[$i]['aktifasi_id'], $data[$i]['id_anggota']);
-        }
-
-        return view('content.presensi.show', compact('data'));
+        $data = Presensi::with(['divisi', 'anggota'])->get();
+    foreach ($data as $item) {
+        $item['nama_divisi'] = $item->divisi ? $item->divisi->nama : 'Tidak diketahui';
+        $item['nama_anggota'] = $item->anggota ? $item->anggota->nama : 'Tidak diketahui';
+        $item['pertemuan'] = $item->aktifasirelation ? $item->aktifasirelation->pertemuan : 'Tidak diketahui';
+        unset($item['id_divisi'], $item['aktifasi_id'], $item['id_anggota']);
+    }
+    // dd($data);
+    return view('content.presensi.show', compact('data'));
     }
 
     public static function store(Request $request){
         $user = Auth()->user();
-        $anggota = Anggota::where('id_anggota', $user->id_anggota)->first();
+        $anggota = $user->anggota;
         $idDivisi = $anggota->divisi->pluck('id_divisi');
         
         $data_jadwal = Jadwal::whereIn('id_divisi', $idDivisi)->first();
         $tenggat = $data_jadwal->waktu_selesai;
-        // dd($request->all());
+        // dd($request);
         $validator = Validator::make($request->all(), [
             'tanggal' => 'nullable',
             'id_divisi' => 'required',
             'aktifasi_id' => 'required',
-            'bukti' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'bukti' => 'required|image|mimes:png,jpg|max:1024|min:1',
         ], [
             'bukti.required' => 'Upload foto dulu',
+            'bukti.mimes' => 'Format gambar harus png atau jpg',
+            'bukti.max' => 'Ukuran gambar maksimal 1MB',
         ]);
 
         $currentDate = Carbon::now()->format('Y-m-d');
@@ -76,7 +124,10 @@ class Presensi extends Model
        
         //dd($currentTime);
         if ($validator->fails()) {
-            return redirect()->route('view-presensi')->with('error', 'data kurang lengkap');
+            return redirect()->route('view-presensi')
+                    ->withErrors($validator)
+                    ->withInput()
+                    ->with('error', 'Data kurang lengkap');
         }
 
         $fotoFile = $request->file('bukti');
@@ -238,10 +289,15 @@ class Presensi extends Model
 
 
     public static function aktifasi(Request $request, $id){
+        
         $request->validate([
-            'tenggat'=>'required',
+            'tenggat'=>'required|date_format:H:i',
             // 'status'=>'required',
-            'pertemuan'=>'required',
+            'pertemuan'=>'required|max:2',
+        ],
+        [
+            'tenggat.date_format' => 'Format waktu salah',
+            'pertemuan.max' => 'Maksimal 2 karakter',
         ]);
         $currentDate = Carbon::now()->format('Y-m-d');
         $data = Aktifasi::where('pertemuan', $request->pertemuan)->where('jadwal_id', $id)->first();
@@ -272,6 +328,39 @@ class Presensi extends Model
             return redirect()->route('scan-qr')->with('error', 'presensi harus menggunakan akun pribadi');
         }
         $dtAktifasi = Aktifasi::takeAktifasi();
+        // dd($dtAktifasi[0][0]->id_divisi);
         return view('content.presensi.scanResult', compact('anggota','dtAktifasi'));
+    }
+    public static function updateValidasi($id){
+        $presensi = Presensi::findOrFail($id);
+        $presensi->status = 'valid';
+        $presensi->save();
+        return redirect()->route('data-presensi')->with('success', 'presensi valid!!');
+    }
+    public static function updateInvalid($id){
+        $presensi = Presensi::findOrFail($id);
+        $presensi->status = 'invalid';
+        $presensi->save();
+        return redirect()->route('data-presensi')->with('success', 'presensi invalid!!');
+    }
+    public static function valid_presensi(){
+        $data = Presensi::with(['divisi', 'anggota'])->get();
+        foreach ($data as $item) {
+            $item['nama_divisi'] = $item->divisi ? $item->divisi->nama : 'Tidak diketahui';
+            $item['nama_anggota'] = $item->anggota ? $item->anggota->nama : 'Tidak diketahui';
+            $item['pertemuan'] = $item->aktifasirelation ? $item->aktifasirelation->pertemuan : 'Tidak diketahui';
+            unset($item['id_divisi'], $item['aktifasi_id'], $item['id_anggota']);
+        }
+        return view('content.presensi.valid', compact('data'));
+    }
+    public static function invalid_presensi(){
+        $data = Presensi::with(['divisi', 'anggota'])->get();
+        foreach ($data as $item) {
+            $item['nama_divisi'] = $item->divisi ? $item->divisi->nama : 'Tidak diketahui';
+            $item['nama_anggota'] = $item->anggota ? $item->anggota->nama : 'Tidak diketahui';
+            $item['pertemuan'] = $item->aktifasirelation ? $item->aktifasirelation->pertemuan : 'Tidak diketahui';
+            unset($item['id_divisi'], $item['aktifasi_id'], $item['id_anggota']);
+        }
+        return view('content.presensi.invalid', compact('data'));
     }
 }

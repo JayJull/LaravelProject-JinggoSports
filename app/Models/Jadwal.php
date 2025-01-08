@@ -29,7 +29,7 @@ class Jadwal extends Model
         return $this->belongsTo(Divisi::class, 'id_divisi', 'id_divisi');
     }
     public function aktifasi(){
-        return $this->hasMany(Aktifasi::class, 'jadwal_id', 'jadwal_id');
+        return $this->hasMany(Aktifasi::class, 'jadwal_id', 'id_jadwal');
     }
     public function getAktifasiAttribute($value)
     {

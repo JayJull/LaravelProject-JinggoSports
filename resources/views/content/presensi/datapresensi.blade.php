@@ -23,6 +23,7 @@
                                 <th>Divisi</th>
                                 <th>Tanggal</th>
                                 <th>Bukti Kehadiran</th>
+                                <th>Status Presensi</th>
                             </tr>
                         </thead>
 
@@ -34,13 +35,13 @@
                                     <td class="nim">{{ $item->nim }}</td>
                                     <td class="divisi">{{ $item->divisi }}</td>
                                     <td class="tanggal">{{$item->tanggal}}</td>
-
+                                    <td class="status">{{$item->status}}</td>
                                     <td>
                                     @if ($item->bukti)
-                                <img src="{{ asset('storage/buktiPresensi/' . $item->bukti) }}" alt="Gambar tidak ada" style="max-width: 200px; max-height: 200px;">
-                                @else
-                                Tidak ada bukti
-                                @endif
+                                        <img src="{{ asset('storage/buktiPresensi/' . $item->bukti) }}" alt="Gambar tidak ada" style="max-width: 200px; max-height: 200px;">
+                                        @else
+                                        Tidak ada bukti
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
