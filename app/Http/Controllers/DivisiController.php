@@ -11,6 +11,7 @@ class DivisiController extends Controller
     public function viewAnggota($id)
     {
         $id = decrypt($id);
+        dd($id);
         $divisi = Divisi::findOrFail($id);
         $anggota = $divisi->anggota;
 

@@ -28,9 +28,9 @@
                             @role('admin')
                             <th>Aksi</th>
                             @endrole
-                            @role('anggota')
+                            <!-- @role('anggota')
                             <th>anggota</th>
-                            @endrole
+                            @endrole -->
                         </tr>
                     </thead>
 
@@ -40,11 +40,11 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             @php $id = Crypt::encrypt($item->id); @endphp
-                            @role('anggota')
+                            <!-- @role('anggota')
                             <td>
                                 <a href="{{ route('view-anggota', $id) }}" class="btn btn-primary btn-sm"><i class="fas fa-user-friends"></i> anggota</a>
                             </td>
-                            @endrole
+                            @endrole -->
 
                             </td>
                             @role('admin')
