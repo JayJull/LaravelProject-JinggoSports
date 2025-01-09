@@ -150,6 +150,7 @@
     @endif --}}
 
 </body>
-
+{{-- sweet alert --}}
+@include('sweetalert::alert')
 
 </html>
