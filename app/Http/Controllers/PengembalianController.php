@@ -16,7 +16,7 @@ class PengembalianController extends Controller
 {
     public function index()
     {
-        $dtpengembalian = Pengembalian::all();
+        $dtpengembalian = Pengembalian::latest()->get();
         // dd($dtpengembalian);
         // $length = count($dtpengembalian);
         // for($i = 0; $i<$length; $i++){
@@ -45,9 +45,8 @@ class PengembalianController extends Controller
 
     public function store(Request $request)
     {
-            Pengembalian::kembali($request);
-            return redirect()->route('pengembalian')->with('toast_success', 'Data berhasil dikembalikan.');
-       
+        Pengembalian::kembali($request);
+        return redirect()->route('pengembalian')->with('toast_success', 'Data berhasil dikembalikan.');
     }
 
 

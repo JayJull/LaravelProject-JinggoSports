@@ -11,7 +11,7 @@ class DivisiController extends Controller
     public function viewAnggota($id)
     {
         $id = decrypt($id);
-        dd($id);
+        // dd($id);
         $divisi = Divisi::findOrFail($id);
         $anggota = $divisi->anggota;
 
@@ -28,6 +28,7 @@ class DivisiController extends Controller
     public function ViewDivisi()
     {
         $dtDivisi = Divisi::ViewDivisi();
+        // $dtDivisi = Divisi::hapusDivisiNoneDiDataJadwal($dtDivisi);
         return view('admin.divisi.index', compact('dtDivisi'));
 
     }
