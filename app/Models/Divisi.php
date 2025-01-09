@@ -29,7 +29,7 @@ class Divisi extends Model
         // dd($dtJadwal);
         $length = count($dtJadwal);
         for ($i = 0; $i<$length; $i++){//untuk menghilangkan divisi_id 11 dari data jadwal
-            if($dtJadwal[$i]->id_divisi == 11){
+            if($dtJadwal[$i]->nama == 'None'){
                 unset($dtJadwal[$i]);
             }
 
@@ -42,6 +42,8 @@ class Divisi extends Model
             // $logName = $user->name;
             // activity()->inLog($logName)->log('membuka alat');
         $dtDivisi = Divisi::Orderby('id_divisi')->paginate(12);
+        Divisi::hapusDivisiNoneDiDataJadwal($dtDivisi);
+        // dd($dtDivisi);
         return $dtDivisi;
     }
 
